@@ -1,8 +1,8 @@
 package service
 
 import (
-	"tasks_API/models"
-	"tasks_API/pkg/repository"
+	"copySys/models"
+	"copySys/pkg/repository"
 )
 
 type TaskService struct {

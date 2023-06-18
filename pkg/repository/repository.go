@@ -1,7 +1,7 @@
 package repository
 
 import (
-	"tasks_API/models"
+	"copySys/models"
 )
 
 type Authorization interface {

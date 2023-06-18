@@ -1,9 +1,9 @@
 package handler
 
 import (
+	"copySys/pkg/service"
 	"github.com/gin-gonic/gin"
 	"net/http"
-	"tasks_API/pkg/service"
 )
 
 type Handler struct {

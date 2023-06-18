@@ -6,7 +6,8 @@ import (
 )
 
 var dropTables = []string{
-	DropTasksTable,
+	DropShedulesTable,
+	DropFilesTable,
 	DropUsersTable,
 }
 

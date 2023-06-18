@@ -1,9 +1,9 @@
 package handler
 
 import (
+	"copySys/models"
 	"github.com/gin-gonic/gin"
 	"net/http"
-	"tasks_API/models"
 )
 
 func (h *Handler) signUp(c *gin.Context) {
@@ -24,7 +24,6 @@ func (h *Handler) signUp(c *gin.Context) {
 		}
 		return
 	}
-
 	c.JSON(http.StatusOK, gin.H{"id": userId})
 }
 
@@ -45,12 +44,16 @@ func (h *Handler) signIn(c *gin.Context) {
 	// Hashing password
 	token, err := h.services.GenerateToken(input.UserName, input.Password, input.Role)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
+
+		if err.Error() == models.ErrNoRowsSQL {
+			c.JSON(http.StatusBadRequest, gin.H{"message": "user not found"})
+		} else {
+			c.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
+		}
 		return
 	}
 
 	c.JSON(http.StatusOK, gin.H{"token": token})
-
 }
 
 func (h *Handler) Ping(c *gin.Context) {

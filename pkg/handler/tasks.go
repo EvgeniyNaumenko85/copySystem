@@ -1,11 +1,11 @@
 package handler
 
 import (
+	"copySys/models"
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"strconv"
-	"tasks_API/models"
 )
 
 func (h *Handler) getAllTasks(c *gin.Context) {

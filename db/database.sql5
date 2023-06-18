@@ -1,38 +1,27 @@
-CREATE DATABASE files_db;
+CREATE DATABASE tasks_db;
+
+CREATE TABLE IF NOT EXISTS tasks
+(
+    id               BIGSERIAL PRIMARY KEY,
+    user_id          integer REFERENCES users (id) ON DELETE CASCADE,
+    task_name        VARCHAR(30)  NOT NULL,
+    description      VARCHAR(255) NOT NULL,
+    is_done          BOOLEAN      NOT NULL,
+    added            TIMESTAMP    NOT NULL DEFAULT now(),
+    deadline         TIMESTAMP,
+    done_at          TIMESTAMP
+);
 
 CREATE TABLE IF NOT EXISTS users
 (
-    id                  BIGSERIAL PRIMARY KEY,
+    id                  SERIAL PRIMARY KEY,
+    full_name           VARCHAR(30) NOT NULL,
     user_name           VARCHAR(30) NOT NULL,
-    email               VARCHAR(30) NOT NULL UNIQUE,
-    password_hash       VARCHAR(255) NOT NULL,
-    role                VARCHAR(30) NOT NULL
+    password_hash       VARCHAR(255) NOT NULL
+--     date_of_Birth DATE NOT NULL
 );
 
 
-CREATE TABLE IF NOT EXISTS files
-(
-    id               BIGSERIAL PRIMARY KEY,
-    user_id          INTEGER REFERENCES users (id) ON DELETE CASCADE,
-    file_name        VARCHAR(30)  NOT NULL UNIQUE,
-    extension        VARCHAR(10),
-    path             VARCHAR(255) NOT NULL UNIQUE,
-    description      VARCHAR(255),
-    deleted          BOOLEAN      NOT NULL,
-    added            TIMESTAMP    NOT NULL DEFAULT now(),
-    version          INTEGER NOT NULL
-);
-
-CREATE TABLE IF NOT EXISTS shedules
-(
-    id               BIGSERIAL PRIMARY KEY,
-    user_id          INTEGER REFERENCES users (id) ON DELETE CASCADE,
-    file_id          INTEGER REFERENCES files (id) ON DELETE CASCADE,
-    copy_time        TIMESTAMP
-);
-
-
-/*
 -- Creating  function getUndoneTasksByUserId:
 CREATE OR REPLACE FUNCTION getUndoneTasksByUserId(user_id_arg integer)
     RETURNS TABLE (id bigint, user_id int, task_name varchar(30), description varchar(255), is_done boolean, added timestamp, deadline timestamp)
@@ -122,4 +111,4 @@ SELECT EXISTS (
 SELECT * FROM get_overdue_tasks(2);
 
 -- ========================>>
-*/
+

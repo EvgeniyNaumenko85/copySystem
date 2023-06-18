@@ -1,9 +1,9 @@
 package service
 
 import (
+	"copySys/models"
+	"copySys/pkg/repository"
 	"fmt"
-	"tasks_API/models"
-	"tasks_API/pkg/repository"
 )
 
 type UserService struct {

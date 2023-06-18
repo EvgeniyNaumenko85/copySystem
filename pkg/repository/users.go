@@ -1,10 +1,10 @@
 package repository
 
 import (
+	"copySys/db"
+	"copySys/models"
+	"copySys/pkg/logger"
 	"github.com/jmoiron/sqlx"
-	"tasks_API/db"
-	"tasks_API/models"
-	"tasks_API/pkg/logger"
 )
 
 type UserPostgres struct {
@@ -19,6 +19,7 @@ func (up *UserPostgres) GetAllUsers() (users []models.User, err error) {
 	rows, err := db.GetDBConn().Query(db.GetAllUsersSql)
 	if err != nil {
 		logger.Error.Println(err.Error())
+
 		return nil, err
 	}
 	defer rows.Close()
@@ -60,10 +61,10 @@ func (up *UserPostgres) GetUserByID(id int) (user models.User, err error) {
 }
 
 func (up *UserPostgres) UpdateUserByID(id int, u models.User) (err error) {
-	result, err := db.GetDBConn().Exec(db.UpdateUserByIDSql, u.UserName, u.Email, u.Role, id)
+	result, err := db.GetDBConn().Exec(db.UpdateUserByIDSql, u.Id, u.UserName, u.Email, u.Role, id)
 
 	if err != nil {
-		logger.Error.Println(err.Error())
+		logger.Error.Println("UpdateUserByID func: ", err.Error())
 		return err
 	}
 

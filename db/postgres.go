@@ -20,7 +20,6 @@ type Config struct {
 
 // Initiation of connection with DB
 func initDB(cfg Config) *sql.DB {
-	//connStr := "host=localhost port=5432 user=postgres  password=Fe4ZOjoj dbname=tasks_db sslmode=disable"
 	connStr := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=%s",
 		cfg.Host, cfg.Port, cfg.Username, cfg.Password, cfg.DBName, cfg.SSLMode)
 	db, err := sql.Open("postgres", connStr)

@@ -1,12 +1,10 @@
 package handler
 
 import (
+	"copySys/models"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"strconv"
-	"tasks_API/models"
-	//"strconv"
-	//"tasks_API/models"
 )
 
 func (h *Handler) getAllUsers(c *gin.Context) {
@@ -35,7 +33,7 @@ func (h *Handler) getUser(c *gin.Context) {
 		switch err.Error() {
 		case "sql: no rows in result set":
 			c.JSON(http.StatusNotFound, gin.H{
-				"message": "not found",
+				"message": "user not found",
 			})
 		default:
 			c.JSON(http.StatusInternalServerError, gin.H{
@@ -49,36 +47,36 @@ func (h *Handler) getUser(c *gin.Context) {
 	c.JSON(http.StatusOK, user)
 }
 
-func (h *Handler) addUser(c *gin.Context) {
-	var u *models.User
-	if err := c.BindJSON(&u); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"reason": "error while binding body",
-		})
-		return
-	}
-
-	id, err := h.services.CreateUser(*u)
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"reason": "error while saving user to db",
-			"err=":   error.Error(err),
-		})
-		return
-	}
-
-	c.JSON(http.StatusOK, gin.H{
-		"reason": "successfully created",
-		"id":     id,
-	})
-}
+//func (h *Handler) addUser(c *gin.Context) {
+//	var u *models.User
+//	if err := c.BindJSON(&u); err != nil {
+//		c.JSON(http.StatusBadRequest, gin.H{
+//			"reason": "error while binding body",
+//		})
+//		return
+//	}
+//
+//	id, err := h.services.CreateUser(*u)
+//	if err != nil {
+//		c.JSON(http.StatusInternalServerError, gin.H{
+//			"reason": "error while saving user to db",
+//			"err=":   error.Error(err),
+//		})
+//		return
+//	}
+//
+//	c.JSON(http.StatusOK, gin.H{
+//		"reason": "successfully created",
+//		"id":     id,
+//	})
+//}
 
 func (h *Handler) updateUser(c *gin.Context) {
 	idStr := c.Param("id")
 	id, err := strconv.Atoi(idStr)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
-			"reason": "invalid task id",
+			"reason": "invalid user id",
 		})
 		return
 	}
@@ -94,7 +92,7 @@ func (h *Handler) updateUser(c *gin.Context) {
 	if err = h.services.UpdateUserByID(id, *u); err != nil {
 		if err == models.ErrUserNotFound {
 			c.JSON(http.StatusNotFound, gin.H{
-				"reason": "user is not found",
+				"reason": "user not found",
 			})
 		} else {
 			c.JSON(http.StatusInternalServerError, gin.H{
@@ -124,7 +122,7 @@ func (h *Handler) deleteUser(c *gin.Context) {
 		switch err.Error() {
 		case "sql: no rows in result set":
 			c.JSON(http.StatusNotFound, gin.H{
-				"message": "user is not found",
+				"message": "user not found",
 			})
 		default:
 			c.JSON(http.StatusInternalServerError, gin.H{

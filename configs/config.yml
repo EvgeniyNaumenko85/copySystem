@@ -4,5 +4,5 @@ db:
   username: "postgres"
   host: "localhost"
   port: "5432"
-  dbname: "tasks_db"
+  dbname: "files_db"
   sslmode: "disable"

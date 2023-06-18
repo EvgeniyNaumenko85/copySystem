@@ -13,9 +13,9 @@ const (
 )
 
 const (
-	GetAllUsersSql    = "SELECT id, username, email, role FROM users"
-	GetUserByIDSql    = "SELECT id, username, email, role  FROM users WHERE id = $1"
-	UpdateUserByIDSql = "UPDATE users SET username = $1, email = $2, role = $3 WHERE id = $4"
+	GetAllUsersSql    = "SELECT id, user_name, email, role FROM users"
+	GetUserByIDSql    = "SELECT id, user_name, email, role  FROM users WHERE id = $1"
+	UpdateUserByIDSql = "UPDATE users SET id=$1, user_name = $2, email = $3, role = $4 WHERE id = $5"
 	DeleteUserByIDSql = "DELETE FROM users WHERE id = $1"
 
 	//ChekUserInTableSql = "SELECT EXISTS id FROM users WHERE id = $1"

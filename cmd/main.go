@@ -2,6 +2,13 @@ package main
 
 import (
 	"context"
+	"copySys"
+	"copySys/configs"
+	"copySys/db"
+	"copySys/pkg/handler"
+	"copySys/pkg/logger"
+	"copySys/pkg/repository"
+	"copySys/pkg/service"
 	"fmt"
 	"github.com/joho/godotenv"
 	"github.com/spf13/viper"
@@ -9,13 +16,6 @@ import (
 	"os"
 	"os/signal"
 	"syscall"
-	tasks "tasks_API"
-	"tasks_API/configs"
-	"tasks_API/db"
-	"tasks_API/pkg/handler"
-	"tasks_API/pkg/logger"
-	"tasks_API/pkg/repository"
-	"tasks_API/pkg/service"
 )
 
 func main() {
@@ -41,13 +41,13 @@ func main() {
 	})
 
 	repos := repository.NewRepository()
-	service := service.NewService(repos)
-	handlers := handler.NewHandler(service)
+	services := service.NewService(repos)
+	handlers := handler.NewHandler(services)
 
 	srv := new(tasks.Server)
 
 	// Поднимаем таблицы в БД
-	logger.Info.Println("Поднимаем таблицы в БД")
+	logger.Info.Println("Raising tables in the database")
 	if err := db.Up(); err != nil {
 		log.Fatalf("Error while migrating tables, err is: %s", err.Error())
 		return

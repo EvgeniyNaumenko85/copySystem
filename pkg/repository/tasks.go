@@ -1,11 +1,11 @@
 package repository
 
 import (
+	"copySys/db"
+	"copySys/models"
+	"copySys/pkg/logger"
 	"fmt"
 	"github.com/jmoiron/sqlx"
-	"tasks_API/db"
-	"tasks_API/models"
-	"tasks_API/pkg/logger"
 )
 
 type TaskPostgres struct {

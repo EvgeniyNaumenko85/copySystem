@@ -1,7 +1,7 @@
 package configs
 
 import (
-	"tasks_API/models"
+	"copySys/models"
 )
 
 var AppSettings models.Settings

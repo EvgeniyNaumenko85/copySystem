@@ -7,7 +7,8 @@ import (
 
 var createTables = []string{
 	CreateTableUsers,
-	CreateTableTasks,
+	CreateTableFiles,
+	CreateTableShedules,
 }
 
 func Up() error {

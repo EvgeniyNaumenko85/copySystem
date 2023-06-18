@@ -1,13 +1,13 @@
 package logger
 
 import (
+	"copySys/configs"
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"gopkg.in/natefinch/lumberjack.v2"
 	"io"
 	"log"
 	"os"
-	"tasks_API/configs"
 	"time"
 )
 
@@ -85,7 +85,7 @@ func Init() {
 	gin.DefaultWriter = io.MultiWriter(os.Stdout, lumberLogInfo)
 
 	Info.SetOutput(lumberLogError)
-	//Info.SetOutput(gin.DefaultWriter)
+	Info.SetOutput(gin.DefaultWriter)
 	Error.SetOutput(lumberLogError)
 	Warn.SetOutput(lumberLogWarn)
 	Debug.SetOutput(lumberLogDebug)

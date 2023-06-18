@@ -1,4 +1,4 @@
-module tasks_API
+module copySys
 
 go 1.20
 

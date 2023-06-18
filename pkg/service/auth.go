@@ -1,13 +1,13 @@
 package service
 
 import (
+	"copySys/models"
+	"copySys/pkg/logger"
+	"copySys/pkg/repository"
 	"crypto/sha1"
 	"errors"
 	"fmt"
 	"github.com/dgrijalva/jwt-go"
-	"tasks_API/models"
-	"tasks_API/pkg/logger"
-	"tasks_API/pkg/repository"
 	"time"
 )
 
@@ -45,11 +45,12 @@ func generatePasswordHash(password string) string {
 }
 
 func (s *AuthService) GenerateToken(username, password, role string) (string, error) {
+
 	password = generatePasswordHash(password)
 	user, err := s.repo.GetUser(username, password, role)
 
 	if err != nil {
-		logger.Error.Println(err.Error())
+		//logger.Error.Println("GetUser func: ", err.Error())
 		return "", err
 	}
 
