@@ -106,9 +106,10 @@ func IdMiddleware(c *gin.Context) {
 	c.Next()
 }
 
-func SizeMiddleware(c *gin.Context) {
+func FileSizeMiddleware(c *gin.Context) {
 	fmt.Println("Hello from SizeMiddleware")
 
+	// to do: внедрить регулирование ограничения объема файла  (передача параметра по роуту)
 	// Ограничение размера файла до 10 МБ (10 * 1024 * 1024 байт)
 	if err := c.Request.ParseMultipartForm(10 << 20); err != nil {
 		log.Println("Error parsing multipart form:", err)

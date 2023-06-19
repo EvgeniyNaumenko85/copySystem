@@ -19,44 +19,61 @@ func NewFilePostgres() *FilePostgres {
 	return &FilePostgres{}
 }
 
-func fileExists(filename string) bool {
+func fileExists(filename string) error {
 	_, err := os.Stat(filename)
-	if err == nil {
-		return true // Файл существует
-	}
 	if os.IsNotExist(err) {
-		return false // Файл не существует
+		return nil // файл не найден (true)
+	} else {
+		fmt.Println("err: ", err)
+		return models.ErrFileAlredyExists
 	}
-	// Обработка других ошибок, если необходимо
-	return false
 }
-
-//file multipart.File, header *multipart.FileHeader, c *gin.Context
 
 // func (fp *FilePostgres) UploadFile(file *multipart.FileHeader, c *gin.Context) error {
 func (fp *FilePostgres) UploadFile(file multipart.File, header *multipart.FileHeader, c *gin.Context) error {
 	filename := filepath.Base(header.Filename)
-	destinationPath := `C:\Users\Евгений Науменко\Desktop\copySys\storage\` + filename //  временная затычка
+	//destinationPath := `C:\Users\Евгений Науменко\Desktop\copySys\storage\` + filename //  временная затычка.
+	destinationPath := `.\copySys\storage\` + filename //  временная затычка
+	currentDir, err := os.Getwd()                      // текущая папка
+	if err != nil {
+		// Обработка ошибки
+	}
+	fmt.Println("currentDir: ", currentDir)
 	fmt.Println(destinationPath)
-	ok := fileExists(destinationPath)
-	if ok {
-		return models.ErrFileAlredyExists
+	//err = fileExists(destinationPath)
+
+	tofileExists := currentDir + "\\storage\\" + filename
+	fmt.Println("tofileExists: ", tofileExists)
+	err = fileExists(tofileExists)
+	if err != nil {
+		return err
+	} else {
+		if err != nil {
+			return err
+		}
 	}
 
-	if err := c.SaveUploadedFile(header, destinationPath); err != nil {
+	if err := c.SaveUploadedFile(header, tofileExists); err != nil {
 		//вставить лог
 		//c.JSON(http.StatusInternalServerError, gin.H{"error": "Ошибка при сохранении файла", "err: ": err.Error()})
 		return err
 	}
+
+	// to do добавить функционал записи значений в ячейки user_id, file_name, extension, path,  в таблицу files
+
 	return nil
 }
 
 func (fp *FilePostgres) GetFile(id int, c *gin.Context) (err error) {
 	fmt.Println("Hello from postgres.loadFile")
 	//получить ссылку на файл path из таблицы files  по переданному id
-	path := `C:\Users\Евгений Науменко\Desktop\copySys\storage\testFile.txt` //искусственная "заглушка"
+	//path := `C:\Users\Евгений Науменко\Desktop\copySys\storage\testFile.txt` //искусственная "заглушка"
+	path := `C:\Users\Евгений Науменко\Desktop\copySys\storage\test.exe`
 	//path := `C:\Users\Евгений Науменко\Desktop\copySys\storage\test.txt`
+
 	//filename := "testFile.txt" // берем из таблицы files по id
+
+	fmt.Println(filepath.Base(path))
 
 	// Устанавливаем заголовки для скачивания файла
 	c.Header("Content-Description", "File Transfer")

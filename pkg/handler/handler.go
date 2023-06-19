@@ -20,14 +20,14 @@ func (h *Handler) InitRoutes() *gin.Engine {
 	router.GET("/", Ping)
 
 	api := router.Group("/api")
-	//api := router.Group("/auth")
 
 	files := api.Group("/files", h.userIdentity)
 
 	{
-		files.POST("/add", SizeMiddleware, h.uploadFile)
+		files.POST("/add", FileSizeMiddleware, h.uploadFile)
 		files.GET("/load/:id", h.getFile)
 
+		//роуты под рефакторинг
 		files.GET("/", h.getAllTasks)
 		files.GET("/:id", IdMiddleware, h.getTask)
 		files.POST("/", h.createTask)

@@ -19,9 +19,9 @@ file_name        VARCHAR(30)  NOT NULL UNIQUE,
 extension        VARCHAR(10),
 path             VARCHAR(255) NOT NULL UNIQUE,
 description      VARCHAR(255),
-deleted          BOOLEAN      NOT NULL,
+deleted          BOOLEAN      NOT NULL DEFAULT false,
 added            TIMESTAMP    NOT NULL DEFAULT now(),
-version          INTEGER NOT NULL
+version          INTEGER NOT NULL --DEFAULT  --to do: при отправке одноименного файла (с уже существующим file_name) увеличивалась версия файла
 );`
 
 	CreateTableShedules = `CREATE TABLE IF NOT EXISTS shedules
