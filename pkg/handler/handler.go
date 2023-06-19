@@ -22,17 +22,21 @@ func (h *Handler) InitRoutes() *gin.Engine {
 	api := router.Group("/api")
 	//api := router.Group("/auth")
 
-	tasks := api.Group("/tasks", h.userIdentity)
+	files := api.Group("/files", h.userIdentity)
+
 	{
-		tasks.GET("/", h.getAllTasks)
-		tasks.GET("/:id", IdMiddleware, h.getTask)
-		tasks.POST("/", h.createTask)
-		tasks.PUT("/:id", IdMiddleware, h.updateTask)
-		tasks.PUT("/reassign/:id", IdMiddleware, h.reassignTask)
-		tasks.DELETE("/:id", IdentifyUserRole, IdMiddleware, h.deleteTask)
-		tasks.GET("/:id/overdue", IdMiddleware, h.getOverdueTasks)
-		tasks.GET("/:id/tasks", IdMiddleware, h.getTaskByUserId)
-		tasks.GET("/:id/undone_tasks", IdMiddleware, h.getUndoneTasksByUserId)
+		files.POST("/add", SizeMiddleware, h.uploadFile)
+		files.GET("/load/:id", h.getFile)
+
+		files.GET("/", h.getAllTasks)
+		files.GET("/:id", IdMiddleware, h.getTask)
+		files.POST("/", h.createTask)
+		files.PUT("/:id", IdMiddleware, h.updateTask)
+		files.PUT("/reassign/:id", IdMiddleware, h.reassignTask)
+		files.DELETE("/:id", IdentifyUserRole, IdMiddleware, h.deleteTask)
+		files.GET("/:id/overdue", IdMiddleware, h.getOverdueTasks)
+		files.GET("/:id/tasks", IdMiddleware, h.getTaskByUserId)
+		files.GET("/:id/undone_tasks", IdMiddleware, h.getUndoneTasksByUserId)
 	}
 
 	users := api.Group("/users", h.userIdentity)

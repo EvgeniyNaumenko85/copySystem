@@ -1,13 +1,57 @@
 package handler
 
 import (
-	"copySys/models"
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"strconv"
 )
 
+func (h *Handler) uploadFile(c *gin.Context) {
+	//file, err := c.FormFile("file")
+	file, header, err := c.Request.FormFile("file")
+
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "ошибка при получении файла"})
+		return
+	}
+
+	err = h.services.UploadFile(file, header, c)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"reason": "error while saving file to db",
+			"err":    err.Error(),
+		})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"message": "Файл успешно сохранен"})
+}
+
+func (h *Handler) getFile(c *gin.Context) {
+	fmt.Println("Hello from loadFile")
+	idStr := c.Param("id")
+	id, err := strconv.Atoi(idStr)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"reason": "invalid id",
+		})
+		return
+	}
+
+	err = h.services.GetFile(id, c)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"reason": "error while load file from db",
+			"err":    err.Error(),
+		})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"message": "Файл успешно выгружен"})
+}
+
+/*
 func (h *Handler) createTask(c *gin.Context) {
 	var t *models.Task
 	if err := c.BindJSON(&t); err != nil {
@@ -264,3 +308,4 @@ func (h *Handler) getUndoneTasksByUserId(c *gin.Context) {
 
 	c.JSON(http.StatusOK, task)
 }
+*/

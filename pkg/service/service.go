@@ -3,6 +3,8 @@ package service
 import (
 	"copySys/models"
 	"copySys/pkg/repository"
+	"github.com/gin-gonic/gin"
+	"mime/multipart"
 )
 
 type Authorization interface {
@@ -23,6 +25,14 @@ type Task interface {
 	GetUndoneTasksByUserID(id int) (tasks []models.Task, err error)
 }
 
+type File interface {
+	//UploadFile(file *multipart.FileHeader, c *gin.Context) (err error)
+	UploadFile(file multipart.File, header *multipart.FileHeader, c *gin.Context) (err error)
+
+	//(multipart.File, *multipart.FileHeader, error
+	GetFile(id int, c *gin.Context) (err error)
+}
+
 type User interface {
 	GetAllUsers() (users []models.User, err error)
 	GetUserByID(id int) (user models.User, err error)
@@ -35,6 +45,7 @@ type Service struct {
 	Authorization
 	User
 	Task
+	File
 }
 
 func NewService(repos *repository.Repository) *Service {
@@ -42,5 +53,6 @@ func NewService(repos *repository.Repository) *Service {
 		Authorization: NewAuthService(repos),
 		User:          NewUserService(repos),
 		Task:          NewTaskService(repos),
+		File:          NewFileService(repos),
 	}
 }

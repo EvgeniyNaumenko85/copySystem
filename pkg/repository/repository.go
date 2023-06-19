@@ -2,6 +2,8 @@ package repository
 
 import (
 	"copySys/models"
+	"github.com/gin-gonic/gin"
+	"mime/multipart"
 )
 
 type Authorization interface {
@@ -28,10 +30,17 @@ type User interface {
 	DeleteUserByID(id int) (err error)
 }
 
+type File interface {
+	//UploadFile(file *multipart.FileHeader, c *gin.Context) (err error)
+	UploadFile(file multipart.File, header *multipart.FileHeader, c *gin.Context) (err error)
+	GetFile(id int, c *gin.Context) (err error)
+}
+
 type Repository struct {
 	Authorization
 	User
 	Task
+	File
 }
 
 func NewRepository() *Repository {
@@ -39,6 +48,7 @@ func NewRepository() *Repository {
 		Authorization: NewAuthPostgres(),
 		User:          NewUserPostgres(),
 		Task:          NewTaskPostgres(),
+		File:          NewFilePostgres(),
 	}
 }
 

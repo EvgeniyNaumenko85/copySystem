@@ -3,7 +3,9 @@ package handler
 import (
 	"copySys/pkg/logger"
 	"errors"
+	"fmt"
 	"github.com/gin-gonic/gin"
+	"log"
 	"net/http"
 	"strconv"
 	"strings"
@@ -99,6 +101,37 @@ func IdMiddleware(c *gin.Context) {
 			"reason": "invalid id",
 		})
 		return
+	}
+
+	c.Next()
+}
+
+func SizeMiddleware(c *gin.Context) {
+	fmt.Println("Hello from SizeMiddleware")
+
+	// Ограничение размера файла до 10 МБ (10 * 1024 * 1024 байт)
+	if err := c.Request.ParseMultipartForm(10 << 20); err != nil {
+		log.Println("Error parsing multipart form:", err)
+		c.AbortWithStatusJSON(http.StatusRequestEntityTooLarge, gin.H{
+			"err": "Error parsing multipart form",
+		})
+		return
+	}
+
+	file, handler, err := c.Request.FormFile("file")
+	if err != nil {
+		log.Println("Error retrieving file:", err)
+		c.String(http.StatusBadRequest, "Error retrieving file")
+		return
+	}
+	defer file.Close()
+
+	// Проверка размера файла
+	if handler.Size > 10<<20 {
+		c.AbortWithStatusJSON(http.StatusRequestEntityTooLarge, gin.H{
+			"err": "File size exceeds the limit",
+		})
+
 	}
 
 	c.Next()

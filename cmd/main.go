@@ -44,7 +44,7 @@ func main() {
 	services := service.NewService(repos)
 	handlers := handler.NewHandler(services)
 
-	srv := new(tasks.Server)
+	srv := new(copySys.Server)
 
 	// Поднимаем таблицы в БД
 	logger.Info.Println("Raising tables in the database")
