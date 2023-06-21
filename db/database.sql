@@ -3,10 +3,11 @@ CREATE DATABASE files_db;
 CREATE TABLE IF NOT EXISTS users
 (
     id                  BIGSERIAL PRIMARY KEY,
-    user_name           VARCHAR(30) NOT NULL,
+    user_name           VARCHAR(30) NOT NULL UNIQUE,
     email               VARCHAR(30) NOT NULL UNIQUE,
     password_hash       VARCHAR(255) NOT NULL,
-    role                VARCHAR(30) NOT NULL
+    user_role           VARCHAR(30) NOT NULL,
+    file_size           INT DEFAULT 20,
 );
 
 
@@ -16,19 +17,18 @@ CREATE TABLE IF NOT EXISTS files
     user_id          INTEGER REFERENCES users (id) ON DELETE CASCADE,
     file_name        VARCHAR(30)  NOT NULL UNIQUE,
     extension        VARCHAR(10),
-    path             VARCHAR(255) NOT NULL UNIQUE,
+    file_path        VARCHAR(255) NOT NULL UNIQUE,
     description      VARCHAR(255),
+    file_size        INTEGER,
     deleted          BOOLEAN      NOT NULL,
     added            TIMESTAMP    NOT NULL DEFAULT now(),
-    version          INTEGER NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS shedules
+CREATE TABLE IF NOT EXISTS accesses
 (
     id               BIGSERIAL PRIMARY KEY,
     user_id          INTEGER REFERENCES users (id) ON DELETE CASCADE,
     file_id          INTEGER REFERENCES files (id) ON DELETE CASCADE,
-    copy_time        TIMESTAMP
 );
 
 

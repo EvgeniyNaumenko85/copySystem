@@ -13,11 +13,21 @@ const (
 )
 
 const (
-	GetAllUsersSql    = "SELECT id, user_name, email, role FROM users"
-	GetUserByIDSql    = "SELECT id, user_name, email, role  FROM users WHERE id = $1"
-	UpdateUserByIDSql = "UPDATE users SET id=$1, user_name = $2, email = $3, role = $4 WHERE id = $5"
+	GetAllUsersSql = "SELECT id, user_name, email, user_role FROM users"
+	GetUserByIDSql = "SELECT id, user_name, email, user_role  FROM users WHERE id = $1"
+
+	UpdateUserByIDSql = "UPDATE users SET id=$1, user_name = $2, email = $3, user_role = $4 WHERE id = $5"
 	DeleteUserByIDSql = "DELETE FROM users WHERE id = $1"
 
-	//ChekUserInTableSql = "SELECT EXISTS id FROM users WHERE id = $1"
-	//AddUserSql        = "INSERT INTO users (id, name, email, date_of_Birth, surname) VALUES ($1, $2, $3, $4, $5) RETURNING id"
+	GetIdUserByNameSql    = "SELECT id FROM users WHERE user_name = $1 "
+	CheckFileSizeLimitSql = "SELECT file_size FROM users WHERE user_name =$1"
+)
+
+const (
+	CreateAccessSql       = "INSERT INTO access (user_id, file_id) VALUES ($1, $2)"
+	CheckAccessInTableSql = "SELECT id FROM access WHERE file_id = $1 AND user_id =$2"
+)
+
+const (
+	CreateFileSql = "INSERT INTO files (user_id, file_name, extension, file_path) VALUES ($1, $2, $3, $4)  RETURNING id"
 )

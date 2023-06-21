@@ -15,8 +15,9 @@ func NewAuthPostgres() *AuthPostgres {
 }
 
 func (ap *AuthPostgres) GetUser(username, password, role string) (u models.User, err error) {
+	//todo перенести как функцию SQL
 	row := db.GetDBConn().
-		QueryRow("select id, user_name, email, role from users WHERE user_name = $1 AND password_hash = $2",
+		QueryRow("select id, user_name, email, user_role from users WHERE user_name = $1 AND password_hash = $2",
 			username, password)
 
 	err = row.Scan(&u.Id, &u.UserName, &u.Email, &u.Role)
@@ -30,8 +31,9 @@ func (ap *AuthPostgres) GetUser(username, password, role string) (u models.User,
 }
 
 func (ap *AuthPostgres) CreateUser(u models.User) (id int, err error) {
+	//todo перенести как функцию SQL
 	err = db.GetDBConn().
-		QueryRow("insert into users (user_name, email, password_hash, role) values ($1, $2, $3, $4) RETURNING id",
+		QueryRow("insert into users (user_name, email, password_hash, user_role) values ($1, $2, $3, $4) RETURNING id",
 			u.UserName, u.Email, u.Password, u.Role).Scan(&id)
 	if err != nil {
 		logger.Error.Println("CreateUser func: ", err.Error())

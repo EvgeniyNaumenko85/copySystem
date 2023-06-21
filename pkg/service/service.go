@@ -10,7 +10,7 @@ import (
 type Authorization interface {
 	CreateUser(user models.User) (int, error)
 	GenerateToken(username, password, role string) (string, error)
-	ParseToken(token string) (int, string, error)
+	ParseToken(token string) (int, string, string, error)
 }
 
 type Task interface {
@@ -27,10 +27,10 @@ type Task interface {
 
 type File interface {
 	//UploadFile(file *multipart.FileHeader, c *gin.Context) (err error)
-	UploadFile(file multipart.File, header *multipart.FileHeader, c *gin.Context) (err error)
+	UploadFile(file multipart.File, header *multipart.FileHeader, c *gin.Context) (id int, err error)
 
 	//(multipart.File, *multipart.FileHeader, error
-	GetFile(id int, c *gin.Context) (err error)
+	GetFile(fileId int, c *gin.Context) (err error)
 }
 
 type User interface {

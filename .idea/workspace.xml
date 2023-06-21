@@ -5,11 +5,23 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c6fa6ba5-cea1-48b8-9398-c3ee53b77c36" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db/database.sql" beforeDir="false" afterPath="$PROJECT_DIR$/db/database.sql" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/db/ddl.go" beforeDir="false" afterPath="$PROJECT_DIR$/db/ddl.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db/dml.go" beforeDir="false" afterPath="$PROJECT_DIR$/db/dml.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/erorrs.go" beforeDir="false" afterPath="$PROJECT_DIR$/models/erorrs.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pkg/handler/auth.go" beforeDir="false" afterPath="$PROJECT_DIR$/pkg/handler/auth.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pkg/handler/files.go" beforeDir="false" afterPath="$PROJECT_DIR$/pkg/handler/files.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pkg/handler/handler.go" beforeDir="false" afterPath="$PROJECT_DIR$/pkg/handler/handler.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pkg/handler/middleware.go" beforeDir="false" afterPath="$PROJECT_DIR$/pkg/handler/middleware.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pkg/repository/auth.go" beforeDir="false" afterPath="$PROJECT_DIR$/pkg/repository/auth.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pkg/repository/files.go" beforeDir="false" afterPath="$PROJECT_DIR$/pkg/repository/files.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pkg/repository/repository.go" beforeDir="false" afterPath="$PROJECT_DIR$/pkg/repository/repository.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pkg/service/auth.go" beforeDir="false" afterPath="$PROJECT_DIR$/pkg/service/auth.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pkg/service/files.go" beforeDir="false" afterPath="$PROJECT_DIR$/pkg/service/files.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pkg/service/service.go" beforeDir="false" afterPath="$PROJECT_DIR$/pkg/service/service.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -20,6 +32,9 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
   <component name="ProjectId" id="2RMVVsZRsmljgl04ZJsaJdGw3BZ" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -27,6 +42,7 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "ASKED_MARK_IGNORED_FILES_AS_EXCLUDED": "true",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.go.formatter.settings.were.checked": "true",
@@ -35,17 +51,43 @@
     "WebServerToolWindowFactoryState": "false",
     "go.import.settings.migrated": "true",
     "go.sdk.automatically.set": "true",
-    "last_opened_file_path": "C:/Users/Евгений Науменко/Desktop/copySys/pkg/handler",
+    "last_opened_file_path": "C:/Users/Евгений Науменко/Desktop/copySys/pkg/service",
     "node.js.detected.package.eslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)"
+    "node.js.selected.package.eslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "reference.settingsdialog.IDE.editor.colors.General"
+  },
+  "keyToStringList": {
+    "DatabaseDriversLRU": [
+      "postgresql"
+    ]
   }
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Евгений Науменко\Desktop\copySys\pkg\service" />
       <recent name="C:\Users\Евгений Науменко\Desktop\copySys\pkg\handler" />
       <recent name="C:\Users\Евгений Науменко\Desktop\copySys\pkg\repository" />
-      <recent name="C:\Users\Евгений Науменко\Desktop\copySys\pkg\service" />
     </key>
+  </component>
+  <component name="RunManager">
+    <configuration default="true" type="GoApplicationRunConfiguration" factoryName="Go Application">
+      <module name="copySys" />
+      <working_directory value="$PROJECT_DIR$" />
+      <kind value="FILE" />
+      <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$" />
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="GoTestRunConfiguration" factoryName="Go Test">
+      <module name="copySys" />
+      <working_directory value="$PROJECT_DIR$" />
+      <kind value="DIRECTORY" />
+      <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$" />
+      <framework value="gotest" />
+      <method v="2" />
+    </configuration>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TypeScriptGeneratedFilesManager">

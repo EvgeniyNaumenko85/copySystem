@@ -16,7 +16,7 @@ func (h *Handler) uploadFile(c *gin.Context) {
 		return
 	}
 
-	err = h.services.UploadFile(file, header, c)
+	fileId, err := h.services.UploadFile(file, header, c)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"reason": "error while saving file to db",
@@ -25,13 +25,16 @@ func (h *Handler) uploadFile(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"message": "Файл успешно сохранен"})
+	c.JSON(http.StatusOK, gin.H{
+		"message": "Файл успешно сохранен",
+		"id":      fileId,
+	})
 }
 
 func (h *Handler) getFile(c *gin.Context) {
 	fmt.Println("Hello from loadFile")
 	idStr := c.Param("id")
-	id, err := strconv.Atoi(idStr)
+	fileId, err := strconv.Atoi(idStr)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"reason": "invalid id",
@@ -39,7 +42,7 @@ func (h *Handler) getFile(c *gin.Context) {
 		return
 	}
 
-	err = h.services.GetFile(id, c)
+	err = h.services.GetFile(fileId, c)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"reason": "error while load file from db",

@@ -19,9 +19,9 @@ const (
 
 type tokenClaims struct {
 	jwt.StandardClaims
-	UserId   int    `json:"user_id"`
-	Role     string `json:"role"`
-	UserName string `json:"user_name"`
+	UserId int    `json:"user_id"`
+	Role   string `json:"role"`
+	UserName
 }
 
 type AuthService struct {
@@ -64,12 +64,12 @@ func (s *AuthService) GenerateToken(username, password, role string) (string, er
 		},
 		user.Id,
 		user.Role,
-		user.UserName,
+			user.UserName,
 	})
 	return token.SignedString([]byte(signingKey))
 }
 
-func (s *AuthService) ParseToken(accessToken string) (int, string, string, error) {
+func (s *AuthService) ParseToken(accessToken string) (int, string, error) {
 	// ключ подпись или ошибку
 
 	token, err := jwt.ParseWithClaims(accessToken, &tokenClaims{}, func(token *jwt.Token) (interface{}, error) {
@@ -85,7 +85,7 @@ func (s *AuthService) ParseToken(accessToken string) (int, string, string, error
 
 	if err != nil {
 		logger.Error.Println(err.Error())
-		return 0, "", "", err
+		return 0, "", err
 	}
 
 	// приведем в структуру и сделаем проверку
@@ -93,13 +93,13 @@ func (s *AuthService) ParseToken(accessToken string) (int, string, string, error
 
 	if !ok {
 		logger.Error.Println("token claims are not of type *tokenClaims ")
-		return 0, "", "", errors.New("token claims are not of type *tokenClaims ")
+		return 0, "", errors.New("token claims are not of type *tokenClaims ")
 	}
 
 	if time.Now().Unix() > claims.ExpiresAt {
 		logger.Error.Println("token expired")
-		return 0, "", "", errors.New("token expired")
+		return 0, "", errors.New("token expired")
 	}
 
-	return claims.UserId, claims.Role, claims.UserName, nil
+	return claims.UserId, claims.Role, nil
 }

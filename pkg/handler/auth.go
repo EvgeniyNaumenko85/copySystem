@@ -55,13 +55,3 @@ func (h *Handler) signIn(c *gin.Context) {
 
 	c.JSON(http.StatusOK, gin.H{"token": token})
 }
-
-func (h *Handler) Ping(c *gin.Context) {
-	id, ok := c.Get(userCtx)
-	if !ok {
-		c.JSON(http.StatusBadRequest, gin.H{"message": ok})
-		return
-	}
-	c.JSON(http.StatusOK, gin.H{"message": id})
-
-}

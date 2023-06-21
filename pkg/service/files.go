@@ -20,12 +20,12 @@ func NewFileService(repo *repository.Repository) *FileService {
 //	return fs.repo.UploadFile(file, c)
 //}
 
-func (fs *FileService) UploadFile(file multipart.File, header *multipart.FileHeader, c *gin.Context) (err error) {
+func (fs *FileService) UploadFile(file multipart.File, header *multipart.FileHeader, c *gin.Context) (fileId int, err error) {
 	return fs.repo.UploadFile(file, header, c)
 }
 
-func (fs *FileService) GetFile(id int, c *gin.Context) (err error) {
-	return fs.repo.GetFile(id, c)
+func (fs *FileService) GetFile(fileId int, c *gin.Context) (err error) {
+	return fs.repo.GetFile(fileId, c)
 }
 
 //type TaskService struct {

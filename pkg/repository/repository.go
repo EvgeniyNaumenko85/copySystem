@@ -32,8 +32,8 @@ type User interface {
 
 type File interface {
 	//UploadFile(file *multipart.FileHeader, c *gin.Context) (err error)
-	UploadFile(file multipart.File, header *multipart.FileHeader, c *gin.Context) (err error)
-	GetFile(id int, c *gin.Context) (err error)
+	UploadFile(file multipart.File, header *multipart.FileHeader, c *gin.Context) (id int, err error)
+	GetFile(fileId int, c *gin.Context) (err error)
 }
 
 type Repository struct {
