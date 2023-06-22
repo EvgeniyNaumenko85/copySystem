@@ -30,6 +30,7 @@ const (
 
 // files
 const (
+	GetAllUserFilesSql     = "SELECT id, user_id, file_name, extension, file_size, added FROM files WHERE user_id = $1"
 	CreateFileSql          = "INSERT INTO files (user_id, file_name, extension, file_path, file_size) VALUES ($1, $2, $3, $4, $5)  RETURNING id"
 	GetFilePathByFileIDSql = "SELECT file_path FROM files WHERE id = $1 "
 	CheckFileSizeLimitSql  = "SELECT file_size_lim FROM users WHERE user_name =$1"

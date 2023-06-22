@@ -29,6 +29,7 @@ type File interface {
 	UploadFile(header *multipart.FileHeader, c *gin.Context) (ID int, err error)
 	GetFileByID(fileId int, c *gin.Context) (err error)
 	DeleteFileByID(fileID int) (err error)
+	ShowAllUserFilesInfo(c *gin.Context) (files []models.File, err error)
 }
 
 type User interface {
@@ -37,6 +38,8 @@ type User interface {
 	UpdateUserByID(id int, u models.User) (err error)
 	DeleteUserByID(id int) (err error)
 }
+
+//(files models.Files )
 
 type Service struct {
 	Authorization

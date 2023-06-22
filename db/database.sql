@@ -17,8 +17,7 @@ CREATE TABLE IF NOT EXISTS files
     file_name        VARCHAR(30)  NOT NULL,
     extension        VARCHAR(10),
     file_path        VARCHAR(255) NOT NULL UNIQUE,
-    description      VARCHAR(255),
-    file_size_lim    INTEGER,
+    file_size        INTEGER,
     deleted          BOOLEAN      NOT NULL,
     added            TIMESTAMP    NOT NULL DEFAULT now(),
 );

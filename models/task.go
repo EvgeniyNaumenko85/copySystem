@@ -13,6 +13,3 @@ type Task struct {
 	DeadLine    time.Time `json:"deadline,omitempty"`
 	DoneAt      time.Time `json:"done_at,omitempty"`
 }
-
-// Tasks is a collection of Task
-type Tasks []*Task

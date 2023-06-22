@@ -51,8 +51,8 @@ func findUserIdByName(userName string) (int, error) {
 		return -1, models.ErrUserNotExists
 	}
 
-	var id int
-	err := db.GetDBConn().QueryRow(db.GetIdUserByNameSql, userName).Scan(&id)
+	var ID int
+	err := db.GetDBConn().QueryRow(db.GetIdUserByNameSql, userName).Scan(&ID)
 	if err != nil {
 		if err == sql.ErrNoRows {
 			return -1, models.ErrUserNotExists
@@ -62,7 +62,7 @@ func findUserIdByName(userName string) (int, error) {
 		}
 	}
 
-	return id, nil
+	return ID, nil
 }
 
 func getFileSizeLimitSql(userName string) (fileSizeLimit int, err error) {
@@ -211,14 +211,14 @@ func (fp *FilePostgres) UploadFile(header *multipart.FileHeader, c *gin.Context)
 
 	currentDir, err := os.Getwd() // текущая папка
 	if err != nil {
-		//todo log.err
+		logger.Error.Println(err.Error())
 		return 0, err
 	}
 
 	//TODO добавить функцию получения userName из Context
 	userName, err := getUserNameFromContext(c)
 	if err != nil {
-		//todo log
+		logger.Error.Println(err.Error())
 		return 0, err
 	}
 
@@ -230,13 +230,13 @@ func (fp *FilePostgres) UploadFile(header *multipart.FileHeader, c *gin.Context)
 	//проверка существования файла в хранилище:
 	err = checkFileExist(fullPathToFile)
 	if err != nil {
-		//todo log
+		logger.Error.Println(err.Error())
 		return 0, err
 	}
 
 	userId, err := findUserIdByName(userName)
 	if err != nil {
-		//todo log
+		logger.Error.Println(err.Error())
 		return 0, err
 	}
 
@@ -249,7 +249,7 @@ func (fp *FilePostgres) UploadFile(header *multipart.FileHeader, c *gin.Context)
 
 	err = checkFileSizeToUpload(fileSizeLimit, c)
 	if err != nil {
-		//todo log
+		logger.Error.Println(err.Error())
 		return 0, err
 	}
 
@@ -335,6 +335,83 @@ func (fp *FilePostgres) GetFileByID(fileID int, c *gin.Context) (err error) {
 
 	return
 }
+
+func (fp *FilePostgres) ShowAllUserFilesInfo(c *gin.Context) (files []models.File, err error) {
+	userName, err := getUserNameFromContext(c)
+	if err != nil {
+		logger.Error.Println(err.Error())
+		return nil, err
+	}
+
+	userID, err := findUserIdByName(userName)
+	if err != nil {
+		logger.Error.Println(err.Error())
+		return nil, err
+	}
+
+	rows, err := db.GetDBConn().Query(db.GetAllUserFilesSql, userID)
+	if err != nil {
+		logger.Error.Println(err.Error())
+		return nil, err
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		file := models.File{}
+		err = rows.Scan(
+			&file.ID,
+			&file.UserId,
+			&file.FileName,
+			&file.Extension,
+			&file.FileSize,
+			&file.Added,
+		)
+
+		if err != nil {
+			logger.Error.Println(err.Error())
+			continue
+		}
+		files = append(files, file)
+	}
+
+	if len(files) == 0 {
+		return files, models.ErrNoRows
+	}
+	return files, nil
+}
+
+/*
+//todo это почти готовая функция для просмотра всех файлов администратором
+func (fp *FilePostgres) ShowAllUserFilesInfo(c *gin.Context) (files []models.File, err error) {
+	rows, err := db.GetDBConn().Query(db.GetAllUserFilesSql)
+	if err != nil {
+		logger.Error.Println(err.Error())
+		return nil, err
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		file := models.File{}
+		err = rows.Scan(
+			&file.ID,
+			&file.UserId,
+			&file.FileName,
+			&file.Extension,
+			&file.Description,
+			&file.FileSize,
+			&file.Added,
+		)
+		if err != nil {
+			logger.Error.Println(err.Error())
+			continue
+		}
+		files = append(files, file)
+	}
+
+	return files, nil
+}
+
+*/
 
 func (fp *FilePostgres) DeleteFileByID(fileID int) error {
 

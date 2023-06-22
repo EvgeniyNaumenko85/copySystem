@@ -28,6 +28,8 @@ func (h *Handler) InitRoutes() *gin.Engine {
 		//todo не забывать редактироваать соответсвующие таблицы!!!!
 		files.POST("/", h.uploadFile)
 		files.GET("/:id", IdMiddleware, h.getFileByID)
+		//files.GET("/", IdMiddleware, h.showAllUserFilesInfo)
+		files.GET("/", h.showAllUserFilesInfo)
 		files.DELETE("/:id", IdMiddleware, h.deleteFileByID)
 
 		//todo роут под поиска файла пользователем
@@ -79,9 +81,9 @@ func (h *Handler) InitRoutes() *gin.Engine {
 	users := api.Group("/users", h.userIdentity)
 	{
 		users.GET("", h.getAllUsers)
-		users.GET("/:id", IdentifyUserRole, IdMiddleware, h.getUser)
-		users.PUT("/:id", IdentifyUserRole, IdMiddleware, h.updateUser)
-		users.DELETE("/:id", IdentifyUserRole, IdMiddleware, h.deleteUser)
+		users.GET("/:id", IdentifyUserRole, IdMiddleware, h.getUserByID)
+		users.PUT("/:id", IdentifyUserRole, IdMiddleware, h.updateUserByID)
+		users.DELETE("/:id", IdentifyUserRole, IdMiddleware, h.deleteUserByID)
 	}
 
 	auth := api.Group("/auth")

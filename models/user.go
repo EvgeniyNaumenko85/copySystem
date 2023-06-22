@@ -8,6 +8,3 @@ type User struct {
 	Password string `json:"password,omitempty"`
 	Role     string `json:"role"`
 }
-
-// Users  is a collection of User
-type Users []*User

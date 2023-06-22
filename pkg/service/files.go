@@ -1,6 +1,7 @@
 package service
 
 import (
+	"copySys/models"
 	"copySys/pkg/repository"
 	"github.com/gin-gonic/gin"
 	"mime/multipart"
@@ -20,6 +21,10 @@ func (fs *FileService) UploadFile(header *multipart.FileHeader, c *gin.Context) 
 
 func (fs *FileService) GetFileByID(fileId int, c *gin.Context) (err error) {
 	return fs.repo.GetFileByID(fileId, c)
+}
+
+func (fs *FileService) ShowAllUserFilesInfo(c *gin.Context) (files []models.File, err error) {
+	return fs.repo.ShowAllUserFilesInfo(c)
 }
 
 func (fs *FileService) DeleteFileByID(fileID int) (err error) {

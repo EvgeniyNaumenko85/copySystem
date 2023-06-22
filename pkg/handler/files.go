@@ -48,7 +48,6 @@ func (h *Handler) uploadFile(c *gin.Context) {
 }
 
 func (h *Handler) getFileByID(c *gin.Context) {
-	fmt.Println("Hello from loadFile")
 	idStr := c.Param("id")
 	fileId, err := strconv.Atoi(idStr)
 	if err != nil {
@@ -68,6 +67,27 @@ func (h *Handler) getFileByID(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, gin.H{"message": "file loaded successfully"})
+}
+
+// todo проверить работу:
+func (h *Handler) showAllUserFilesInfo(c *gin.Context) {
+	files, err := h.services.ShowAllUserFilesInfo(c)
+
+	if err != nil {
+		switch err {
+		case models.ErrNoRows:
+			c.JSON(http.StatusNoContent, gin.H{
+				"reason": err.Error(),
+			})
+			return
+		default:
+			c.JSON(http.StatusInternalServerError, gin.H{
+				"reason": err.Error(),
+			})
+			return
+		}
+	}
+	c.JSON(http.StatusOK, files)
 }
 
 func (h *Handler) deleteFileByID(c *gin.Context) {

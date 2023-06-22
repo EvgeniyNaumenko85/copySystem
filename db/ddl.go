@@ -22,7 +22,7 @@ file_name        VARCHAR(30)  NOT NULL,
 extension        VARCHAR(10),
 file_path        VARCHAR(255) NOT NULL UNIQUE,
 file_size		 INTEGER,
-description      VARCHAR(255),
+-- description      VARCHAR(255),
 deleted          BOOLEAN      NOT NULL DEFAULT false,
 added            TIMESTAMP    NOT NULL DEFAULT now()
 );`

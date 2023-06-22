@@ -18,7 +18,7 @@ func (h *Handler) getAllUsers(c *gin.Context) {
 	c.JSON(http.StatusOK, user)
 }
 
-func (h *Handler) getUser(c *gin.Context) {
+func (h *Handler) getUserByID(c *gin.Context) {
 	idStr := c.Param("id")
 	id, err := strconv.Atoi(idStr)
 	if err != nil {
@@ -71,7 +71,7 @@ func (h *Handler) getUser(c *gin.Context) {
 //	})
 //}
 
-func (h *Handler) updateUser(c *gin.Context) {
+func (h *Handler) updateUserByID(c *gin.Context) {
 	idStr := c.Param("id")
 	id, err := strconv.Atoi(idStr)
 	if err != nil {
@@ -107,7 +107,7 @@ func (h *Handler) updateUser(c *gin.Context) {
 	})
 }
 
-func (h *Handler) deleteUser(c *gin.Context) {
+func (h *Handler) deleteUserByID(c *gin.Context) {
 	idStr := c.Param("id")
 	id, err := strconv.Atoi(idStr)
 	if err != nil {
