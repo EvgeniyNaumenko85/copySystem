@@ -18,7 +18,7 @@ type Task interface {
 	CreateTask(models.Task) (id int, err error)
 	UpdateTaskByID(id int, t models.Task) (err error)
 	ReassignTask(oldUserID, newUserID, id int) (err error)
-	DeleteTaskByID(id int) (err error)
+	DeleteTaskByID(ID int) (err error)
 	GetTaskByUserID(id int) (tasks []models.Task, err error)
 	GetUndoneTasksByUserID(id int) (tasks []models.Task, err error)
 }
@@ -31,9 +31,9 @@ type User interface {
 }
 
 type File interface {
-	//UploadFile(file *multipart.FileHeader, c *gin.Context) (err error)
-	UploadFile(file multipart.File, header *multipart.FileHeader, c *gin.Context) (id int, err error)
-	GetFile(fileId int, c *gin.Context) (err error)
+	UploadFile(header *multipart.FileHeader, c *gin.Context) (id int, err error)
+	GetFileByID(fileId int, c *gin.Context) (err error)
+	DeleteFileByID(fileID int) (err error)
 }
 
 type Repository struct {

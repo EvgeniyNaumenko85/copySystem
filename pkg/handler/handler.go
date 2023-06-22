@@ -24,8 +24,11 @@ func (h *Handler) InitRoutes() *gin.Engine {
 	files := api.Group("/files", h.userIdentity)
 
 	{
-		files.POST("/", FileSizeMiddleware, h.uploadFile)
-		files.GET("/:id", IdMiddleware, h.getFile)
+		//files.POST("/", FileSizeMiddleware, h.uploadFile)
+		//todo не забывать редактироваать соответсвующие таблицы!!!!
+		files.POST("/", h.uploadFile)
+		files.GET("/:id", IdMiddleware, h.getFileByID)
+		files.DELETE("/:id", IdMiddleware, h.deleteFileByID)
 
 		//todo роут под поиска файла пользователем
 		// files.GET("/file/", h.findFile)

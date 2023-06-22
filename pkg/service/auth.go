@@ -59,10 +59,10 @@ func (s *AuthService) GenerateToken(username, password, role string) (string, er
 	// передаем метод для подписи
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, &tokenClaims{
 		jwt.StandardClaims{
-			ExpiresAt: time.Now().Add(12000 * time.Hour).Unix(), // время жизни токена
-			IssuedAt:  time.Now().Unix(),                        // когда был создан токен
+			ExpiresAt: time.Now().Add(12 * time.Hour).Unix(), // время жизни токена
+			IssuedAt:  time.Now().Unix(),                     // когда был создан токен
 		},
-		user.Id,
+		user.ID,
 		user.Role,
 		user.UserName,
 	})

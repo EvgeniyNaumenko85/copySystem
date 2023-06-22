@@ -7,19 +7,18 @@ CREATE TABLE IF NOT EXISTS users
     email               VARCHAR(30) NOT NULL UNIQUE,
     password_hash       VARCHAR(255) NOT NULL,
     user_role           VARCHAR(30) NOT NULL,
-    file_size           INT DEFAULT 20,
+    file_size_lim       INT DEFAULT 20,
 );
-
 
 CREATE TABLE IF NOT EXISTS files
 (
     id               BIGSERIAL PRIMARY KEY,
     user_id          INTEGER REFERENCES users (id) ON DELETE CASCADE,
-    file_name        VARCHAR(30)  NOT NULL UNIQUE,
+    file_name        VARCHAR(30)  NOT NULL,
     extension        VARCHAR(10),
     file_path        VARCHAR(255) NOT NULL UNIQUE,
     description      VARCHAR(255),
-    file_size        INTEGER,
+    file_size_lim    INTEGER,
     deleted          BOOLEAN      NOT NULL,
     added            TIMESTAMP    NOT NULL DEFAULT now(),
 );

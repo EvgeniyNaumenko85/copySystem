@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"copySys/models"
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"net/http"
@@ -8,30 +9,45 @@ import (
 )
 
 func (h *Handler) uploadFile(c *gin.Context) {
-	//file, err := c.FormFile("file")
-	file, header, err := c.Request.FormFile("file")
+	_, header, err := c.Request.FormFile("file")
 
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "ошибка при получении файла"})
+		fmt.Println(err.Error())
+		c.JSON(http.StatusBadRequest, gin.H{"error": "error getting file"})
 		return
 	}
 
-	fileId, err := h.services.UploadFile(file, header, c)
+	fileId, err := h.services.UploadFile(header, c)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"reason": "error while saving file to db",
-			"err":    err.Error(),
-		})
-		return
+		switch err {
+		case models.ErrFileToBig:
+			c.JSON(http.StatusRequestEntityTooLarge, gin.H{
+				"reason": "file to upload is too big",
+				"err":    err.Error(),
+			})
+			return
+		case models.ErrFileAlreadyExists:
+			c.JSON(http.StatusConflict, gin.H{
+				"reason": "file already exists",
+				"err":    err.Error(),
+			})
+			return
+		default:
+			c.JSON(http.StatusInternalServerError, gin.H{
+				"reason": "error while saving file to db",
+				"err":    err.Error(),
+			})
+			return
+		}
 	}
 
 	c.JSON(http.StatusOK, gin.H{
-		"message": "Файл успешно сохранен",
+		"message": "file saved successfully",
 		"id":      fileId,
 	})
 }
 
-func (h *Handler) getFile(c *gin.Context) {
+func (h *Handler) getFileByID(c *gin.Context) {
 	fmt.Println("Hello from loadFile")
 	idStr := c.Param("id")
 	fileId, err := strconv.Atoi(idStr)
@@ -42,7 +58,7 @@ func (h *Handler) getFile(c *gin.Context) {
 		return
 	}
 
-	err = h.services.GetFile(fileId, c)
+	err = h.services.GetFileByID(fileId, c)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"reason": "error while load file from db",
@@ -51,7 +67,36 @@ func (h *Handler) getFile(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"message": "Файл успешно выгружен"})
+	c.JSON(http.StatusOK, gin.H{"message": "file loaded successfully"})
+}
+
+func (h *Handler) deleteFileByID(c *gin.Context) {
+	idStr := c.Param("id")
+	fileID, err := strconv.Atoi(idStr)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"reason": "invalid file id",
+		})
+		return
+	}
+
+	err = h.services.DeleteFileByID(fileID)
+	if err != nil {
+		switch err.Error() {
+		case "sql: no rows in result set":
+			c.JSON(http.StatusNotFound, gin.H{
+				"message": "file is not found",
+			})
+		default:
+			c.JSON(http.StatusInternalServerError, gin.H{
+				"message": "error while deleting file",
+				"reason":  err.Error(),
+			})
+		}
+		return
+	}
+
+	c.JSON(http.StatusOK, "file successfully deleted")
 }
 
 /*

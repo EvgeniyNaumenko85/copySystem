@@ -20,7 +20,7 @@ func (ap *AuthPostgres) GetUser(username, password, role string) (u models.User,
 		QueryRow("select id, user_name, email, user_role from users WHERE user_name = $1 AND password_hash = $2",
 			username, password)
 
-	err = row.Scan(&u.Id, &u.UserName, &u.Email, &u.Role)
+	err = row.Scan(&u.ID, &u.UserName, &u.Email, &u.Role)
 	if err != nil {
 		logger.Error.Println("GetUser func: ", err.Error())
 		return models.User{}, err

@@ -5,13 +5,14 @@ import (
 	"copySys/models"
 	"copySys/pkg/logger"
 	"database/sql"
-	"errors"
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/jmoiron/sqlx"
 	"io"
+	"log"
 	"math"
 	"mime/multipart"
+	"net/http"
 	"os"
 	"path/filepath"
 )
@@ -24,8 +25,8 @@ func NewFilePostgres() *FilePostgres {
 	return &FilePostgres{}
 }
 
-func fileExists(filename string) error {
-	_, err := os.Stat(filename)
+func checkFileExist(fullPathToFile string) error {
+	_, err := os.Stat(fullPathToFile)
 	if os.IsNotExist(err) {
 		return nil // файл не найден (true)
 	} else {
@@ -37,7 +38,8 @@ func fileExists(filename string) error {
 func getUserNameFromContext(c *gin.Context) (string, error) {
 	userNameTypeAny, ok := c.Get("userName")
 	if !ok {
-		return "", errors.New("can't  get userName")
+		logger.Error.Println(models.ErrCantGetUserName.Error())
+		return "", models.ErrCantGetUserName
 	} else {
 		userName := fmt.Sprintf("%v", userNameTypeAny)
 		return userName, nil
@@ -45,7 +47,6 @@ func getUserNameFromContext(c *gin.Context) (string, error) {
 }
 
 func findUserIdByName(userName string) (int, error) {
-	//fmt.Println("userName: ", userName)
 	if userName == "" {
 		return -1, models.ErrUserNotExists
 	}
@@ -57,7 +58,6 @@ func findUserIdByName(userName string) (int, error) {
 			return -1, models.ErrUserNotExists
 		} else {
 			logger.Error.Println(err.Error())
-			fmt.Println(err.Error())
 			return -1, err
 		}
 	}
@@ -65,36 +65,54 @@ func findUserIdByName(userName string) (int, error) {
 	return id, nil
 }
 
-func fileSizeToUpload(fileName string, c *gin.Context) (fileSize int, err error) {
-	file, err := c.FormFile(fileName)
+func getFileSizeLimitSql(userName string) (fileSizeLimit int, err error) {
+	err = db.GetDBConn().QueryRow(db.CheckFileSizeLimitSql, userName).Scan(&fileSizeLimit)
 	if err != nil {
 		logger.Error.Println(err.Error())
-		return
+		return 0, err
 	}
 
-	fileSizeInBytes := file.Size
-	fileSize = int(math.Round(float64(fileSizeInBytes) / (1024 * 1024)))
-
-	return fileSize, nil
+	return fileSizeLimit, nil
 }
 
-func checkFileSizeLimitSql(userName string, fileSize int) error {
-	var fileSizeLimit int
-	err := db.GetDBConn().QueryRow(db.CheckFileSizeLimitSql, userName).Scan(&fileSizeLimit)
+func checkFileSizeToUpload(fileSizeLimit int, c *gin.Context) error {
+	file, handler, err := c.Request.FormFile("file")
 	if err != nil {
-		logger.Error.Println(err.Error())
+		log.Println("Error retrieving file:", err)
+		c.String(http.StatusBadRequest, "Error retrieving file")
 		return err
 	}
+	defer file.Close()
 
-	if fileSize > fileSizeLimit {
-		return models.FileToBig
+	// Проверка размера файла
+	var sizeOfOneMb int64 = 1024 * 1024
+	handlerSizeInMb := handler.Size / sizeOfOneMb
+	if handlerSizeInMb > int64(fileSizeLimit) {
+		fmt.Println("handler.Size: ", handler.Size)
+		//todo log
+		return models.ErrFileToBig
 	}
 
 	return nil
 }
 
-func addFileInfoToDB(userId int, fileName, extension, path string) (id int, err error) {
-	err = db.GetDBConn().QueryRow(db.CreateFileSql, userId, fileName, extension, path).Scan(&id)
+func getFileSize(filePath string) (int, error) {
+	fileInfo, err := os.Stat(filePath)
+	if err != nil {
+		return 0, err
+	}
+
+	fileSize := float64(fileInfo.Size())
+
+	var sizeOfOneMb float64 = 1024 * 1024
+	fileSizeInMB := int(math.Ceil(fileSize / sizeOfOneMb))
+
+	return fileSizeInMB, nil
+
+}
+
+func addFileInfoToDB(userId int, fileName, extension, path string, fileSize int) (id int, err error) {
+	err = db.GetDBConn().QueryRow(db.CreateFileSql, userId, fileName, extension, path, fileSize).Scan(&id)
 	if err != nil {
 		logger.Error.Println(err.Error())
 		return 0, err
@@ -104,7 +122,7 @@ func addFileInfoToDB(userId int, fileName, extension, path string) (id int, err 
 }
 
 func addAccessInfoToDB(fileId, userId int) error {
-	_, err := db.GetDBConn().Exec(db.CreateAccessSql, fileId, userId)
+	_, err := db.GetDBConn().Exec(db.CreateAccessSql, userId, fileId)
 	if err != nil {
 		logger.Error.Println(err.Error())
 		return err
@@ -112,11 +130,32 @@ func addAccessInfoToDB(fileId, userId int) error {
 	return nil
 }
 
-func userToFileAccess(fileId, userId int) error {
-	result, err := db.GetDBConn().Exec(db.CheckAccessInTableSql, fileId, userId)
+func getFilePathByFileID(fileID int) (path string, err error) {
+
+	err = db.GetDBConn().QueryRow(db.GetFilePathByFileIDSql, fileID).Scan(&path)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			return "", models.ErrFileNotExists
+		} else {
+			logger.Error.Println(err.Error())
+			return "", err
+		}
+	}
+
+	return path, nil
+}
+
+func checkUserToFileAccess(fileID, userID int) error {
+	_, err := getFilePathByFileID(fileID)
+	if err != nil {
+		logger.Error.Println(err.Error())
+		return err
+	}
+
+	result, err := db.GetDBConn().Exec(db.CheckAccessInTableSql, fileID, userID)
 	foundRows, _ := result.RowsAffected()
 	if foundRows == 0 {
-		return models.FileAccessDenied
+		return models.ErrFileAccessDenied
 	}
 	if err != nil {
 		logger.Error.Println(err.Error())
@@ -126,34 +165,70 @@ func userToFileAccess(fileId, userId int) error {
 	return nil
 }
 
-func (fp *FilePostgres) UploadFile(file multipart.File, header *multipart.FileHeader, c *gin.Context) (int, error) {
-	fileName := filepath.Base(header.Filename)
-	extension := filepath.Ext(fileName) // Извлечение расширения файла
-	//onlyName := filename[:len(filename)-len(extension)] // Извлечение имени файла без расширения
+func deleteFileInfoByFileID(fileID int) error {
+	result, err := db.GetDBConn().Exec(db.DeleteFileByIDSql, fileID)
+	foundRows, _ := result.RowsAffected()
+	if foundRows == 0 {
+		return models.ErrFileInfoNotFound
+	}
+	if err != nil {
+		logger.Error.Println(err.Error())
+		return err
+	}
 
-	//destinationPath := `C:\Users\Евгений Науменко\Desktop\copySys\storage\` + filename //  временная затычка.
-	//destinationPath := `.\copySys\storage\` + filename //  временная затычка
+	return nil
+}
+
+//func deleteAccessByFileID(fileID int) error {
+//	result, err := db.GetDBConn().Exec(db.DeleteAccessByFileIDSql, fileID)
+//	foundRows, _ := result.RowsAffected()
+//	if foundRows == 0 {
+//		return models.ErrAccessInfoNotFound
+//	}
+//	if err != nil {
+//		logger.Error.Println(err.Error())
+//		return err
+//	}
+//
+//	return nil
+//}
+
+func deleteAccessByFileID(fileID int) error {
+	_, err := db.GetDBConn().Exec(db.DeleteAccessByFileIDSql, fileID)
+	if err != nil {
+		logger.Error.Println(err.Error())
+		return err
+	}
+
+	return nil
+}
+
+// outer func ===========>>
+
+func (fp *FilePostgres) UploadFile(header *multipart.FileHeader, c *gin.Context) (int, error) {
+	fileName := filepath.Base(header.Filename)
+	fileExtension := filepath.Ext(fileName) // Извлечение расширения файла
+
 	currentDir, err := os.Getwd() // текущая папка
 	if err != nil {
 		//todo log.err
 		return 0, err
 	}
 
-	path := currentDir + "\\storage\\"
-
 	//TODO добавить функцию получения userName из Context
 	userName, err := getUserNameFromContext(c)
-	//fmt.Println("userName, err :", userName, err)
 	if err != nil {
 		//todo log
 		return 0, err
 	}
 
-	toFileExists := currentDir + "\\storage\\" + userName + "\\" + "\\" + fileName
+	var folderToFileStore = "\\storage\\"
+	//path := currentDir + folderToFileStore
+
+	fullPathToFile := currentDir + folderToFileStore + userName + "\\" + fileName
 
 	//проверка существования файла в хранилище:
-	//todo не забыть включить эту проверку
-	err = fileExists(toFileExists)
+	err = checkFileExist(fullPathToFile)
 	if err != nil {
 		//todo log
 		return 0, err
@@ -165,96 +240,86 @@ func (fp *FilePostgres) UploadFile(file multipart.File, header *multipart.FileHe
 		return 0, err
 	}
 
-	//todo определяем размер передаваемого файла
-	fileSize, err := fileSizeToUpload(fileName, c)
+	//todo определяем размер передаваемого файла / проверка на размер файла доступного пользователю
+	fileSizeLimit, err := getFileSizeLimitSql(userName)
 	if err != nil {
 		//todo log
-		fmt.Println("HIIII")
-		fmt.Println("fileName:", fileName)
-		fmt.Println("fileSize", fileSize)
 		return 0, err
 	}
 
-	//todo проверяем размер загружаемого файла, по user_id смотрим чтоб fileSize <= size_limit в таблице users
-	err = checkFileSizeLimitSql(userName, fileSize)
+	err = checkFileSizeToUpload(fileSizeLimit, c)
 	if err != nil {
 		//todo log
 		return 0, err
 	}
 
 	// cохраняем файл в папку
-	if err := c.SaveUploadedFile(header, toFileExists); err != nil {
+	if err := c.SaveUploadedFile(header, fullPathToFile); err != nil {
 		// todo вставить лог
 		//c.JSON(http.StatusInternalServerError, gin.H{"error": "Ошибка при сохранении файла", "err: ": err.Error()})
 		return 0, err
 	}
 
+	//todo функция возвращающая размер создаваемого файла
+	fileSize, err := getFileSize(fullPathToFile)
+	if err != nil {
+		//todo log
+		return 0, err
+	}
+
 	// to do добавить функционал записи значений в ячейки user_id, file_name, extension, path, в таблицу files
 	// TODO AddFileInfoToDB(user_id, file_name, extension, path)
-
-	fileId, err := addFileInfoToDB(userId, fileName, extension, path)
+	fileId, err := addFileInfoToDB(userId, fileName, fileExtension, fullPathToFile, fileSize)
 	if err != nil {
 		logger.Error.Println(err.Error())
 		return 0, err
 	}
 
-	//TODO при сохранении файла создается запись в таблице "accesses",в которой id задачи создается список пользователей,
+	//TODO при сохранении файла создается запись в таблице "accesses", в которой id задачи создается список пользователей,
 	//имеющих доступ к данному файлу. При создании файла доступ имеет только создатель.
-
 	err = addAccessInfoToDB(fileId, userId)
-
+	fmt.Println("addAccessInfoToDB: OK")
+	if err != nil {
+		fmt.Println("addAccessInfoToDB: !OK")
+		logger.Error.Println(err.Error())
+		return 0, err
+	}
 	return fileId, nil
 }
 
-func (fp *FilePostgres) GetFile(fileId int, c *gin.Context) (err error) {
+func (fp *FilePostgres) GetFileByID(fileID int, c *gin.Context) (err error) {
 
-	//TODO добавить функцию получения userName из Context
 	userName, err := getUserNameFromContext(c)
-	//fmt.Println("userName, err :", userName, err)
 	if err != nil {
-		//todo log
+		logger.Error.Println(err.Error())
 		return err
 	}
 
-	userId, err := findUserIdByName(userName)
+	userID, err := findUserIdByName(userName)
 	if err != nil {
-		//todo log
+		logger.Error.Println(err.Error())
 		return err
 	}
 
-	//todo функция прав доступа к файлу (ищет пару user_id/file_id в таблице access)
-	err = userToFileAccess(fileId, userId)
+	err = checkUserToFileAccess(fileID, userID)
 	if err != nil {
-		//todo log
+		logger.Error.Println(err.Error())
 		return err
 	}
 
-	//
-	fmt.Println("Hello from postgres.loadFile")
-	//получить ссылку на файл path из таблицы files  по переданному id
-	//path := `C:\Users\Евгений Науменко\Desktop\copySys\storage\testFile.txt` //искусственная "заглушка"
-	path := `C:\Users\Евгений Науменко\Desktop\copySys\storage\test.exe`
-	//path := `C:\Users\Евгений Науменко\Desktop\copySys\storage\test.txt`
-
-	//filename := "testFile.txt" // берем из таблицы files по id
-
-	fmt.Println(filepath.Base(path))
+	path, err := getFilePathByFileID(fileID)
+	if err != nil {
+		logger.Error.Println(err.Error())
+		return err
+	}
 
 	// Устанавливаем заголовки для скачивания файла
 	c.Header("Content-Description", "File Transfer")
-	//c.Header("Content-Disposition", "attachment; filename="+filename)
-	//c.Header("Content-Disposition", fmt.Sprintf("attachment; filename=%s", filepath.Base(path)))
 	c.Header("Content-Type", "application/octet-stream")
 	c.Header("Content-Transfer-Encoding", "binary")
-
-	//c.Header("Content-Disposition", "attachment; filename="+filename)
-	//c.Header("Content-Disposition", fmt.Sprintf("attachment; filename=%s", filepath.Base(path)))
-	//c.File(path) //ругается на  http: wrote more than the declared Content-Length
-
 	// Устанавливаем заголовок Content-Disposition для передачи имени файла с расширением
 	c.Header("Content-Disposition", fmt.Sprintf("attachment; filename=%s", filepath.Base(path)))
 
-	// Открываем файл для чтения
 	file, err := os.Open(path)
 	if err != nil {
 
@@ -262,7 +327,6 @@ func (fp *FilePostgres) GetFile(fileId int, c *gin.Context) (err error) {
 	}
 	defer file.Close()
 
-	// Отправляем файл в ответ
 	_, err = io.Copy(c.Writer, file)
 	if err != nil {
 
@@ -270,6 +334,35 @@ func (fp *FilePostgres) GetFile(fileId int, c *gin.Context) (err error) {
 	}
 
 	return
+}
+
+func (fp *FilePostgres) DeleteFileByID(fileID int) error {
+
+	filePath, err := getFilePathByFileID(fileID)
+	if err != nil {
+		logger.Error.Println(err.Error())
+		return err
+	}
+
+	err = os.Remove(filePath)
+	if err != nil {
+		logger.Error.Println(err.Error())
+		return err
+	}
+
+	err = deleteFileInfoByFileID(fileID)
+	if err != nil {
+		logger.Error.Println(err.Error())
+		return err
+	}
+
+	err = deleteAccessByFileID(fileID)
+	if err != nil {
+		logger.Error.Println(err.Error())
+		return err
+	}
+
+	return nil
 }
 
 /*

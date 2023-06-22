@@ -20,23 +20,20 @@ type Task interface {
 	CreateTask(models.Task) (int, error)
 	UpdateTaskByID(id int, t models.Task) (err error)
 	ReassignTask(oldUserID, newUserID, id int) (err error)
-	DeleteTaskByID(id int) (err error)
+	DeleteTaskByID(ID int) (err error)
 	GetTaskByUserID(id int) (tasks []models.Task, err error)
 	GetUndoneTasksByUserID(id int) (tasks []models.Task, err error)
 }
 
 type File interface {
-	//UploadFile(file *multipart.FileHeader, c *gin.Context) (err error)
-	UploadFile(file multipart.File, header *multipart.FileHeader, c *gin.Context) (id int, err error)
-
-	//(multipart.File, *multipart.FileHeader, error
-	GetFile(fileId int, c *gin.Context) (err error)
+	UploadFile(header *multipart.FileHeader, c *gin.Context) (ID int, err error)
+	GetFileByID(fileId int, c *gin.Context) (err error)
+	DeleteFileByID(fileID int) (err error)
 }
 
 type User interface {
 	GetAllUsers() (users []models.User, err error)
 	GetUserByID(id int) (user models.User, err error)
-	//AddUser(u models.User) (id int, err error)
 	UpdateUserByID(id int, u models.User) (err error)
 	DeleteUserByID(id int) (err error)
 }

@@ -3,9 +3,7 @@ package handler
 import (
 	"copySys/pkg/logger"
 	"errors"
-	"fmt"
 	"github.com/gin-gonic/gin"
-	"log"
 	"net/http"
 	"strconv"
 	"strings"
@@ -40,7 +38,6 @@ func (h *Handler) userIdentity(c *gin.Context) {
 	}
 
 	userId, role, userName, err := h.services.Authorization.ParseToken(headerParts[1])
-
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"reason": err.Error()})
 
@@ -107,6 +104,7 @@ func IdMiddleware(c *gin.Context) {
 	c.Next()
 }
 
+/*
 func FileSizeMiddleware(c *gin.Context) {
 	fmt.Println("Hello from SizeMiddleware")
 
@@ -138,3 +136,4 @@ func FileSizeMiddleware(c *gin.Context) {
 
 	c.Next()
 }
+*/

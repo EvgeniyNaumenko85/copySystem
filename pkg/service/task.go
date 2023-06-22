@@ -37,8 +37,8 @@ func (s *TaskService) ReassignTask(oldUserID, newUserID, id int) (err error) {
 	return s.repo.ReassignTask(oldUserID, newUserID, id)
 }
 
-func (s *TaskService) DeleteTaskByID(id int) (err error) {
-	return s.repo.DeleteTaskByID(id)
+func (s *TaskService) DeleteTaskByID(ID int) (err error) {
+	return s.repo.DeleteTaskByID(ID)
 }
 
 func (s *TaskService) GetTaskByUserID(id int) (tasks []models.Task, err error) {

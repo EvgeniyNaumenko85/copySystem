@@ -5,23 +5,26 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c6fa6ba5-cea1-48b8-9398-c3ee53b77c36" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/9f83a5aa-5582-4755-9610-f424706efe1f.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/9f83a5aa-5582-4755-9610-f424706efe1f.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/9f83a5aa-5582-4755-9610-f424706efe1f/storage_v2/_src_/database/files_db.Ro821A/schema/public.abK9xQ.meta" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/9f83a5aa-5582-4755-9610-f424706efe1f/storage_v2/_src_/database/files_db.Ro821A/schema/public.abK9xQ.meta" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/db/database.sql" beforeDir="false" afterPath="$PROJECT_DIR$/db/database.sql" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/db/ddl.go" beforeDir="false" afterPath="$PROJECT_DIR$/db/ddl.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/db/dml.go" beforeDir="false" afterPath="$PROJECT_DIR$/db/dml.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/models/erorrs.go" beforeDir="false" afterPath="$PROJECT_DIR$/models/erorrs.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pkg/handler/auth.go" beforeDir="false" afterPath="$PROJECT_DIR$/pkg/handler/auth.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/user.go" beforeDir="false" afterPath="$PROJECT_DIR$/models/user.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pkg/handler/files.go" beforeDir="false" afterPath="$PROJECT_DIR$/pkg/handler/files.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pkg/handler/handler.go" beforeDir="false" afterPath="$PROJECT_DIR$/pkg/handler/handler.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pkg/handler/middleware.go" beforeDir="false" afterPath="$PROJECT_DIR$/pkg/handler/middleware.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pkg/repository/auth.go" beforeDir="false" afterPath="$PROJECT_DIR$/pkg/repository/auth.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pkg/repository/files.go" beforeDir="false" afterPath="$PROJECT_DIR$/pkg/repository/files.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pkg/repository/repository.go" beforeDir="false" afterPath="$PROJECT_DIR$/pkg/repository/repository.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pkg/repository/tasks.go" beforeDir="false" afterPath="$PROJECT_DIR$/pkg/repository/tasks.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pkg/repository/users.go" beforeDir="false" afterPath="$PROJECT_DIR$/pkg/repository/users.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pkg/service/auth.go" beforeDir="false" afterPath="$PROJECT_DIR$/pkg/service/auth.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pkg/service/files.go" beforeDir="false" afterPath="$PROJECT_DIR$/pkg/service/files.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pkg/service/service.go" beforeDir="false" afterPath="$PROJECT_DIR$/pkg/service/service.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pkg/service/task.go" beforeDir="false" afterPath="$PROJECT_DIR$/pkg/service/task.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -51,7 +54,7 @@
     "WebServerToolWindowFactoryState": "false",
     "go.import.settings.migrated": "true",
     "go.sdk.automatically.set": "true",
-    "last_opened_file_path": "C:/Users/Евгений Науменко/Desktop/copySys/pkg/service",
+    "last_opened_file_path": "C:/Users/Евгений Науменко/Desktop/todo_list_db",
     "node.js.detected.package.eslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",

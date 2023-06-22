@@ -27,7 +27,7 @@ func (up *UserPostgres) GetAllUsers() (users []models.User, err error) {
 	for rows.Next() {
 		u := models.User{}
 		err = rows.Scan(
-			&u.Id,
+			&u.ID,
 			&u.UserName,
 			&u.Email,
 			&u.Role,
@@ -47,7 +47,7 @@ func (up *UserPostgres) GetUserByID(id int) (user models.User, err error) {
 	row := db.GetDBConn().
 		QueryRow(db.GetUserByIDSql, id)
 	err = row.Scan(
-		&u.Id,
+		&u.ID,
 		&u.UserName,
 		&u.Email,
 		&u.Role,
@@ -61,7 +61,7 @@ func (up *UserPostgres) GetUserByID(id int) (user models.User, err error) {
 }
 
 func (up *UserPostgres) UpdateUserByID(id int, u models.User) (err error) {
-	result, err := db.GetDBConn().Exec(db.UpdateUserByIDSql, u.Id, u.UserName, u.Email, u.Role, id)
+	result, err := db.GetDBConn().Exec(db.UpdateUserByIDSql, u.ID, u.UserName, u.Email, u.Role, id)
 
 	if err != nil {
 		logger.Error.Println("UpdateUserByID func: ", err.Error())

@@ -199,8 +199,8 @@ func (tp *TaskPostgres) ReassignTask(oldUserID, newUserID, id int) error {
 	return nil
 }
 
-func (tp *TaskPostgres) DeleteTaskByID(id int) error {
-	result, err := db.GetDBConn().Exec(db.DeleteTaskByIDSql, id)
+func (tp *TaskPostgres) DeleteTaskByID(ID int) error {
+	result, err := db.GetDBConn().Exec(db.DeleteFileByIDSql, ID)
 	if err != nil {
 		logger.Error.Println(err.Error())
 		return err
