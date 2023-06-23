@@ -47,21 +47,35 @@ func getUserNameFromContext(c *gin.Context) (string, error) {
 
 func findUserIdByName(userName string) (int, error) {
 	if userName == "" {
-		return -1, models.ErrUserNotExists
+		return 0, models.ErrUserNotExists
 	}
 
 	var ID int
 	err := db.GetDBConn().QueryRow(db.GetIdUserByNameSql, userName).Scan(&ID)
 	if err != nil {
 		if err == sql.ErrNoRows {
-			return -1, models.ErrUserNotExists
+			return 0, models.ErrUserNotExists
 		} else {
 			logger.Error.Println(err.Error())
-			return -1, err
+			return 0, err
 		}
 	}
-
 	return ID, nil
+}
+
+func getFileIDByFileName(fileName string) (int, error) {
+
+	var fileID int
+	err := db.GetDBConn().QueryRow(db.GetFileIDByFileNameSql, fileName).Scan(&fileID)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			return -1, models.ErrFileNotExists
+		} else {
+			logger.Error.Println(err.Error())
+			return 0, err
+		}
+	}
+	return fileID, nil
 }
 
 func getFileSizeLimitSql(userName string) (fileSizeLimit int, err error) {
@@ -286,57 +300,6 @@ func (fp *FilePostgres) UploadFile(header *multipart.FileHeader, c *gin.Context)
 	return fileId, nil
 }
 
-/*
-func (fp *FilePostgres) GetFileByID(fileID int, c *gin.Context) (err error) {
-
-	userName, err := getUserNameFromContext(c)
-	if err != nil {
-		logger.Error.Println(err.Error())
-		return err
-	}
-
-	userID, err := findUserIdByName(userName)
-	if err != nil {
-		logger.Error.Println(err.Error())
-		return err
-	}
-
-	err = checkUserToFileAccess(fileID, userID)
-	if err != nil {
-		logger.Error.Println(err.Error())
-		return err
-	}
-
-	path, err := getFilePathByFileID(fileID)
-	if err != nil {
-		logger.Error.Println(err.Error())
-		return err
-	}
-
-	// Устанавливаем заголовки для скачивания файла
-	c.Header("Content-Description", "File Transfer")
-	c.Header("Content-Type", "application/octet-stream")
-	c.Header("Content-Transfer-Encoding", "binary")
-	// Устанавливаем заголовок Content-Disposition для передачи имени файла с расширением
-	c.Header("Content-Disposition", fmt.Sprintf("attachment; filename=%s", filepath.Base(path)))
-
-	file, err := os.Open(path)
-	if err != nil {
-
-		return err
-	}
-	defer file.Close()
-
-	_, err = io.Copy(c.Writer, file)
-	if err != nil {
-
-		return err
-	}
-
-	return
-}
-*/
-
 func (fp *FilePostgres) GetFileByID(fileID int, userName string) (filePath string, err error) {
 
 	userID, err := findUserIdByName(userName)
@@ -420,7 +383,6 @@ func (fp *FilePostgres) ShowAllUserFilesInfo(c *gin.Context) (files []models.Fil
 			&file.FileSize,
 			&file.Added,
 		)
-
 		if err != nil {
 			logger.Error.Println(err.Error())
 			continue
@@ -437,36 +399,41 @@ func (fp *FilePostgres) ShowAllUserFilesInfo(c *gin.Context) (files []models.Fil
 // todo доделать функцию (в т.ч. по слоям!)
 func (fp *FilePostgres) FindFileByFileName(fileName, userName string) (file models.File, err error) {
 
-	// todo отправить файл в ответ и информацию о файле на heandler
+	userID, err := findUserIdByName(userName)
+	if err != nil {
+		logger.Error.Println(err.Error())
+		return file, err
+	}
 
-	//todo get fileID by fileName
+	fileID, err := getFileIDByFileName(fileName)
+	if err != nil {
+		logger.Error.Println(err.Error())
+		return file, err
+	}
 
-	//path, err := getFilePathByFileID(fileID)
-	//if err != nil {
-	//	logger.Error.Println(err.Error())
-	//	return err
-	//}
+	err = checkUserToFileAccess(fileID, userID)
+	if err != nil {
+		fmt.Println("err", err)
+		logger.Error.Println(err.Error())
+		return file, err
+	}
 
-	////todo перенести на слой hendlers
-	//// Устанавливаем заголовки для скачивания файла
-	//c.Header("Content-Description", "File Transfer")
-	//c.Header("Content-Type", "application/octet-stream")
-	//c.Header("Content-Transfer-Encoding", "binary")
-	//// Устанавливаем заголовок Content-Disposition для передачи имени файла с расширением
-	//c.Header("Content-Disposition", fmt.Sprintf("attachment; filename=%s", filepath.Base(path)))
-	//
-	//file, err := os.Open(path)
-	//if err != nil {
-	//
-	//	return err
-	//}
-	//defer file.Close()
-	//
-	//_, err = io.Copy(c.Writer, file)
-	//if err != nil {
-	//
-	//	return err
-	//}
+	fmt.Println("Hello from here1")
+	row := db.GetDBConn().QueryRow(db.GetFileByFileIDSql, fileID)
+	err = row.Scan(
+		&file.ID,
+		&file.UserId,
+		&file.FileName,
+		&file.Extension,
+		&file.FileSize,
+		&file.Added,
+	)
+	if err != nil {
+		logger.Error.Println(err.Error())
+		return file, err
+	}
+
+	fmt.Println("file: ", file)
 
 	return file, err
 }

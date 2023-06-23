@@ -30,7 +30,8 @@ func (h *Handler) InitRoutes() *gin.Engine {
 		files.GET("/:id", IdMiddleware, h.getFileByID)
 		files.GET("/all", IdentifyUserRole, h.allFilesInfo)
 		files.GET("/", h.showAllUserFilesInfo)
-		files.GET("/file_name/", h.findFileByFileName)
+		//files.GET("/name", h.findFileByFileName)
+		files.POST("/name", h.findFileByFileName)
 		files.DELETE("/:id", IdMiddleware, h.deleteFileByID)
 
 		//todo роут под поиска файла пользователем

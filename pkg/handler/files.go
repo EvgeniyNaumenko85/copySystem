@@ -158,11 +158,11 @@ func (h *Handler) showAllUserFilesInfo(c *gin.Context) {
 
 // todo
 func (h *Handler) findFileByFileName(c *gin.Context) {
-
-	//todo функция получения имени файла из Header
-	fileName, err := utils.GetInfoFromContext(models.FileNameHeader, c)
-	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"message": err})
+	var f models.File
+	if err := c.BindJSON(&f); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"reason": "error while binding body",
+		})
 		return
 	}
 
@@ -172,8 +172,7 @@ func (h *Handler) findFileByFileName(c *gin.Context) {
 		return
 	}
 
-	file, err := h.services.FindFileByFileName(fileName, userName)
-
+	file, err := h.services.FindFileByFileName(f.FileName, userName)
 	if err != nil {
 		switch err {
 		case models.ErrNoRows:
@@ -181,15 +180,20 @@ func (h *Handler) findFileByFileName(c *gin.Context) {
 				"reason": err,
 			})
 			return
+		case models.ErrFileAccessDenied:
+			c.JSON(http.StatusForbidden, gin.H{
+				"reason": err.Error(),
+			})
+			return
 		default:
 			c.JSON(http.StatusInternalServerError, gin.H{
-				"reason": err,
+				"reason": err.Error(),
 			})
 			return
 		}
 	}
-	c.JSON(http.StatusOK, file)
 
+	c.JSON(http.StatusOK, file)
 }
 
 func (h *Handler) deleteFileByID(c *gin.Context) {

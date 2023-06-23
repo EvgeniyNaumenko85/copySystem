@@ -3,7 +3,6 @@ package utils
 import (
 	"copySys/models"
 	"copySys/pkg/logger"
-	"errors"
 	"fmt"
 	"github.com/gin-gonic/gin"
 )
@@ -19,16 +18,27 @@ func GetUserNameFromContext(c *gin.Context) (string, error) {
 	}
 }
 
+/*
 func GetInfoFromContext(headerKey string, c *gin.Context) (string, error) {
-	fileNameAny, ok := c.Get(headerKey)
-	if !ok {
-		logger.Error.Println(models.ErrCantGetUserName.Error())
-		return "", models.ErrCantGetUserName
-	} else {
-		fileName, success := fileNameAny.(string)
-		if !success {
-			return "", errors.New("value is not a string")
-		}
-		return fileName, nil
-	}
+	fmt.Println("headerKey: ", headerKey)
+
+	headerKey = "userName"
+
+	fileNameAny := c.GetHeader(headerKey)
+	fmt.Println("fileNameAny: ", fileNameAny)
+
+	//if !ok {
+	//	fmt.Println("fileNameAny: ", fileNameAny)
+	//	logger.Error.Println(models.ErrCantGetInfoFromHeader.Error())
+	//	return "", models.ErrCantGetInfoFromHeader
+	//} else {
+	//	fileName, success := fileNameAny.(string)
+	//	if !success {
+	//		return "", errors.New("value is not a string")
+	//	}
+	//	return fileName, nil
+	//}
+
+	return fileNameAny, nil
 }
+*/
