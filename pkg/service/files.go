@@ -23,6 +23,10 @@ func (fs *FileService) GetFileByID(fileId int, c *gin.Context) (err error) {
 	return fs.repo.GetFileByID(fileId, c)
 }
 
+func (fs *FileService) AllFilesInfo() (files []models.File, err error) {
+	return fs.repo.AllFilesInfo()
+}
+
 func (fs *FileService) ShowAllUserFilesInfo(c *gin.Context) (files []models.File, err error) {
 	return fs.repo.ShowAllUserFilesInfo(c)
 }

@@ -35,6 +35,7 @@ type File interface {
 	GetFileByID(fileId int, c *gin.Context) (err error)
 	DeleteFileByID(fileID int) (err error)
 	ShowAllUserFilesInfo(c *gin.Context) (files []models.File, err error)
+	AllFilesInfo() (files []models.File, err error)
 }
 
 type Repository struct {
@@ -53,11 +54,11 @@ func NewRepository() *Repository {
 	}
 }
 
-type Config struct {
-	Host     string
-	Port     string
-	UserName string
-	Password string
-	DBName   string
-	SSLMode  string
-}
+//type Config struct {
+//	Host     string
+//	Port     string
+//	UserName string
+//	Password string
+//	DBName   string
+//	SSLMode  string
+//}

@@ -81,14 +81,12 @@ func getUserRole(c *gin.Context) (string, error) {
 }
 
 func IdentifyUserRole(c *gin.Context) {
-	//id, _ := getUserId(c)
 	role, _ := getUserRole(c)
 
 	if role != "admin" {
 		c.AbortWithStatusJSON(http.StatusForbidden, gin.H{"reason": "access denied"})
 		return
 	}
-
 }
 
 func IdMiddleware(c *gin.Context) {

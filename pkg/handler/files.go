@@ -69,8 +69,29 @@ func (h *Handler) getFileByID(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"message": "file loaded successfully"})
 }
 
+func (h *Handler) allFilesInfo(c *gin.Context) {
+	files, err := h.services.AllFilesInfo()
+
+	if err != nil {
+		switch err {
+		case models.ErrNoRows:
+			c.JSON(http.StatusNoContent, gin.H{
+				"reason": err.Error(),
+			})
+			return
+		default:
+			c.JSON(http.StatusInternalServerError, gin.H{
+				"reason": err.Error(),
+			})
+			return
+		}
+	}
+	c.JSON(http.StatusOK, files)
+}
+
 // todo проверить работу:
 func (h *Handler) showAllUserFilesInfo(c *gin.Context) {
+
 	files, err := h.services.ShowAllUserFilesInfo(c)
 
 	if err != nil {

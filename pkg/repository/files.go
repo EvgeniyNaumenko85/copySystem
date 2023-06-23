@@ -380,10 +380,10 @@ func (fp *FilePostgres) ShowAllUserFilesInfo(c *gin.Context) (files []models.Fil
 	return files, nil
 }
 
-/*
-//todo это почти готовая функция для просмотра всех файлов администратором
-func (fp *FilePostgres) ShowAllUserFilesInfo(c *gin.Context) (files []models.File, err error) {
-	rows, err := db.GetDBConn().Query(db.GetAllUserFilesSql)
+// todo это почти готовая функция для просмотра всех файлов администратором
+func (fp *FilePostgres) AllFilesInfo() (files []models.File, err error) {
+
+	rows, err := db.GetDBConn().Query(db.AllFilesInfo)
 	if err != nil {
 		logger.Error.Println(err.Error())
 		return nil, err
@@ -397,7 +397,6 @@ func (fp *FilePostgres) ShowAllUserFilesInfo(c *gin.Context) (files []models.Fil
 			&file.UserId,
 			&file.FileName,
 			&file.Extension,
-			&file.Description,
 			&file.FileSize,
 			&file.Added,
 		)
@@ -410,8 +409,6 @@ func (fp *FilePostgres) ShowAllUserFilesInfo(c *gin.Context) (files []models.Fil
 
 	return files, nil
 }
-
-*/
 
 func (fp *FilePostgres) DeleteFileByID(fileID int) error {
 

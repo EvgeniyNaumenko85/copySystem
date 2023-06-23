@@ -28,7 +28,7 @@ func (h *Handler) InitRoutes() *gin.Engine {
 		//todo не забывать редактироваать соответсвующие таблицы!!!!
 		files.POST("/", h.uploadFile)
 		files.GET("/:id", IdMiddleware, h.getFileByID)
-		//files.GET("/", IdMiddleware, h.showAllUserFilesInfo)
+		files.GET("/all", IdentifyUserRole, h.allFilesInfo)
 		files.GET("/", h.showAllUserFilesInfo)
 		files.DELETE("/:id", IdMiddleware, h.deleteFileByID)
 

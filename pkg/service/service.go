@@ -30,6 +30,7 @@ type File interface {
 	GetFileByID(fileId int, c *gin.Context) (err error)
 	DeleteFileByID(fileID int) (err error)
 	ShowAllUserFilesInfo(c *gin.Context) (files []models.File, err error)
+	AllFilesInfo() (files []models.File, err error)
 }
 
 type User interface {
