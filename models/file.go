@@ -11,3 +11,7 @@ type File struct {
 	Deleted   bool      `json:"-" `
 	Added     time.Time `json:"added"`
 }
+
+const (
+	FileNameHeader = "File-name"
+)

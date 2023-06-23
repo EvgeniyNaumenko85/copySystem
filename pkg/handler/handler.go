@@ -30,10 +30,11 @@ func (h *Handler) InitRoutes() *gin.Engine {
 		files.GET("/:id", IdMiddleware, h.getFileByID)
 		files.GET("/all", IdentifyUserRole, h.allFilesInfo)
 		files.GET("/", h.showAllUserFilesInfo)
+		files.GET("/file_name/", h.findFileByFileName)
 		files.DELETE("/:id", IdMiddleware, h.deleteFileByID)
 
 		//todo роут под поиска файла пользователем
-		// files.GET("/file/", h.findFile)
+		// files.GET("/file_name/", h.findFile)
 		//(отправляется JSON c именем файла, распарсивается имя требуемого файла, затем ищем файл в таблице files,
 		//возвращаем id файла из таблицы files)
 
@@ -88,8 +89,8 @@ func (h *Handler) InitRoutes() *gin.Engine {
 
 	auth := api.Group("/auth")
 	{
-		auth.POST("sign-up", h.signUp)
-		auth.POST("sign-in", h.signIn)
+		auth.POST("signUp", h.signUp)
+		auth.POST("signIn", h.signIn)
 	}
 
 	return router

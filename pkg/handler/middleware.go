@@ -52,11 +52,13 @@ func (h *Handler) userIdentity(c *gin.Context) {
 func getUserId(c *gin.Context) (int, error) {
 	id, ok := c.Get(userCtx)
 	if !ok {
+		logger.Error.Println("user id not found")
 		return 0, errors.New("user id not found")
 	}
 
 	idInt, ok := id.(int)
 	if !ok {
+		logger.Error.Println("user id is of invalid type")
 		return 0, errors.New("user id is of invalid type")
 	}
 
@@ -101,37 +103,3 @@ func IdMiddleware(c *gin.Context) {
 
 	c.Next()
 }
-
-/*
-func FileSizeMiddleware(c *gin.Context) {
-	fmt.Println("Hello from SizeMiddleware")
-
-	// to do: внедрить регулирование ограничения объема файла  (передача параметра по роуту)
-	// Ограничение размера файла до 10 МБ (10 * 1024 * 1024 байт)
-	if err := c.Request.ParseMultipartForm(10 << 20); err != nil {
-		log.Println("Error parsing multipart form:", err)
-		c.AbortWithStatusJSON(http.StatusRequestEntityTooLarge, gin.H{
-			"err": "Error parsing multipart form",
-		})
-		return
-	}
-
-	file, handler, err := c.Request.FormFile("file")
-	if err != nil {
-		log.Println("Error retrieving file:", err)
-		c.String(http.StatusBadRequest, "Error retrieving file")
-		return
-	}
-	defer file.Close()
-
-	// Проверка размера файла
-	if handler.Size > 10<<20 {
-		c.AbortWithStatusJSON(http.StatusRequestEntityTooLarge, gin.H{
-			"err": "File size exceeds the limit",
-		})
-
-	}
-
-	c.Next()
-}
-*/

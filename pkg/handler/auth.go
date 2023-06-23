@@ -8,7 +8,6 @@ import (
 
 func (h *Handler) signUp(c *gin.Context) {
 	var payload models.User
-
 	err := c.ShouldBind(&payload)
 	if err != nil {
 		c.JSON(http.StatusBadGateway, gin.H{"message": err.Error()})
@@ -27,15 +26,8 @@ func (h *Handler) signUp(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"id": userId})
 }
 
-type singInput struct {
-	UserName string `json:"username"`
-	Password string `json:"password"`
-	Role     string `json:"role"`
-}
-
 func (h *Handler) signIn(c *gin.Context) {
-	var input singInput
-
+	var input models.SingInput
 	err := c.ShouldBind(&input)
 	if err != nil {
 		c.JSON(http.StatusBadGateway, gin.H{"message": err.Error()})

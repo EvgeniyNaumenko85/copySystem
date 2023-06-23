@@ -2,9 +2,12 @@ package handler
 
 import (
 	"copySys/models"
+	"copySys/pkg/logger"
+	"copySys/utils"
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"net/http"
+	"path/filepath"
 	"strconv"
 )
 
@@ -47,6 +50,7 @@ func (h *Handler) uploadFile(c *gin.Context) {
 	})
 }
 
+/*
 func (h *Handler) getFileByID(c *gin.Context) {
 	idStr := c.Param("id")
 	fileId, err := strconv.Atoi(idStr)
@@ -67,6 +71,47 @@ func (h *Handler) getFileByID(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, gin.H{"message": "file loaded successfully"})
+}
+*/
+
+func (h *Handler) getFileByID(c *gin.Context) {
+	idStr := c.Param("id")
+	fileID, err := strconv.Atoi(idStr)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"reason": "invalid id",
+		})
+		return
+	}
+
+	userName, err := utils.GetUserNameFromContext(c)
+
+	filePath, err := h.services.GetFileByID(fileID, userName)
+	if err != nil {
+		switch err {
+		case models.ErrFileAccessDenied:
+			c.JSON(http.StatusForbidden, gin.H{
+				"reason": err.Error(),
+			})
+			return
+		default:
+			c.JSON(http.StatusInternalServerError, gin.H{
+				"reason": err.Error(),
+			})
+			return
+		}
+	}
+
+	// Устанавливаем заголовки для скачивания файла
+	c.Header("Content-Description", "File Transfer")
+	c.Header("Content-Type", "application/octet-stream")
+	c.Header("Content-Transfer-Encoding", "binary")
+	// Устанавливаем заголовок Content-Disposition для передачи имени файла с расширением
+	c.Header("Content-Disposition", fmt.Sprintf("attachment; filename=%s", filepath.Base(filePath)))
+
+	c.File(filePath)
+
+	return
 }
 
 func (h *Handler) allFilesInfo(c *gin.Context) {
@@ -109,6 +154,42 @@ func (h *Handler) showAllUserFilesInfo(c *gin.Context) {
 		}
 	}
 	c.JSON(http.StatusOK, files)
+}
+
+// todo
+func (h *Handler) findFileByFileName(c *gin.Context) {
+
+	//todo функция получения имени файла из Header
+	fileName, err := utils.GetInfoFromContext(models.FileNameHeader, c)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"message": err})
+		return
+	}
+
+	userName, err := utils.GetUserNameFromContext(c)
+	if err != nil {
+		logger.Error.Println(err)
+		return
+	}
+
+	file, err := h.services.FindFileByFileName(fileName, userName)
+
+	if err != nil {
+		switch err {
+		case models.ErrNoRows:
+			c.JSON(http.StatusNoContent, gin.H{
+				"reason": err,
+			})
+			return
+		default:
+			c.JSON(http.StatusInternalServerError, gin.H{
+				"reason": err,
+			})
+			return
+		}
+	}
+	c.JSON(http.StatusOK, file)
+
 }
 
 func (h *Handler) deleteFileByID(c *gin.Context) {

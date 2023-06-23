@@ -8,7 +8,6 @@ import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/jmoiron/sqlx"
-	"io"
 	"log"
 	"math"
 	"mime/multipart"
@@ -287,6 +286,7 @@ func (fp *FilePostgres) UploadFile(header *multipart.FileHeader, c *gin.Context)
 	return fileId, nil
 }
 
+/*
 func (fp *FilePostgres) GetFileByID(fileID int, c *gin.Context) (err error) {
 
 	userName, err := getUserNameFromContext(c)
@@ -335,6 +335,60 @@ func (fp *FilePostgres) GetFileByID(fileID int, c *gin.Context) (err error) {
 
 	return
 }
+*/
+
+func (fp *FilePostgres) GetFileByID(fileID int, userName string) (filePath string, err error) {
+
+	userID, err := findUserIdByName(userName)
+	if err != nil {
+		logger.Error.Println(err.Error())
+		return "", err
+	}
+
+	err = checkUserToFileAccess(fileID, userID)
+	if err != nil {
+		logger.Error.Println(err.Error())
+		return "", err
+	}
+
+	filePath, err = getFilePathByFileID(fileID)
+	if err != nil {
+		logger.Error.Println(err.Error())
+		return "", err
+	}
+	return filePath, err
+
+}
+
+// todo проверить
+func (fp *FilePostgres) AllFilesInfo() (files []models.File, err error) {
+
+	rows, err := db.GetDBConn().Query(db.AllFilesInfo)
+	if err != nil {
+		logger.Error.Println(err.Error())
+		return nil, err
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		file := models.File{}
+		err = rows.Scan(
+			&file.ID,
+			&file.UserId,
+			&file.FileName,
+			&file.Extension,
+			&file.FileSize,
+			&file.Added,
+		)
+		if err != nil {
+			logger.Error.Println(err.Error())
+			continue
+		}
+		files = append(files, file)
+	}
+
+	return files, nil
+}
 
 func (fp *FilePostgres) ShowAllUserFilesInfo(c *gin.Context) (files []models.File, err error) {
 	userName, err := getUserNameFromContext(c)
@@ -380,34 +434,41 @@ func (fp *FilePostgres) ShowAllUserFilesInfo(c *gin.Context) (files []models.Fil
 	return files, nil
 }
 
-// todo это почти готовая функция для просмотра всех файлов администратором
-func (fp *FilePostgres) AllFilesInfo() (files []models.File, err error) {
+// todo доделать функцию (в т.ч. по слоям!)
+func (fp *FilePostgres) FindFileByFileName(fileName, userName string) (file models.File, err error) {
 
-	rows, err := db.GetDBConn().Query(db.AllFilesInfo)
-	if err != nil {
-		logger.Error.Println(err.Error())
-		return nil, err
-	}
-	defer rows.Close()
+	// todo отправить файл в ответ и информацию о файле на heandler
 
-	for rows.Next() {
-		file := models.File{}
-		err = rows.Scan(
-			&file.ID,
-			&file.UserId,
-			&file.FileName,
-			&file.Extension,
-			&file.FileSize,
-			&file.Added,
-		)
-		if err != nil {
-			logger.Error.Println(err.Error())
-			continue
-		}
-		files = append(files, file)
-	}
+	//todo get fileID by fileName
 
-	return files, nil
+	//path, err := getFilePathByFileID(fileID)
+	//if err != nil {
+	//	logger.Error.Println(err.Error())
+	//	return err
+	//}
+
+	////todo перенести на слой hendlers
+	//// Устанавливаем заголовки для скачивания файла
+	//c.Header("Content-Description", "File Transfer")
+	//c.Header("Content-Type", "application/octet-stream")
+	//c.Header("Content-Transfer-Encoding", "binary")
+	//// Устанавливаем заголовок Content-Disposition для передачи имени файла с расширением
+	//c.Header("Content-Disposition", fmt.Sprintf("attachment; filename=%s", filepath.Base(path)))
+	//
+	//file, err := os.Open(path)
+	//if err != nil {
+	//
+	//	return err
+	//}
+	//defer file.Close()
+	//
+	//_, err = io.Copy(c.Writer, file)
+	//if err != nil {
+	//
+	//	return err
+	//}
+
+	return file, err
 }
 
 func (fp *FilePostgres) DeleteFileByID(fileID int) error {

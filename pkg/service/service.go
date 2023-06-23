@@ -27,10 +27,11 @@ type Task interface {
 
 type File interface {
 	UploadFile(header *multipart.FileHeader, c *gin.Context) (ID int, err error)
-	GetFileByID(fileId int, c *gin.Context) (err error)
+	GetFileByID(fileId int, userName string) (filePath string, err error)
 	DeleteFileByID(fileID int) (err error)
 	ShowAllUserFilesInfo(c *gin.Context) (files []models.File, err error)
 	AllFilesInfo() (files []models.File, err error)
+	FindFileByFileName(fileName, userName string) (file models.File, err error)
 }
 
 type User interface {
