@@ -18,6 +18,9 @@ func (h *Handler) signUp(c *gin.Context) {
 	if err != nil {
 		if err.Error() == models.ErrNotUnicUser {
 			c.JSON(http.StatusConflict, gin.H{"message": err.Error()})
+		}
+		if err.Error() == models.ErrNotUnicUserName {
+			c.JSON(http.StatusConflict, gin.H{"message": err.Error()})
 		} else {
 			c.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
 		}

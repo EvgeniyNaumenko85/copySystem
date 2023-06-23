@@ -18,8 +18,6 @@ import (
 	"syscall"
 )
 
-//test
-
 func main() {
 
 	configs.PutAdditionalSettings()
@@ -74,7 +72,6 @@ func main() {
 
 	<-quit
 
-	// Закрытие соединения с базой данных
 	if err := db.CloseDbConnection(); err != nil {
 		fmt.Errorf("error occurred on database connection closing: %s", err.Error())
 	}

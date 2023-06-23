@@ -11,18 +11,6 @@ type Authorization interface {
 	GetUser(username, password, role string) (models.User, error)
 }
 
-type Task interface {
-	GetAllTasks() (tasks []models.Task, err error)
-	GetTaskByID(id int) (task models.Task, err error)
-	GetOverdueTasks(id int) (tasks []models.Task, err error)
-	CreateTask(models.Task) (id int, err error)
-	UpdateTaskByID(id int, t models.Task) (err error)
-	ReassignTask(oldUserID, newUserID, id int) (err error)
-	DeleteTaskByID(ID int) (err error)
-	GetTaskByUserID(id int) (tasks []models.Task, err error)
-	GetUndoneTasksByUserID(id int) (tasks []models.Task, err error)
-}
-
 type User interface {
 	GetAllUsers() (users []models.User, err error)
 	GetUserByID(id int) (user models.User, err error)
@@ -42,7 +30,6 @@ type File interface {
 type Repository struct {
 	Authorization
 	User
-	Task
 	File
 }
 
@@ -50,7 +37,6 @@ func NewRepository() *Repository {
 	return &Repository{
 		Authorization: NewAuthPostgres(),
 		User:          NewUserPostgres(),
-		Task:          NewTaskPostgres(),
 		File:          NewFilePostgres(),
 	}
 }
