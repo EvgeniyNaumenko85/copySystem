@@ -23,3 +23,7 @@ func (as *AccessService) ProvidingAccessAll(userID, fileID int) (err error) {
 func (as *AccessService) RemoveAccess(fileID, accessToUserID, userID int) (err error) {
 	return as.repo.RemoveAccess(fileID, accessToUserID, userID)
 }
+
+func (as *AccessService) RemoveAccessToAll(fileID, userID int) (err error) {
+	return as.repo.RemoveAccessToAll(fileID, userID)
+}

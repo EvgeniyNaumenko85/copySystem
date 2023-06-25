@@ -30,6 +30,7 @@ const (
 	CheckAccessInTableSql   = "SELECT id FROM access WHERE (file_id = $1 AND user_id =$2)"
 	DeleteAccessByFileIDSql = "DELETE FROM access WHERE id = $1"
 	DeleteUserAccessSql     = "DELETE FROM access WHERE (file_id = $1 AND user_id =$2 AND user_id !=$3)"
+	DeleteAccessToAllSql    = "DELETE FROM access WHERE (file_id = $1 AND user_id !=$2)"
 )
 
 // files
@@ -45,4 +46,8 @@ const (
 	CheckFileSizeLimitSql  = "SELECT file_size_lim FROM users WHERE user_name =$1"
 	CheckFileByFileIDSql   = "SELECT id FROM files WHERE id = $1"
 	DeleteFileByIDSql      = "DELETE FROM files WHERE id = $1"
+)
+
+const (
+	SetLimitsToUser = "UPDATE users SET file_size_lim = $1 WHERE id = $2"
 )

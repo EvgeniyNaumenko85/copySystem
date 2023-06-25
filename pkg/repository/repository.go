@@ -32,6 +32,11 @@ type Access interface {
 	ProvidingAccess(fileID, accessToUserID, UserID int) (err error)
 	ProvidingAccessAll(userID, fileID int) (err error)
 	RemoveAccess(fileID, accessToUserID, userID int) (err error)
+	RemoveAccessToAll(fileID, userID int) (err error)
+}
+
+type Limits interface {
+	SetLimitsToUser(userID, fileSizeLim int) (err error)
 }
 
 type Repository struct {
@@ -39,6 +44,7 @@ type Repository struct {
 	User
 	File
 	Access
+	Limits
 }
 
 func NewRepository() *Repository {
@@ -47,5 +53,6 @@ func NewRepository() *Repository {
 		User:          NewUserPostgres(),
 		File:          NewFilePostgres(),
 		Access:        NewAccessPostgres(),
+		Limits:        NewLimitsPostgres(),
 	}
 }

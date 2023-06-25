@@ -35,8 +35,15 @@ func (h *Handler) InitRoutes() *gin.Engine {
 		access.POST("/", h.providingAccess)
 		access.POST("/:id", IdMiddleware, h.providingAccessAll)
 		access.DELETE("/", h.removeAccess)
-		//todo роут на ограничение прав всем пользоватевалям кроме владельца
-		//access.DELETE("/all", h.stopAccess) // отправляем JSON c парой file_id/user_id для удаления из таблицы access
+		access.DELETE("/all", h.removeAccessToAll)
+	}
+
+	limits := api.Group("/limits", h.userIdentity)
+	{
+		limits.PUT("/:id", IdentifyUserRole, IdMiddleware, h.setLimitsToUser)
+		//limits.POST("/:id", IdMiddleware, h.providingAccessAll)
+		//limits.DELETE("/", h.removeAccess)
+		//limits.DELETE("/all", h.removeAccessToAll)
 	}
 
 	//todo //stat := api.Group("/", h.userIdentity)

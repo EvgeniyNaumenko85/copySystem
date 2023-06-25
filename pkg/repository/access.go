@@ -30,7 +30,10 @@ func checkUserToFileAccess(fileID, userID int) error {
 	}
 
 	result, err := db.GetDBConn().Exec(db.CheckAccessInTableSql, fileID, userID)
+
 	foundRows, _ := result.RowsAffected()
+	fmt.Println("foundRows", foundRows)
+	fmt.Println("userRole", userRole)
 	if foundRows == 0 && userRole != "admin" {
 		return models.ErrFileAccessDenied
 	}
@@ -61,6 +64,15 @@ func removeAccessInfoFromDB(fileId, accessToUserID, userId int) error {
 		logger.Error.Println(err.Error())
 		return err
 	}
+	if err != nil {
+		logger.Error.Println(err.Error())
+		return err
+	}
+	return nil
+}
+
+func removeAccessToAll(fileId, userId int) error {
+	_, err := db.GetDBConn().Exec(db.DeleteAccessToAllSql, fileId, userId)
 	if err != nil {
 		logger.Error.Println(err.Error())
 		return err
@@ -203,6 +215,29 @@ func (ap *AccessPostgres) RemoveAccess(fileID, accessToUserID, userID int) error
 	}
 
 	err = removeAccessInfoFromDB(fileID, accessToUserID, userID)
+	if err != nil {
+		logger.Error.Println(err.Error())
+		return err
+	}
+
+	return nil
+}
+
+func (ap *AccessPostgres) RemoveAccessToAll(fileID, userID int) error {
+
+	err := checkUserToFileAccess(fileID, userID)
+	if err != nil {
+		logger.Error.Println(err.Error())
+		return models.ErrFileAccessDenied
+	}
+
+	err = checkUserExistByUserID(userID)
+	if err != nil {
+		logger.Error.Println(err.Error())
+		return err
+	}
+
+	err = removeAccessToAll(fileID, userID)
 	if err != nil {
 		logger.Error.Println(err.Error())
 		return err

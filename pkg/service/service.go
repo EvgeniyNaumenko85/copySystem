@@ -34,6 +34,11 @@ type Access interface {
 	ProvidingAccess(fileID, accessToUserID, UserID int) (err error)
 	ProvidingAccessAll(userID, fileID int) (err error)
 	RemoveAccess(fileID, accessToUserID, userID int) (err error)
+	RemoveAccessToAll(fileID, userID int) (err error)
+}
+
+type Limits interface {
+	SetLimitsToUser(userID, fileSizeLim int) (err error)
 }
 
 type Service struct {
@@ -41,6 +46,7 @@ type Service struct {
 	User
 	File
 	Access
+	Limits
 }
 
 func NewService(repos *repository.Repository) *Service {
@@ -49,5 +55,6 @@ func NewService(repos *repository.Repository) *Service {
 		User:          NewUserService(repos),
 		File:          NewFileService(repos),
 		Access:        NewAccessService(repos),
+		Limits:        NewLimitsService(repos),
 	}
 }

@@ -84,7 +84,6 @@ func (h *Handler) providingAccessAll(c *gin.Context) {
 	c.JSON(http.StatusOK, "access added successfully")
 }
 
-// todo work here
 func (h *Handler) removeAccess(c *gin.Context) {
 	var a models.AccessRequest
 	if err := c.BindJSON(&a); err != nil {
@@ -115,4 +114,35 @@ func (h *Handler) removeAccess(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, "access removed successfully")
+}
+
+func (h *Handler) removeAccessToAll(c *gin.Context) {
+	var a models.AccessRequest
+	if err := c.BindJSON(&a); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"reason": "error while binding body",
+		})
+		return
+	}
+
+	userID, err := utils.GetUserIDFromContext(c)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"err":    models.ErrCantGetUserID,
+			"reason": err,
+		})
+		return
+	}
+
+	fileID := a.FileID
+
+	err = h.services.RemoveAccessToAll(fileID, userID)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"err": err.Error(),
+		})
+		return
+	}
+
+	c.JSON(http.StatusOK, "access to all removed successfully")
 }
