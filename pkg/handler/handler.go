@@ -27,6 +27,11 @@ func (h *Handler) InitRoutes() *gin.Engine {
 		files.GET("/", h.showAllUserFilesInfo)
 		files.POST("/name", h.findFileByFileName)
 		files.DELETE("/:id", IdMiddleware, h.deleteFileByID)
+		//todo deleteAllUserFiles (admin only)
+		files.DELETE("/all", IdentifyUserRole, h.deleteAllFiles)
+		//todo deleteAllFiles (admin only, soft delete)
+
+		//
 	}
 
 	//todo //access := api.Group("/", h.userIdentity)

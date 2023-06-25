@@ -50,30 +50,6 @@ func (h *Handler) uploadFile(c *gin.Context) {
 	})
 }
 
-/*
-func (h *Handler) getFileByID(c *gin.Context) {
-	idStr := c.Param("id")
-	fileId, err := strconv.Atoi(idStr)
-	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"reason": "invalid id",
-		})
-		return
-	}
-
-	err = h.services.GetFileByID(fileId, c)
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"reason": "error while load file from db",
-			"err":    err.Error(),
-		})
-		return
-	}
-
-	c.JSON(http.StatusOK, gin.H{"message": "file loaded successfully"})
-}
-*/
-
 func (h *Handler) getFileByID(c *gin.Context) {
 	idStr := c.Param("id")
 	fileID, err := strconv.Atoi(idStr)
@@ -121,7 +97,7 @@ func (h *Handler) allFilesInfo(c *gin.Context) {
 
 	if err != nil {
 		switch err {
-		case models.ErrNoRows:
+		case models.ErrFilesNotExists:
 			c.JSON(http.StatusNoContent, gin.H{})
 			return
 		default:
@@ -154,7 +130,6 @@ func (h *Handler) showAllUserFilesInfo(c *gin.Context) {
 	c.JSON(http.StatusOK, files)
 }
 
-// todo
 func (h *Handler) findFileByFileName(c *gin.Context) {
 	var f models.File
 	if err := c.BindJSON(&f); err != nil {
@@ -204,21 +179,43 @@ func (h *Handler) deleteFileByID(c *gin.Context) {
 
 	err = h.services.DeleteFileByID(fileID)
 	if err != nil {
-		switch err.Error() {
-		case "sql: no rows in result set":
-			c.JSON(http.StatusNotFound, gin.H{
-				"message": "file is not found",
+		switch err {
+		case models.ErrNoRows:
+			c.JSON(http.StatusNoContent, gin.H{})
+			return
+		case models.ErrFileAccessDenied:
+			c.JSON(http.StatusForbidden, gin.H{
+				"reason": err.Error(),
 			})
+			return
 		default:
 			c.JSON(http.StatusInternalServerError, gin.H{
-				"message": "error while deleting file",
-				"reason":  err.Error(),
+				"reason": err.Error(),
+			})
+			return
+		}
+	}
+
+	c.JSON(http.StatusOK, "file successfully deleted")
+}
+
+func (h *Handler) deleteAllFiles(c *gin.Context) {
+	err := h.services.DeleteAllFiles()
+	if err != nil {
+		switch err {
+		case models.ErrNoRows:
+			c.JSON(http.StatusNoContent, gin.H{})
+			return
+		default:
+			c.JSON(http.StatusInternalServerError, gin.H{
+				"message": "error while deleting user",
+				"reason":  err,
 			})
 		}
 		return
 	}
 
-	c.JSON(http.StatusOK, "file successfully deleted")
+	c.JSON(http.StatusOK, "all files successfully deleted")
 }
 
 /*

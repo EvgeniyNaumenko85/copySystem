@@ -22,6 +22,7 @@ type File interface {
 	UploadFile(header *multipart.FileHeader, c *gin.Context) (id int, err error)
 	GetFileByID(fileID int, userName string) (filePath string, err error)
 	DeleteFileByID(fileID int) (err error)
+	DeleteAllFiles() (err error)
 	ShowAllUserFilesInfo(c *gin.Context) (files []models.File, err error)
 	AllFilesInfo() (files []models.File, err error)
 	FindFileByFileName(fileName, userName string) (file models.File, err error)

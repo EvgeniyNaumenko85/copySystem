@@ -8,10 +8,7 @@ type File struct {
 	FileName  string    `json:"file_name"`
 	Extension string    `json:"extension"`
 	FileSize  string    `json:"file_size"`
-	Deleted   bool      `json:"-" `
+	FilePath  string    `json:"file_path"`
 	Added     time.Time `json:"added"`
+	Deleted   bool      `json:"-"`
 }
-
-const (
-	FileNameHeader = "File-name"
-)

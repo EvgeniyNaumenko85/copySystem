@@ -4,6 +4,7 @@ CopySys - файловый менеджер(аналог гугл диска)
 
 ## Стек технологий
 - Golang: Gin, Viper, GoDotEnv, lumberjack.v2, "regexp"
+- JWT
 - Postgres
 
 ## Логирование

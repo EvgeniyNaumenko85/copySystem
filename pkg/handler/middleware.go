@@ -49,32 +49,34 @@ func (h *Handler) userIdentity(c *gin.Context) {
 	c.Set(userNameCtx, userName)
 }
 
-func getUserId(c *gin.Context) (int, error) {
-	id, ok := c.Get(userCtx)
-	if !ok {
-		logger.Error.Println("user id not found")
-		return 0, errors.New("user id not found")
-	}
-
-	idInt, ok := id.(int)
-	if !ok {
-		logger.Error.Println("user id is of invalid type")
-		return 0, errors.New("user id is of invalid type")
-	}
-
-	return idInt, nil
-}
+//func getUserId(c *gin.Context) (int, error) {
+//	id, ok := c.Get(userCtx)
+//	if !ok {
+//		logger.Error.Println("user id not found")
+//		return 0, errors.New("user id not found")
+//	}
+//
+//	idInt, ok := id.(int)
+//	if !ok {
+//		logger.Error.Println("user id is of invalid type")
+//		return 0, errors.New("user id is of invalid type")
+//	}
+//
+//	return idInt, nil
+//}
 
 func getUserRole(c *gin.Context) (string, error) {
 	roleCtx, ok := c.Get(userRoleCtx)
 
 	if !ok {
+		//todo создать новую ошибку в models
 		logger.Error.Println("user role not found")
 		return "", errors.New("user role not found")
 	}
 
 	role, ok := roleCtx.(string)
 	if !ok {
+		//todo создать новую ошибку в models
 		logger.Error.Println("user role is of invalid type")
 		return "", errors.New("user role is of invalid type")
 	}

@@ -16,6 +16,7 @@ var ErrFileAlreadyExists = errors.New("file already exists")
 var ErrFileAccessDenied = errors.New("file access denied")
 var ErrFileToBig = errors.New("file to upload is too big")
 var ErrFileNotExists = errors.New("file is not exists in DB")
+var ErrFilesNotExists = errors.New("no files")
 var ErrFileInfoNotFound = errors.New("file info is not found")
 
 var ErrAccessInfoNotFound = errors.New("access info is not found")

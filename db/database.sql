@@ -19,7 +19,7 @@ CREATE TABLE IF NOT EXISTS files
     file_path        VARCHAR(255) NOT NULL UNIQUE,
     file_size        DOUBLE PRECISION NOT NULL,
     deleted          BOOLEAN      NOT NULL,
-    added            TIMESTAMP    NOT NULL DEFAULT now(),
+    added            TIMESTAMP without time zone NOT NULL DEFAULT to_timestamp('2023-06-25 12:53:00', 'YYYY-MM-DD HH24:MI:SS'),
 );
 
 CREATE TABLE IF NOT EXISTS accesses

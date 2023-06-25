@@ -38,3 +38,7 @@ func (fs *FileService) FindFileByFileName(fileName, userName string) (file model
 func (fs *FileService) DeleteFileByID(fileID int) (err error) {
 	return fs.repo.DeleteFileByID(fileID)
 }
+
+func (fs *FileService) DeleteAllFiles() (err error) {
+	return fs.repo.DeleteAllFiles()
+}

@@ -47,30 +47,6 @@ func (h *Handler) getUserByID(c *gin.Context) {
 	c.JSON(http.StatusOK, user)
 }
 
-//func (h *Handler) addUser(c *gin.Context) {
-//	var u *models.User
-//	if err := c.BindJSON(&u); err != nil {
-//		c.JSON(http.StatusBadRequest, gin.H{
-//			"reason": "error while binding body",
-//		})
-//		return
-//	}
-//
-//	id, err := h.services.CreateUser(*u)
-//	if err != nil {
-//		c.JSON(http.StatusInternalServerError, gin.H{
-//			"reason": "error while saving user to db",
-//			"err=":   error.Error(err),
-//		})
-//		return
-//	}
-//
-//	c.JSON(http.StatusOK, gin.H{
-//		"reason": "successfully created",
-//		"id":     id,
-//	})
-//}
-
 func (h *Handler) updateUserByID(c *gin.Context) {
 	idStr := c.Param("id")
 	id, err := strconv.Atoi(idStr)
