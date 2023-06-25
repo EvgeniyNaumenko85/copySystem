@@ -34,35 +34,6 @@ func checkFileExist(fullPathToFile string) error {
 	}
 }
 
-func getUserNameFromContext(c *gin.Context) (string, error) {
-	userNameTypeAny, ok := c.Get("userName")
-	if !ok {
-		logger.Error.Println(models.ErrCantGetUserName.Error())
-		return "", models.ErrCantGetUserName
-	} else {
-		userName := fmt.Sprintf("%v", userNameTypeAny)
-		return userName, nil
-	}
-}
-
-func findUserIdByName(userName string) (int, error) {
-	if userName == "" {
-		return 0, models.ErrUserNotExists
-	}
-
-	var ID int
-	err := db.GetDBConn().QueryRow(db.GetIdUserByNameSql, userName).Scan(&ID)
-	if err != nil {
-		if err == sql.ErrNoRows {
-			return 0, models.ErrUserNotExists
-		} else {
-			logger.Error.Println(err.Error())
-			return 0, err
-		}
-	}
-	return ID, nil
-}
-
 func getFileIDByFileName(fileName string) (int, error) {
 
 	var fileID int
@@ -141,15 +112,6 @@ func addFileInfoToDB(userId int, fileName, extension, path string, fileSize floa
 	return id, nil
 }
 
-func addAccessInfoToDB(fileId, userId int) error {
-	_, err := db.GetDBConn().Exec(db.CreateAccessSql, userId, fileId)
-	if err != nil {
-		logger.Error.Println(err.Error())
-		return err
-	}
-	return nil
-}
-
 func getFilePathByFileID(fileID int) (path string, err error) {
 	err = db.GetDBConn().QueryRow(db.GetFilePathByFileIDSql, fileID).Scan(&path)
 	if err != nil {
@@ -178,7 +140,6 @@ func getFileIDByFilePath(filePath string) (fileID int, err error) {
 	return fileID, nil
 }
 
-// todo work here
 func getAllFilesPaths() (filesPath []string, err error) {
 	rows, err := db.GetDBConn().Query(db.GetAllFilesPath)
 	if err != nil {
@@ -221,48 +182,12 @@ func getUserRoleByUserID(userID int) (userRole string, err error) {
 	return userRole, err
 }
 
-func checkUserToFileAccess(fileID, userID int) error {
-	_, err := getFilePathByFileID(fileID)
-	if err != nil {
-		logger.Error.Println(err.Error())
-		return err
-	}
-
-	userRole, err := getUserRoleByUserID(userID)
-	if err != nil {
-		logger.Error.Println(err.Error())
-		return err
-	}
-
-	result, err := db.GetDBConn().Exec(db.CheckAccessInTableSql, fileID, userID)
-	foundRows, _ := result.RowsAffected()
-	if foundRows == 0 && userRole != "admin" {
-		return models.ErrFileAccessDenied
-	}
-	if err != nil {
-		logger.Error.Println(err.Error())
-		return err
-	}
-
-	return nil
-}
-
 func deleteFileInfoByFileID(fileID int) error {
 	result, err := db.GetDBConn().Exec(db.DeleteFileByIDSql, fileID)
 	foundRows, _ := result.RowsAffected()
 	if foundRows == 0 {
 		return models.ErrFileInfoNotFound
 	}
-	if err != nil {
-		logger.Error.Println(err.Error())
-		return err
-	}
-
-	return nil
-}
-
-func deleteAccessByFileID(fileID int) error {
-	_, err := db.GetDBConn().Exec(db.DeleteAccessByFileIDSql, fileID)
 	if err != nil {
 		logger.Error.Println(err.Error())
 		return err

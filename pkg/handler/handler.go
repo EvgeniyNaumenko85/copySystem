@@ -23,30 +23,20 @@ func (h *Handler) InitRoutes() *gin.Engine {
 	{
 		files.POST("/", h.uploadFile)
 		files.GET("/:id", IdMiddleware, h.getFileByID)
-		files.GET("/all", IdentifyUserRole, h.allFilesInfo)
 		files.GET("/", h.showAllUserFilesInfo)
+		files.GET("/all", IdentifyUserRole, h.allFilesInfo)
 		files.POST("/name", h.findFileByFileName)
 		files.DELETE("/:id", IdMiddleware, h.deleteFileByID)
-		//todo deleteAllUserFiles (admin only)
 		files.DELETE("/all", IdentifyUserRole, h.deleteAllFiles)
-		//todo deleteAllFiles (admin only, soft delete)
-
-		//
 	}
 
-	//todo //access := api.Group("/", h.userIdentity)
-	//  роут групп по управлению доступом к файлам
+	access := api.Group("/access", h.userIdentity)
 	{
-		//todo роут на добавление прав другому пользоватевалю
-		//access.POST("/", h.providingAccess) // отправляем JSON c парой file_id/user_id для добавления в таблицу access
-		//todo роут на добавление прав всем пользоватевалям
-		//access.POST("/all", h.fullAccess) // выполняется функция, организующая запись всех возможных пар
-		//file_id/user_id для добавления в таблицу access
-		//todo роут на удаление прав пользоватеваля
-		//access.DELETE("/", h.limitationAccess) // отправляем JSON c парой file_id/user_id для удаления из таблицы access
+		access.POST("/", h.providingAccess)
+		access.POST("/:id", IdMiddleware, h.providingAccessAll)
+		access.DELETE("/", h.removeAccess)
 		//todo роут на ограничение прав всем пользоватевалям кроме владельца
 		//access.DELETE("/all", h.stopAccess) // отправляем JSON c парой file_id/user_id для удаления из таблицы access
-
 	}
 
 	//todo //stat := api.Group("/", h.userIdentity)

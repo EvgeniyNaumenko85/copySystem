@@ -28,10 +28,17 @@ type File interface {
 	FindFileByFileName(fileName, userName string) (file models.File, err error)
 }
 
+type Access interface {
+	ProvidingAccess(fileID, accessToUserID, UserID int) (err error)
+	ProvidingAccessAll(userID, fileID int) (err error)
+	RemoveAccess(fileID, accessToUserID, userID int) (err error)
+}
+
 type Repository struct {
 	Authorization
 	User
 	File
+	Access
 }
 
 func NewRepository() *Repository {
@@ -39,5 +46,6 @@ func NewRepository() *Repository {
 		Authorization: NewAuthPostgres(),
 		User:          NewUserPostgres(),
 		File:          NewFilePostgres(),
+		Access:        NewAccessPostgres(),
 	}
 }

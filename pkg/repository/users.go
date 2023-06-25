@@ -4,6 +4,9 @@ import (
 	"copySys/db"
 	"copySys/models"
 	"copySys/pkg/logger"
+	"database/sql"
+	"fmt"
+	"github.com/gin-gonic/gin"
 	"github.com/jmoiron/sqlx"
 )
 
@@ -15,6 +18,35 @@ func NewUserPostgres() *UserPostgres {
 	return &UserPostgres{}
 }
 
+func getUserNameFromContext(c *gin.Context) (string, error) {
+	userNameTypeAny, ok := c.Get("userName")
+	if !ok {
+		logger.Error.Println(models.ErrCantGetUserName.Error())
+		return "", models.ErrCantGetUserName
+	} else {
+		userName := fmt.Sprintf("%v", userNameTypeAny)
+		return userName, nil
+	}
+}
+
+func findUserIdByName(userName string) (int, error) {
+	if userName == "" {
+		return 0, models.ErrUserNotExists
+	}
+	var ID int
+	err := db.GetDBConn().QueryRow(db.GetIdUserByNameSql, userName).Scan(&ID)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			return 0, models.ErrUserNotExists
+		} else {
+			logger.Error.Println(err.Error())
+			return 0, err
+		}
+	}
+	return ID, nil
+}
+
+// GetAllUsers outer func ===========>>
 func (up *UserPostgres) GetAllUsers() (users []models.User, err error) {
 	rows, err := db.GetDBConn().Query(db.GetAllUsersSql)
 	if err != nil {

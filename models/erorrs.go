@@ -11,14 +11,15 @@ var ErrNotUnicUser = "pq: повторяющееся значение ключа
 var ErrNotUnicUserName = "pq: повторяющееся значение ключа нарушает ограничение уникальности \"users_user_name_key\""
 var ErrUserNotExists = errors.New("user is not exists in DB")
 var ErrCantGetUserName = errors.New("can't  get user name")
+var ErrCantGetUserID = errors.New("can't  get user ID")
 
 var ErrFileAlreadyExists = errors.New("file already exists")
-var ErrFileAccessDenied = errors.New("file access denied")
 var ErrFileToBig = errors.New("file to upload is too big")
 var ErrFileNotExists = errors.New("file is not exists in DB")
 var ErrFilesNotExists = errors.New("no files")
 var ErrFileInfoNotFound = errors.New("file info is not found")
 
+var ErrFileAccessDenied = errors.New("file access denied")
 var ErrAccessInfoNotFound = errors.New("access info is not found")
 
 var ErrCantGetInfoFromHeader = errors.New("can't  get info from Headers")

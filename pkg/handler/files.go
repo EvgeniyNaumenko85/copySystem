@@ -61,6 +61,12 @@ func (h *Handler) getFileByID(c *gin.Context) {
 	}
 
 	userName, err := utils.GetUserNameFromContext(c)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"reason": err.Error(),
+		})
+		return
+	}
 
 	filePath, err := h.services.GetFileByID(fileID, userName)
 	if err != nil {
@@ -110,7 +116,6 @@ func (h *Handler) allFilesInfo(c *gin.Context) {
 	c.JSON(http.StatusOK, files)
 }
 
-// todo проверить работу:
 func (h *Handler) showAllUserFilesInfo(c *gin.Context) {
 
 	files, err := h.services.ShowAllUserFilesInfo(c)

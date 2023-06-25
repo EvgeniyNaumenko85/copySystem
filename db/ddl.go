@@ -26,11 +26,13 @@ deleted          BOOLEAN      NOT NULL DEFAULT false,
 added            TIMESTAMP without time zone NOT NULL DEFAULT to_timestamp('2023-06-25 12:53:00', 'YYYY-MM-DD HH24:MI:SS')
 );`
 
+	//todo: добавить нужную таблицу и убрать не нужную!!!!
 	CreateTableShedules = `CREATE TABLE IF NOT EXISTS access
 (
     id               BIGSERIAL PRIMARY KEY,
+    file_id          INTEGER REFERENCES files (id) ON DELETE CASCADE,
     user_id          INTEGER REFERENCES users (id) ON DELETE CASCADE,
-    file_id          INTEGER REFERENCES files (id) ON DELETE CASCADE
+	CONSTRAINT unique_user_file_pair UNIQUE (user_id, file_id)
 );`
 )
 

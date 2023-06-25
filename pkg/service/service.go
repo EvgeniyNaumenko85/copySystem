@@ -30,10 +30,17 @@ type User interface {
 	DeleteUserByID(id int) (err error)
 }
 
+type Access interface {
+	ProvidingAccess(fileID, accessToUserID, UserID int) (err error)
+	ProvidingAccessAll(userID, fileID int) (err error)
+	RemoveAccess(fileID, accessToUserID, userID int) (err error)
+}
+
 type Service struct {
 	Authorization
 	User
 	File
+	Access
 }
 
 func NewService(repos *repository.Repository) *Service {
@@ -41,5 +48,6 @@ func NewService(repos *repository.Repository) *Service {
 		Authorization: NewAuthService(repos),
 		User:          NewUserService(repos),
 		File:          NewFileService(repos),
+		Access:        NewAccessService(repos),
 	}
 }
