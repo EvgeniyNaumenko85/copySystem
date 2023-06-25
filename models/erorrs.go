@@ -6,6 +6,7 @@ var ErrNoRows = errors.New("sql: no rows in result set")
 var ErrNoRowsSQL = "sql: no rows in result set"
 
 var ErrUserNotFound = errors.New("sql: user not found")
+var ErrInvalidEmailForm = errors.New("invalid email form")
 var ErrNotUnicUser = "pq: повторяющееся значение ключа нарушает ограничение уникальности \"users_email_key\""
 var ErrNotUnicUserName = "pq: повторяющееся значение ключа нарушает ограничение уникальности \"users_user_name_key\""
 var ErrUserNotExists = errors.New("user is not exists in DB")

@@ -94,6 +94,8 @@ func (h *Handler) getFileByID(c *gin.Context) {
 				"reason": err.Error(),
 			})
 			return
+		case models.ErrFileNotExists:
+			c.JSON(http.StatusNoContent, gin.H{})
 		default:
 			c.JSON(http.StatusInternalServerError, gin.H{
 				"reason": err.Error(),
@@ -120,9 +122,7 @@ func (h *Handler) allFilesInfo(c *gin.Context) {
 	if err != nil {
 		switch err {
 		case models.ErrNoRows:
-			c.JSON(http.StatusNoContent, gin.H{
-				"reason": err.Error(),
-			})
+			c.JSON(http.StatusNoContent, gin.H{})
 			return
 		default:
 			c.JSON(http.StatusInternalServerError, gin.H{
@@ -142,9 +142,7 @@ func (h *Handler) showAllUserFilesInfo(c *gin.Context) {
 	if err != nil {
 		switch err {
 		case models.ErrNoRows:
-			c.JSON(http.StatusNoContent, gin.H{
-				"reason": err.Error(),
-			})
+			c.JSON(http.StatusNoContent, gin.H{})
 			return
 		default:
 			c.JSON(http.StatusInternalServerError, gin.H{
@@ -176,9 +174,7 @@ func (h *Handler) findFileByFileName(c *gin.Context) {
 	if err != nil {
 		switch err {
 		case models.ErrNoRows:
-			c.JSON(http.StatusNoContent, gin.H{
-				"reason": err,
-			})
+			c.JSON(http.StatusNoContent, gin.H{})
 			return
 		case models.ErrFileAccessDenied:
 			c.JSON(http.StatusForbidden, gin.H{

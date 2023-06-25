@@ -8,12 +8,13 @@ import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/jmoiron/sqlx"
-	"log"
 	"math"
 	"mime/multipart"
 	"net/http"
 	"os"
 	"path/filepath"
+	"strconv"
+	"strings"
 )
 
 type FilePostgres struct {
@@ -90,7 +91,7 @@ func getFileSizeLimitSql(userName string) (fileSizeLimit int, err error) {
 func checkFileSizeToUpload(fileSizeLimit int, c *gin.Context) error {
 	file, handler, err := c.Request.FormFile("file")
 	if err != nil {
-		log.Println("Error retrieving file:", err)
+		logger.Error.Println(err.Error())
 		c.String(http.StatusBadRequest, "Error retrieving file")
 		return err
 	}
@@ -106,22 +107,35 @@ func checkFileSizeToUpload(fileSizeLimit int, c *gin.Context) error {
 	return nil
 }
 
-func getFileSize(filePath string) (int, error) {
+func getFileSize(filePath string) (float64, error) {
 	fileInfo, err := os.Stat(filePath)
 	if err != nil {
+		logger.Error.Println(err.Error())
 		return 0, err
 	}
 
 	fileSize := float64(fileInfo.Size())
 
-	var sizeOfOneMb float64 = 1024 * 1024
-	fileSizeInMB := int(math.Ceil(fileSize / sizeOfOneMb))
+	fmt.Println("fileSize: ", fileSize)
 
-	return fileSizeInMB, nil
+	var sizeOfOneMb float64 = 1024 * 1024
+	fileSizeInMbString := fmt.Sprintf("%2f", math.Round(fileSize/sizeOfOneMb))
+	fileSizeInMb, err := strconv.ParseFloat(fileSizeInMbString, 64)
+	if err != nil {
+		logger.Error.Println(err.Error())
+		return 0, err
+	}
+	if fileSizeInMb == 0 {
+		fileSizeInMb = 0.01
+	}
+
+	fmt.Println("fileSizeInMB: ", fileSizeInMb)
+
+	return fileSizeInMb, nil
 
 }
 
-func addFileInfoToDB(userId int, fileName, extension, path string, fileSize int) (id int, err error) {
+func addFileInfoToDB(userId int, fileName, extension, path string, fileSize float64) (id int, err error) {
 	err = db.GetDBConn().QueryRow(db.CreateFileSql, userId, fileName, extension, path, fileSize).Scan(&id)
 	if err != nil {
 		logger.Error.Println(err.Error())
@@ -203,7 +217,9 @@ func deleteAccessByFileID(fileID int) error {
 
 func (fp *FilePostgres) UploadFile(header *multipart.FileHeader, c *gin.Context) (int, error) {
 	fileName := filepath.Base(header.Filename)
-	fileExtension := filepath.Ext(fileName)
+	partsOfFileName := strings.Split(fileName, ".")
+	fileExtension := strings.ToLower(filepath.Ext(fileName))
+	fileName = partsOfFileName[0] + fileExtension
 
 	currentDir, err := os.Getwd()
 	if err != nil {
@@ -264,9 +280,7 @@ func (fp *FilePostgres) UploadFile(header *multipart.FileHeader, c *gin.Context)
 	}
 
 	err = addAccessInfoToDB(fileId, userId)
-	fmt.Println("addAccessInfoToDB: OK")
 	if err != nil {
-		fmt.Println("addAccessInfoToDB: !OK")
 		logger.Error.Println(err.Error())
 		return 0, err
 	}

@@ -95,7 +95,8 @@ func IdMiddleware(c *gin.Context) {
 	idStr := c.Param("id")
 	_, err := strconv.Atoi(idStr)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
+		logger.Error.Println("Hello from middleware: ", err.Error())
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
 			"reason": "invalid id",
 		})
 		return

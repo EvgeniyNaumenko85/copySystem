@@ -17,7 +17,6 @@ func NewHandler(services *service.Service) *Handler {
 func (h *Handler) InitRoutes() *gin.Engine {
 	//gin.SetMode(gin.ReleaseMode)
 	router := gin.Default()
-	router.GET("/", Ping)
 	api := router.Group("/api")
 
 	files := api.Group("/files", h.userIdentity)
@@ -68,6 +67,8 @@ func (h *Handler) InitRoutes() *gin.Engine {
 		auth.POST("signUp", h.signUp)
 		auth.POST("signIn", h.signIn)
 	}
+
+	router.GET("/", Ping)
 
 	return router
 }

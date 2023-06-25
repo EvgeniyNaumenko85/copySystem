@@ -46,7 +46,6 @@ func main() {
 
 	srv := new(copySys.Server)
 
-	// Поднимаем таблицы в БД
 	logger.Info.Println("Raising tables in the database")
 	if err := db.Up(); err != nil {
 		log.Fatalf("Error while migrating tables, err is: %s", err.Error())

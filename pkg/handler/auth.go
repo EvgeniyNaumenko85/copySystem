@@ -2,6 +2,8 @@ package handler
 
 import (
 	"copySys/models"
+	"copySys/pkg/logger"
+	"copySys/utils"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
@@ -13,6 +15,14 @@ func (h *Handler) signUp(c *gin.Context) {
 		c.JSON(http.StatusBadGateway, gin.H{"message": err.Error()})
 		return
 	}
+
+	ok := utils.IsValidEmail(payload.Email)
+	if !ok {
+		logger.Error.Println(models.ErrInvalidEmailForm.Error())
+		c.JSON(http.StatusBadRequest, gin.H{"message": models.ErrInvalidEmailForm.Error()})
+		return
+	}
+
 	// Hashing password
 	userId, err := h.services.CreateUser(payload)
 	if err != nil {

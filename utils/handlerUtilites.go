@@ -5,6 +5,7 @@ import (
 	"copySys/pkg/logger"
 	"fmt"
 	"github.com/gin-gonic/gin"
+	"regexp"
 )
 
 func GetUserNameFromContext(c *gin.Context) (string, error) {
@@ -16,4 +17,10 @@ func GetUserNameFromContext(c *gin.Context) (string, error) {
 		userName := fmt.Sprintf("%v", userNameTypeAny)
 		return userName, nil
 	}
+}
+
+func IsValidEmail(email string) bool {
+	emailRegex := `^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$`
+	match, _ := regexp.MatchString(emailRegex, email)
+	return match
 }
