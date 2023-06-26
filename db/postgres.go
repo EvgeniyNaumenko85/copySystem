@@ -1,6 +1,7 @@
 package db
 
 import (
+	"copySys/pkg/logger"
 	"database/sql"
 	"fmt"
 	_ "github.com/lib/pq"
@@ -23,10 +24,8 @@ func initDB(cfg Config) *sql.DB {
 	connStr := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=%s",
 		cfg.Host, cfg.Port, cfg.Username, cfg.Password, cfg.DBName, cfg.SSLMode)
 	db, err := sql.Open("postgres", connStr)
-	//if err != nil {
-	//	panic(err)
-	//}
 	if err != nil {
+		logger.Error.Println(err)
 		log.Fatal("Couldn't connect to database", err.Error())
 	}
 
@@ -46,6 +45,7 @@ func GetDBConn() *sql.DB {
 func CloseDbConnection() error {
 	if err := GetDBConn().Close(); err != nil {
 		fmt.Errorf("error occurred on database connection closing: %s", err.Error())
+		logger.Error.Println(err)
 	}
 	return nil
 }

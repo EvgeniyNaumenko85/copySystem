@@ -19,6 +19,20 @@ func (h *Handler) InitRoutes() *gin.Engine {
 	router := gin.Default()
 	api := router.Group("/api")
 
+	auth := api.Group("/auth")
+	{
+		auth.POST("signUp", h.signUp)
+		auth.POST("signIn", h.signIn)
+	}
+
+	users := api.Group("/users", h.userIdentity)
+	{
+		users.GET("", h.getAllUsers)
+		users.GET("/:id", IdMiddleware, h.getUserByID)
+		users.PUT("/:id", IdentifyUserRole, IdMiddleware, h.updateUserByID)
+		users.DELETE("/:id", IdentifyUserRole, IdMiddleware, h.deleteUserByID)
+	}
+
 	files := api.Group("/files", h.userIdentity)
 	{
 		files.POST("/", h.uploadFile)
@@ -43,27 +57,9 @@ func (h *Handler) InitRoutes() *gin.Engine {
 		limits.PUT("/:id", IdentifyUserRole, IdMiddleware, h.setLimitsToUser)
 	}
 
-	//todo //stat := api.Group("/", h.userIdentity)
+	stat := api.Group("/stat", h.userIdentity)
 	{
-		//todo роут на получение информации о типе, кол-ве, общем объеме файлов конкретного пользователя (возможно
-		// добавить столбец в таблицу files с инфой о размере каждого файла, которая вносится в нее при записи файла в папку)
-		//stat.GET("/:id", IdMiddleware, IdentifyUserRole, h.getStat)
-		//todo роут на получение статистики всех пользователей (только для админа)
-		//stat.GET("/all", IdMiddleware, IdentifyUserRole, h.allStat)
-	}
-
-	users := api.Group("/users", h.userIdentity)
-	{
-		users.GET("", h.getAllUsers)
-		users.GET("/:id", IdMiddleware, h.getUserByID)
-		users.PUT("/:id", IdentifyUserRole, IdMiddleware, h.updateUserByID)
-		users.DELETE("/:id", IdentifyUserRole, IdMiddleware, h.deleteUserByID)
-	}
-
-	auth := api.Group("/auth")
-	{
-		auth.POST("signUp", h.signUp)
-		auth.POST("signIn", h.signIn)
+		stat.GET("/:id", IdMiddleware, IdentifyUserRole, h.getUserStatistics)
 	}
 
 	router.GET("/", Ping)

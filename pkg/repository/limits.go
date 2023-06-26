@@ -22,7 +22,7 @@ func (lp *LimitsPostgres) SetLimitsToUser(userID, fileSizeLim, storageSizeLim in
 		return err
 	}
 
-	_, err = db.GetDBConn().Exec(db.SetLimitsToUser, fileSizeLim, storageSizeLim, userID)
+	_, err = db.GetDBConn().Exec(db.SetLimitsToUserSql, fileSizeLim, storageSizeLim, userID)
 	if err != nil {
 		logger.Error.Println(err.Error())
 		fmt.Println(err)

@@ -41,12 +41,17 @@ type Limits interface {
 	SetLimitsToUser(userID, fileSizeLim, storageSizeLim int) (err error)
 }
 
+type Statistics interface {
+	GetUserStatistics(userID int) (userStat models.UserStat, err error)
+}
+
 type Service struct {
 	Authorization
 	User
 	File
 	Access
 	Limits
+	Statistics
 }
 
 func NewService(repos *repository.Repository) *Service {
@@ -56,5 +61,6 @@ func NewService(repos *repository.Repository) *Service {
 		File:          NewFileService(repos),
 		Access:        NewAccessService(repos),
 		Limits:        NewLimitsService(repos),
+		Statistics:    NewStatisticsService(repos),
 	}
 }

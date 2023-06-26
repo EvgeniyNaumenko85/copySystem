@@ -144,7 +144,7 @@ func getFileIDByFilePath(filePath string) (fileID int, err error) {
 }
 
 func getAllFilesPaths() (filesPath []string, err error) {
-	rows, err := db.GetDBConn().Query(db.GetAllFilesPath)
+	rows, err := db.GetDBConn().Query(db.GetAllFilesPathSql)
 	if err != nil {
 		logger.Error.Println(err.Error())
 		return nil, err
@@ -313,7 +313,7 @@ func (fp *FilePostgres) GetFileByID(fileID int, userName string) (filePath strin
 }
 
 func (fp *FilePostgres) AllFilesInfo() (files []models.File, err error) {
-	rows, err := db.GetDBConn().Query(db.AllFilesInfo)
+	rows, err := db.GetDBConn().Query(db.AllFilesInfoSql)
 	if err != nil {
 		logger.Error.Println(err)
 		return nil, err
@@ -391,7 +391,6 @@ func (fp *FilePostgres) ShowAllUserFilesInfo(c *gin.Context) (files []models.Fil
 }
 
 func (fp *FilePostgres) FindFileByFileName(fileName, userName string) (file models.File, err error) {
-
 	userID, err := findUserIdByName(userName)
 	if err != nil {
 		logger.Error.Println(err.Error())
@@ -430,7 +429,6 @@ func (fp *FilePostgres) FindFileByFileName(fileName, userName string) (file mode
 }
 
 func (fp *FilePostgres) DeleteFileByID(fileID int) error {
-
 	filePath, err := getFilePathByFileID(fileID)
 	if err != nil {
 		logger.Error.Println(err.Error())
@@ -459,7 +457,6 @@ func (fp *FilePostgres) DeleteFileByID(fileID int) error {
 }
 
 func (fp *FilePostgres) DeleteAllFiles() (err error) {
-
 	filesPath, err := getAllFilesPaths()
 	if err != nil {
 		logger.Error.Println(err.Error())

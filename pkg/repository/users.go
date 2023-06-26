@@ -34,7 +34,7 @@ func findUserIdByName(userName string) (int, error) {
 		return 0, models.ErrUserNotExists
 	}
 	var ID int
-	err := db.GetDBConn().QueryRow(db.GetIdUserByNameSql, userName).Scan(&ID)
+	err := db.GetDBConn().QueryRow(db.GetUserIDByUserNameSql, userName).Scan(&ID)
 	if err != nil {
 		if err == sql.ErrNoRows {
 			return 0, models.ErrUserNotExists

@@ -39,12 +39,17 @@ type Limits interface {
 	SetLimitsToUser(userID, fileSizeLim, storageSizeLim int) (err error)
 }
 
+type Statistics interface {
+	GetUserStatistics(userID int) (userStat models.UserStat, err error)
+}
+
 type Repository struct {
 	Authorization
 	User
 	File
 	Access
 	Limits
+	Statistics
 }
 
 func NewRepository() *Repository {
@@ -54,5 +59,6 @@ func NewRepository() *Repository {
 		File:          NewFilePostgres(),
 		Access:        NewAccessPostgres(),
 		Limits:        NewLimitsPostgres(),
+		Statistics:    NewStatisticsPostgres(),
 	}
 }
