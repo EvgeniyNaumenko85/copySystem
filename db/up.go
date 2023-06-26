@@ -8,7 +8,7 @@ import (
 var createTables = []string{
 	CreateTableUsers,
 	CreateTableFiles,
-	CreateTableShedules,
+	CreateTableAccess,
 }
 
 func Up() error {

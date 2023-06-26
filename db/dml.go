@@ -46,8 +46,22 @@ const (
 	CheckFileSizeLimitSql  = "SELECT file_size_lim FROM users WHERE user_name =$1"
 	CheckFileByFileIDSql   = "SELECT id FROM files WHERE id = $1"
 	DeleteFileByIDSql      = "DELETE FROM files WHERE id = $1"
+	GetStorageFreeSpaceSql = "SELECT  users.storage_size_lim - COALESCE(SUM(files.file_size), 0) AS remaining_storage FROM users LEFT JOIN files ON files.user_id = users.id WHERE users.user_name = $1 GROUP BY users.id, users.storage_size_lim"
 )
 
 const (
-	SetLimitsToUser = "UPDATE users SET file_size_lim = $1 WHERE id = $2"
+	SetLimitsToUser = "UPDATE users SET file_size_lim = $1, storage_size_lim = $2 WHERE id = $3"
 )
+
+//
+//SELECT
+//users.id AS user_id,
+//users.storage_size_lim - COALESCE(SUM(files.file_size), 0) AS remaining_storage
+//FROM
+//users
+//LEFT JOIN
+//files ON files.user_id = users.id
+//WHERE
+//users.id = <ваш user_id>
+//GROUP BY
+//users.id, users.storage_size_lim;

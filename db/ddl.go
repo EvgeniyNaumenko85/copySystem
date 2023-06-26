@@ -5,14 +5,13 @@ package db
 const (
 	CreateTableUsers = `CREATE TABLE IF NOT EXISTS users
 (
-id             	BIGSERIAL PRIMARY KEY,
-user_name       VARCHAR(30) NOT NULL UNIQUE,
-email         	VARCHAR(30) NOT NULL UNIQUE,
-password_hash 	VARCHAR(255) NOT NULL,
-user_role  		VARCHAR(30) NOT NULL,
-file_size_lim   INTEGER DEFAULT 20
-
-
+id             		BIGSERIAL PRIMARY KEY,
+user_name       	VARCHAR(30) NOT NULL UNIQUE,
+email         		VARCHAR(30) NOT NULL UNIQUE,
+password_hash 		VARCHAR(255) NOT NULL,
+user_role  			VARCHAR(30) NOT NULL,
+file_size_lim   	INTEGER DEFAULT 20,
+storage_size_lim 	INT DEFAULT 100
 );`
 	CreateTableFiles = `CREATE TABLE IF NOT EXISTS files
 (
@@ -26,8 +25,7 @@ deleted          BOOLEAN      NOT NULL DEFAULT false,
 added            TIMESTAMP without time zone NOT NULL DEFAULT to_timestamp('2023-06-25 12:53:00', 'YYYY-MM-DD HH24:MI:SS')
 );`
 
-	//todo: добавить нужную таблицу и убрать не нужную!!!!
-	CreateTableShedules = `CREATE TABLE IF NOT EXISTS access
+	CreateTableAccess = `CREATE TABLE IF NOT EXISTS access
 (
     id               BIGSERIAL PRIMARY KEY,
     file_id          INTEGER REFERENCES files (id) ON DELETE CASCADE,
@@ -37,7 +35,7 @@ added            TIMESTAMP without time zone NOT NULL DEFAULT to_timestamp('2023
 )
 
 const (
-	DropShedulesTable = `DROP TABLE IF EXISTS access;`
-	DropFilesTable    = `DROP TABLE IF EXISTS files;`
-	DropUsersTable    = `DROP TABLE IF EXISTS users;`
+	DropAccessTable = `DROP TABLE IF EXISTS access;`
+	DropFilesTable  = `DROP TABLE IF EXISTS files;`
+	DropUsersTable  = `DROP TABLE IF EXISTS users;`
 )

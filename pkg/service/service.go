@@ -38,7 +38,7 @@ type Access interface {
 }
 
 type Limits interface {
-	SetLimitsToUser(userID, fileSizeLim int) (err error)
+	SetLimitsToUser(userID, fileSizeLim, storageSizeLim int) (err error)
 }
 
 type Service struct {

@@ -10,7 +10,6 @@ import (
 	"github.com/jmoiron/sqlx"
 	"math"
 	"mime/multipart"
-	"net/http"
 	"os"
 	"path/filepath"
 	"strconv"
@@ -59,23 +58,27 @@ func getFileSizeLimitSql(userName string) (fileSizeLimit int, err error) {
 	return fileSizeLimit, nil
 }
 
-func checkFileSizeToUpload(fileSizeLimit int, c *gin.Context) error {
+func checkFileSizeToUpload(c *gin.Context) (handlerSizeInMb float64, err error) {
 	file, handler, err := c.Request.FormFile("file")
 	if err != nil {
-		logger.Error.Println(err.Error())
-		c.String(http.StatusBadRequest, "Error retrieving file")
-		return err
+		logger.Error.Println(err)
+		return 0, err
 	}
 	defer file.Close()
 
 	var sizeOfOneMb int64 = 1024 * 1024
-	handlerSizeInMb := handler.Size / sizeOfOneMb
-	if handlerSizeInMb > int64(fileSizeLimit) {
-		logger.Error.Println(err.Error())
-		return models.ErrFileToBig
-	}
+	handlerSizeInMb = float64(handler.Size / sizeOfOneMb)
 
-	return nil
+	return handlerSizeInMb, nil
+}
+
+func getStorageFreeSpace(userName string) (freeSpace float64, err error) {
+	err = db.GetDBConn().QueryRow(db.GetStorageFreeSpaceSql, userName).Scan(&freeSpace)
+	if err != nil {
+		logger.Error.Println(err.Error())
+		return 0, err
+	}
+	return freeSpace, nil
 }
 
 func getFileSize(filePath string) (float64, error) {
@@ -197,23 +200,20 @@ func deleteFileInfoByFileID(fileID int) error {
 }
 
 // outer func ===========>>
-
 func (fp *FilePostgres) UploadFile(header *multipart.FileHeader, c *gin.Context) (int, error) {
 	fileName := filepath.Base(header.Filename)
-
 	partsOfFileName := strings.Split(fileName, ".")
 	fileExtension := strings.ToLower(filepath.Ext(fileName))
 	fileName = partsOfFileName[0] + fileExtension
-
 	currentDir, err := os.Getwd()
 	if err != nil {
-		logger.Error.Println(err.Error())
+		logger.Error.Println(err)
 		return 0, err
 	}
 
 	userName, err := getUserNameFromContext(c)
 	if err != nil {
-		logger.Error.Println(err.Error())
+		logger.Error.Println(err)
 		return 0, err
 	}
 
@@ -223,13 +223,13 @@ func (fp *FilePostgres) UploadFile(header *multipart.FileHeader, c *gin.Context)
 
 	err = checkFileExist(fullPathToFile)
 	if err != nil {
-		logger.Error.Println(err.Error())
+		logger.Error.Println(err)
 		return 0, err
 	}
 
 	userId, err := findUserIdByName(userName)
 	if err != nil {
-		logger.Error.Println(err.Error())
+		logger.Error.Println(err)
 		return 0, err
 	}
 
@@ -239,15 +239,30 @@ func (fp *FilePostgres) UploadFile(header *multipart.FileHeader, c *gin.Context)
 		return 0, err
 	}
 
-	err = checkFileSizeToUpload(fileSizeLimit, c)
+	handlerSizeInMb, err := checkFileSizeToUpload(c)
 	if err != nil {
-
+		logger.Error.Println(err)
 		return 0, err
 	}
 
-	if err := c.SaveUploadedFile(header, fullPathToFile); err != nil {
-		// todo вставить лог
-		//c.JSON(http.StatusInternalServerError, gin.H{"error": "Ошибка при сохранении файла", "err: ": err.Error()})
+	freeSpace, err := getStorageFreeSpace(userName)
+	if err != nil {
+		logger.Error.Println(err)
+		return 0, err
+	}
+
+	if handlerSizeInMb > float64(fileSizeLimit) {
+		logger.Error.Println(err)
+		return 0, models.ErrFileToBig
+	}
+
+	if freeSpace-handlerSizeInMb <= 0 {
+		logger.Error.Println(err)
+		return 0, models.ErrFileToBig
+	}
+
+	if err = c.SaveUploadedFile(header, fullPathToFile); err != nil {
+		logger.Error.Println(err)
 		return 0, err
 	}
 
@@ -267,7 +282,7 @@ func (fp *FilePostgres) UploadFile(header *multipart.FileHeader, c *gin.Context)
 
 	err = addAccessInfoToDB(fileId, userId)
 	if err != nil {
-		logger.Error.Println(err.Error())
+		logger.Error.Println(err)
 		return 0, err
 	}
 	return fileId, nil
@@ -277,19 +292,19 @@ func (fp *FilePostgres) GetFileByID(fileID int, userName string) (filePath strin
 
 	userID, err := findUserIdByName(userName)
 	if err != nil {
-		logger.Error.Println(err.Error())
+		logger.Error.Println(err)
 		return "", err
 	}
 
 	err = checkUserToFileAccess(fileID, userID)
 	if err != nil {
-		logger.Error.Println(err.Error())
+		logger.Error.Println(err)
 		return "", err
 	}
 
 	filePath, err = getFilePathByFileID(fileID)
 	if err != nil {
-		logger.Error.Println(err.Error())
+		logger.Error.Println(err)
 		return "", err
 	}
 
@@ -300,7 +315,7 @@ func (fp *FilePostgres) GetFileByID(fileID int, userName string) (filePath strin
 func (fp *FilePostgres) AllFilesInfo() (files []models.File, err error) {
 	rows, err := db.GetDBConn().Query(db.AllFilesInfo)
 	if err != nil {
-		logger.Error.Println(err.Error())
+		logger.Error.Println(err)
 		return nil, err
 	}
 	defer rows.Close()
@@ -317,7 +332,7 @@ func (fp *FilePostgres) AllFilesInfo() (files []models.File, err error) {
 			&file.Added,
 		)
 		if err != nil {
-			logger.Error.Println(err.Error())
+			logger.Error.Println(err)
 			continue
 		}
 		files = append(files, file)
@@ -334,19 +349,19 @@ func (fp *FilePostgres) AllFilesInfo() (files []models.File, err error) {
 func (fp *FilePostgres) ShowAllUserFilesInfo(c *gin.Context) (files []models.File, err error) {
 	userName, err := getUserNameFromContext(c)
 	if err != nil {
-		logger.Error.Println(err.Error())
+		logger.Error.Println(err)
 		return nil, err
 	}
 
 	userID, err := findUserIdByName(userName)
 	if err != nil {
-		logger.Error.Println(err.Error())
+		logger.Error.Println(err)
 		return nil, err
 	}
 
 	rows, err := db.GetDBConn().Query(db.GetAllUserFilesSql, userID)
 	if err != nil {
-		logger.Error.Println(err.Error())
+		logger.Error.Println(err)
 		return nil, err
 	}
 	defer rows.Close()

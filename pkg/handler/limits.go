@@ -26,7 +26,7 @@ func (h *Handler) setLimitsToUser(c *gin.Context) {
 		return
 	}
 
-	err = h.services.SetLimitsToUser(userID, l.FileSizeLim)
+	err = h.services.SetLimitsToUser(userID, l.FileSizeLim, l.StorageSizeLim)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"err": err.Error(),

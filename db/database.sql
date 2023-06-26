@@ -8,7 +8,7 @@ CREATE TABLE IF NOT EXISTS users
     password_hash       VARCHAR(255) NOT NULL,
     user_role           VARCHAR(30) NOT NULL,
     file_size_lim       INT DEFAULT 20,
-    
+    storage_size_lim    INT DEFAULT 100,
 );
 
 CREATE TABLE IF NOT EXISTS files

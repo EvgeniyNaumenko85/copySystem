@@ -12,5 +12,6 @@ type AccessRequest struct {
 }
 
 type LimitRequest struct {
-	FileSizeLim int `json:"file_size_lim"`
+	FileSizeLim    int `json:"file_size_lim"`
+	StorageSizeLim int `json:"storage_size_lim"`
 }

@@ -41,13 +41,9 @@ func (h *Handler) InitRoutes() *gin.Engine {
 	limits := api.Group("/limits", h.userIdentity)
 	{
 		limits.PUT("/:id", IdentifyUserRole, IdMiddleware, h.setLimitsToUser)
-		//limits.POST("/:id", IdMiddleware, h.providingAccessAll)
-		//limits.DELETE("/", h.removeAccess)
-		//limits.DELETE("/all", h.removeAccessToAll)
 	}
 
 	//todo //stat := api.Group("/", h.userIdentity)
-	// роут групп по получению статистики по файлам (только админу?)
 	{
 		//todo роут на получение информации о типе, кол-ве, общем объеме файлов конкретного пользователя (возможно
 		// добавить столбец в таблицу files с инфой о размере каждого файла, которая вносится в нее при записи файла в папку)

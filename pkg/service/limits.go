@@ -12,6 +12,6 @@ func NewLimitsService(repo *repository.Repository) *LimitsService {
 	return &LimitsService{repo: repo}
 }
 
-func (ls *LimitsService) SetLimitsToUser(userID, fileSizeLim int) (err error) {
-	return ls.repo.SetLimitsToUser(userID, fileSizeLim)
+func (ls *LimitsService) SetLimitsToUser(userID, fileSizeLim, storageSizeLim int) (err error) {
+	return ls.repo.SetLimitsToUser(userID, fileSizeLim, storageSizeLim)
 }
