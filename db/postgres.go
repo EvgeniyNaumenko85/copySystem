@@ -19,7 +19,6 @@ type Config struct {
 	SSLMode  string
 }
 
-// Initiation of connection with DB
 func initDB(cfg Config) *sql.DB {
 	connStr := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=%s",
 		cfg.Host, cfg.Port, cfg.Username, cfg.Password, cfg.DBName, cfg.SSLMode)
@@ -32,12 +31,10 @@ func initDB(cfg Config) *sql.DB {
 	return db
 }
 
-// StartDbConnection Creates connection to database
 func StartDbConnection(cfg Config) {
 	database = initDB(cfg)
 }
 
-// GetDBConn func for getting db conn globally
 func GetDBConn() *sql.DB {
 	return database
 }

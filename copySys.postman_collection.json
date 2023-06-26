@@ -1,0 +1,1143 @@
+{
+	"info": {
+		"_postman_id": "ed88391b-24fe-4456-a332-3406e530474b",
+		"name": "copySys",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "27146137"
+	},
+	"item": [
+		{
+			"name": "auth",
+			"item": [
+				{
+					"name": "localhost:9090/api/auth/signUp (signUp)",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"John Doe\",\r\n    \"email\": \"jd@yahoo.com\",\r\n    \"password\": \"123\",\r\n    \"role\": \"user\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "localhost:9090/api/auth/signUp"
+					},
+					"response": []
+				},
+				{
+					"name": "localhost:9090/api/auth/signUp (signUp) another user",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"Jack Citizen\",\r\n    \"email\": \"jc@yahoo.com\",\r\n    \"password\": \"123w\",\r\n    \"role\": \"user\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "localhost:9090/api/auth/signUp"
+					},
+					"response": []
+				},
+				{
+					"name": "localhost:9090/api/auth/signUp (signUp) another admin",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"Alex Smith\",\r\n    \"email\": \"alex@yahoo.com\",\r\n    \"password\": \"123\",\r\n    \"role\": \"admin\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "localhost:9090/api/auth/signUp"
+					},
+					"response": []
+				},
+				{
+					"name": "localhost:9090/api/auth/signIn (signIn)",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"John Doe\",\r\n    // \"email\": \"alex@yahoo.com\",\r\n    \"password\": \"123\"\r\n    // \"role\": \"admin\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "localhost:9090/api/auth/signIn"
+					},
+					"response": []
+				},
+				{
+					"name": "localhost:9090/api/auth/signIn (signIn) another user",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "\r\n{\r\n    \"username\": \"Jack Citizen\",\r\n    \"password\": \"123w\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "localhost:9090/api/auth/signIn"
+					},
+					"response": []
+				},
+				{
+					"name": "localhost:9090/api/auth/signIn (signIn) another admin",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"Alex Smith\",\r\n    // \"email\": \"alex@yahoo.com\",\r\n    \"password\": \"123\"\r\n    // \"role\": \"admin\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "localhost:9090/api/auth/signIn"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "/users",
+			"item": [
+				{
+					"name": "localhost:9090/api/users/ (getAllUsers)",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "jwt",
+							"jwt": {
+								"payload": "\"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MzAyNTU1NzMsImlhdCI6MTY4NzA1NTU3MywidXNlcl9pZCI6MSwicm9sZSI6ImFkbWluIn0.1rCyj6vYgquPb4RxJ-dreJGt8s9ynyysXF7OvxbOKVA\"",
+								"header": "",
+								"secret": "Bearer",
+								"headerPrefix": "Bearer",
+								"algorithm": "HS256",
+								"isSecretBase64Encoded": false,
+								"addTokenTo": "header",
+								"queryParamKey": "token"
+							}
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "pass",
+								"value": "\"123\"",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2ODc3NTk3ODQsImlhdCI6MTY4NzcxNjU4NCwidXNlcl9pZCI6MSwicm9sZSI6InVzZXIiLCJ1c2VyX25hbWUiOiJKb2huIERvZSJ9.nLtQz7Ecflff5zy8TL9iduheLuLA5Rg0H5UOfX7ZPE8",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "localhost:9090/api/users/"
+					},
+					"response": []
+				},
+				{
+					"name": "localhost:9090/api/users/:id (getUserByID)",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "jwt",
+							"jwt": {
+								"payload": "\"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2ODY4MzM3ODEsImlhdCI6MTY4Njc5MDU4MSwidXNlcl9pZCI6MSwicm9sZSI6ImFkbWluIn0.N5WFeG08JrYJAo8HcN4Vakd_xjN0-J6hQjko8nRvE_A\"",
+								"header": "",
+								"secret": "Bearer",
+								"headerPrefix": "Bearer",
+								"algorithm": "HS256",
+								"isSecretBase64Encoded": false,
+								"addTokenTo": "header",
+								"queryParamKey": "token"
+							}
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2ODc3MTg3NjQsImlhdCI6MTY4NzY3NTU2NCwidXNlcl9pZCI6MSwicm9sZSI6InVzZXIiLCJ1c2VyX25hbWUiOiJKb2huIERvZSJ9.NY6IXZXt3MykE1S_OKer2pHasqIQPXRy-mfX4yXXuE4",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    // \"username\": \"Alex Smith\",\r\n    // \"email\": \"alex@yahoo.com\"\r\n    // \"password\": \"123\"\r\n    // \"role\": \"admin\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "localhost:9090/api/users/1"
+					},
+					"response": []
+				},
+				{
+					"name": "localhost:9090/api/users/1 (updateUserByID)",
+					"request": {
+						"auth": {
+							"type": "jwt",
+							"jwt": {
+								"payload": "\"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MzAxNjU5MzQsImlhdCI6MTY4Njk2NTkzNCwidXNlcl9pZCI6MTksInJvbGUiOiJhZG1pbiJ9.4R78TDmTBlH4VNUDrPIqsu94KIHpKn640kGnOEB4qH4\"",
+								"header": "",
+								"secret": "Bearer",
+								"headerPrefix": "Bearer",
+								"algorithm": "HS256",
+								"isSecretBase64Encoded": false,
+								"addTokenTo": "header",
+								"queryParamKey": "token"
+							}
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MzAyNTU1NzMsImlhdCI6MTY4NzA1NTU3MywidXNlcl9pZCI6MSwicm9sZSI6ImFkbWluIn0.1rCyj6vYgquPb4RxJ-dreJGt8s9ynyysXF7OvxbOKVA",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": " {\r\n    \"id\": 1,\r\n    \"username\": \"Alex Smith\",\r\n    \"email\": \"alex@yahoo.com\",\r\n    \"role\": \"admin\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "localhost:9090/api/users/1"
+					},
+					"response": []
+				},
+				{
+					"name": "localhost:9090/api/users/:id (deleteUserByID)",
+					"request": {
+						"auth": {
+							"type": "jwt",
+							"jwt": {
+								"payload": "\"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MzAyNTU1NzMsImlhdCI6MTY4NzA1NTU3MywidXNlcl9pZCI6MSwicm9sZSI6ImFkbWluIn0.1rCyj6vYgquPb4RxJ-dreJGt8s9ynyysXF7OvxbOKVA\"",
+								"header": "",
+								"secret": "Bearer",
+								"headerPrefix": "Bearer",
+								"algorithm": "HS256",
+								"isSecretBase64Encoded": false,
+								"addTokenTo": "header",
+								"queryParamKey": "token"
+							}
+						},
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2ODc0NDQ1MjIsImlhdCI6MTY4NzQwMTMyMiwidXNlcl9pZCI6MSwicm9sZSI6InVzZXIiLCJ1c2VyX25hbWUiOiJKb2huIERvZSJ9.Ubu8W4wlVvTd7okzvBUJ-VqN_ahw40uv2UUjvzHIOvU",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"user_id\": 3,\r\n    \"name\": \"to do 3 task\",\r\n    \"done\": false,\r\n    \"description\": \"to do 3 task well\",\r\n    \"added\": \"2023-05-25T21:13:12Z\",\r\n    \"deadline\": \"2023-05-24T19:58:14Z\",\r\n    \"done_at\": \"0001-01-01T00:00:00Z\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "localhost:9090/api/users/2"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "/files",
+			"item": [
+				{
+					"name": "localhost:9090/api/file/ (uploadFile)",
+					"request": {
+						"auth": {
+							"type": "jwt",
+							"jwt": {
+								"payload": "\"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MzA0ODg0OTYsImlhdCI6MTY4NzI4ODQ5NiwidXNlcl9pZCI6MSwicm9sZSI6InVzZXIiLCJ1c2VyX25hbWUiOiJFcmljIENsYXB0b24ifQ.UYnNWkrCQZYi70zIuNDQPIl0rZmVEOhg9-JV3RQCqhc\"\r\n",
+								"header": "",
+								"secret": "Bearer",
+								"headerPrefix": "Bearer",
+								"algorithm": "HS256",
+								"isSecretBase64Encoded": false,
+								"addTokenTo": "header",
+								"queryParamKey": "token"
+							}
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2ODgxNTk1OTgsImlhdCI6MTY4NzcyNzU5OCwidXNlcl9pZCI6MSwicm9sZSI6InVzZXIiLCJ1c2VyX25hbWUiOiJKb2huIERvZSJ9.DRtJxKJd_l_A0bQBV1vOgsqt-eF9b3oPRsZUTmYhDAk",
+								"type": "text"
+							},
+							{
+								"key": "Content-Disposition",
+								"value": "form-data; name=\"file\"; filename=\"sample.txt\"",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"description": "тестирую отправку",
+									"type": "file",
+									"src": "/C:/Users/Евгений Науменко/Desktop/testFile.dat"
+								},
+								{
+									"key": "name",
+									"value": "tes",
+									"type": "text"
+								}
+							]
+						},
+						"url": "localhost:9090/api/files/"
+					},
+					"response": []
+				},
+				{
+					"name": "localhost:9090/api/file/ (uploadFile) admin/another user",
+					"request": {
+						"auth": {
+							"type": "jwt",
+							"jwt": {
+								"payload": "\"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MzA0ODg0OTYsImlhdCI6MTY4NzI4ODQ5NiwidXNlcl9pZCI6MSwicm9sZSI6InVzZXIiLCJ1c2VyX25hbWUiOiJFcmljIENsYXB0b24ifQ.UYnNWkrCQZYi70zIuNDQPIl0rZmVEOhg9-JV3RQCqhc\"\r\n",
+								"header": "",
+								"secret": "Bearer",
+								"headerPrefix": "Bearer",
+								"algorithm": "HS256",
+								"isSecretBase64Encoded": false,
+								"addTokenTo": "header",
+								"queryParamKey": "token"
+							}
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MzA1ODQwNjYsImlhdCI6MTY4NzM4NDA2NiwidXNlcl9pZCI6Miwicm9sZSI6ImFkbWluIiwidXNlcl9uYW1lIjoiQWxleCBTbWl0aCJ9.L2lsLRzU8Arj0u1fc9nQufNXwgSWTK_WjYA-XharDz8",
+								"type": "text"
+							},
+							{
+								"key": "Content-Disposition",
+								"value": "form-data; name=\"file\"; filename=\"sample.txt\"",
+								"type": "text"
+							},
+							{
+								"key": "file",
+								"value": "3mb.exe",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"description": "тестирую отправку",
+									"type": "file",
+									"src": "/C:/Users/Евгений Науменко/Desktop/In Deep House Music Mini.wav"
+								},
+								{
+									"key": "name",
+									"value": "tes",
+									"type": "text"
+								}
+							]
+						},
+						"url": "localhost:9090/api/files/"
+					},
+					"response": []
+				},
+				{
+					"name": "localhost:9090/api/files/:id (getFileByID)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "jwt",
+							"jwt": {
+								"payload": "\"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2ODY4MzM3ODEsImlhdCI6MTY4Njc5MDU4MSwidXNlcl9pZCI6MSwicm9sZSI6ImFkbWluIn0.N5WFeG08JrYJAo8HcN4Vakd_xjN0-J6hQjko8nRvE_A\"",
+								"header": "",
+								"secret": "Bearer",
+								"headerPrefix": "Bearer",
+								"algorithm": "HS256",
+								"isSecretBase64Encoded": false,
+								"addTokenTo": "header",
+								"queryParamKey": "token"
+							}
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2ODc3MjI0OTcsImlhdCI6MTY4NzY3OTI5NywidXNlcl9pZCI6MSwicm9sZSI6InVzZXIiLCJ1c2VyX25hbWUiOiJKb2huIERvZSJ9.xTMQt_vHaCFmstFM3JwuXRMZhEpLY_WotPWX4MCYli4",
+								"type": "text"
+							},
+							{
+								"key": "Content-Disposition",
+								"value": "form-data; name=\"file\"; filename=\"sample.txt\"",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "file",
+							"file": {}
+						},
+						"url": "localhost:9090/api/files/"
+					},
+					"response": []
+				},
+				{
+					"name": "localhost:9090/api/files/:id (getFileByID) another (admin)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "jwt",
+							"jwt": {
+								"payload": "\"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2ODY4MzM3ODEsImlhdCI6MTY4Njc5MDU4MSwidXNlcl9pZCI6MSwicm9sZSI6ImFkbWluIn0.N5WFeG08JrYJAo8HcN4Vakd_xjN0-J6hQjko8nRvE_A\"",
+								"header": "",
+								"secret": "Bearer",
+								"headerPrefix": "Bearer",
+								"algorithm": "HS256",
+								"isSecretBase64Encoded": false,
+								"addTokenTo": "header",
+								"queryParamKey": "token"
+							}
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2ODc3MjIzOTMsImlhdCI6MTY4NzY3OTE5MywidXNlcl9pZCI6Miwicm9sZSI6ImFkbWluIiwidXNlcl9uYW1lIjoiQWxleCBTbWl0aCJ9.onvkbtTPfwfMVAWIb6lx6yfDsNEozbQYa4pn1jbao-w",
+								"type": "text"
+							},
+							{
+								"key": "Content-Disposition",
+								"value": "form-data; name=\"file\"; filename=\"sample.txt\"",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "file",
+							"file": {}
+						},
+						"url": "localhost:9090/api/files/1"
+					},
+					"response": []
+				},
+				{
+					"name": "localhost:9090/api/files/ (showAllUserFilesInfo)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "jwt",
+							"jwt": {
+								"payload": "\"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2ODY4MzM3ODEsImlhdCI6MTY4Njc5MDU4MSwidXNlcl9pZCI6MSwicm9sZSI6ImFkbWluIn0.N5WFeG08JrYJAo8HcN4Vakd_xjN0-J6hQjko8nRvE_A\"",
+								"header": "",
+								"secret": "Bearer",
+								"headerPrefix": "Bearer",
+								"algorithm": "HS256",
+								"isSecretBase64Encoded": false,
+								"addTokenTo": "header",
+								"queryParamKey": "token"
+							}
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2ODc3NzAwMzMsImlhdCI6MTY4NzcyNjgzMywidXNlcl9pZCI6Miwicm9sZSI6ImFkbWluIiwidXNlcl9uYW1lIjoiQWxleCBTbWl0aCJ9.GJl-cPuxV0abxhcsOfDzQSaG5s9U54aZz5UfG7EDKdg",
+								"type": "text"
+							},
+							{
+								"key": "Content-Disposition",
+								"value": "form-data; name=\"file\"; filename=\"sample.txt\"",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "file",
+							"file": {}
+						},
+						"url": "localhost:9090/api/files/"
+					},
+					"response": []
+				},
+				{
+					"name": "localhost:9090/api/files/all (allFilesInfo) admin only",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "jwt",
+							"jwt": {
+								"payload": "\"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2ODY4MzM3ODEsImlhdCI6MTY4Njc5MDU4MSwidXNlcl9pZCI6MSwicm9sZSI6ImFkbWluIn0.N5WFeG08JrYJAo8HcN4Vakd_xjN0-J6hQjko8nRvE_A\"",
+								"header": "",
+								"secret": "Bearer",
+								"headerPrefix": "Bearer",
+								"algorithm": "HS256",
+								"isSecretBase64Encoded": false,
+								"addTokenTo": "header",
+								"queryParamKey": "token"
+							}
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2ODc3NzAwMzMsImlhdCI6MTY4NzcyNjgzMywidXNlcl9pZCI6Miwicm9sZSI6ImFkbWluIiwidXNlcl9uYW1lIjoiQWxleCBTbWl0aCJ9.GJl-cPuxV0abxhcsOfDzQSaG5s9U54aZz5UfG7EDKdg",
+								"type": "text"
+							},
+							{
+								"key": "Content-Disposition",
+								"value": "form-data; name=\"file\"; filename=\"sample.txt\"",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "file",
+							"file": {}
+						},
+						"url": "localhost:9090/api/files/all"
+					},
+					"response": []
+				},
+				{
+					"name": "localhost:9090/api/files/name (findFileByFileName)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "jwt",
+							"jwt": {
+								"payload": "\"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2ODY4MzM3ODEsImlhdCI6MTY4Njc5MDU4MSwidXNlcl9pZCI6MSwicm9sZSI6ImFkbWluIn0.N5WFeG08JrYJAo8HcN4Vakd_xjN0-J6hQjko8nRvE_A\"",
+								"header": "",
+								"secret": "Bearer",
+								"headerPrefix": "Bearer",
+								"algorithm": "HS256",
+								"isSecretBase64Encoded": false,
+								"addTokenTo": "header",
+								"queryParamKey": "token"
+							}
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2ODc3MjMyMjgsImlhdCI6MTY4NzY4MDAyOCwidXNlcl9pZCI6Miwicm9sZSI6ImFkbWluIiwidXNlcl9uYW1lIjoiQWxleCBTbWl0aCJ9.cn2IJ0hYOb7QkvJdtVdhGnS41i_nJUzDeuKpPdN0owM",
+								"type": "text"
+							},
+							{
+								"key": "Content-Disposition",
+								"value": "form-data; name=\"file\"; filename=\"sample.txt\"",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "File-name",
+								"value": "3mb.exe",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"file_name\": \"testFile.dat\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "localhost:9090/api/files/name"
+					},
+					"response": []
+				},
+				{
+					"name": "localhost:9090/api/files/:id (deleteFileByID)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "jwt",
+							"jwt": {
+								"payload": "\"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2ODY4MzM3ODEsImlhdCI6MTY4Njc5MDU4MSwidXNlcl9pZCI6MSwicm9sZSI6ImFkbWluIn0.N5WFeG08JrYJAo8HcN4Vakd_xjN0-J6hQjko8nRvE_A\"",
+								"header": "",
+								"secret": "Bearer",
+								"headerPrefix": "Bearer",
+								"algorithm": "HS256",
+								"isSecretBase64Encoded": false,
+								"addTokenTo": "header",
+								"queryParamKey": "token"
+							}
+						},
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2ODc3MTg3NjQsImlhdCI6MTY4NzY3NTU2NCwidXNlcl9pZCI6MSwicm9sZSI6InVzZXIiLCJ1c2VyX25hbWUiOiJKb2huIERvZSJ9.NY6IXZXt3MykE1S_OKer2pHasqIQPXRy-mfX4yXXuE4",
+								"type": "text"
+							},
+							{
+								"key": "Content-Disposition",
+								"value": "form-data; name=\"file\"; filename=\"sample.txt\"",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "File-name",
+								"value": "3mb.exe",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"file_name\": \"3mb.exe\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "localhost:9090/api/files/1"
+					},
+					"response": []
+				},
+				{
+					"name": "localhost:9090/api/files/all (deleteAllFiles) admin only",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "jwt",
+							"jwt": {
+								"payload": "\"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2ODY4MzM3ODEsImlhdCI6MTY4Njc5MDU4MSwidXNlcl9pZCI6MSwicm9sZSI6ImFkbWluIn0.N5WFeG08JrYJAo8HcN4Vakd_xjN0-J6hQjko8nRvE_A\"",
+								"header": "",
+								"secret": "Bearer",
+								"headerPrefix": "Bearer",
+								"algorithm": "HS256",
+								"isSecretBase64Encoded": false,
+								"addTokenTo": "header",
+								"queryParamKey": "token"
+							}
+						},
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2ODc3Njc1NzIsImlhdCI6MTY4NzcyNDM3MiwidXNlcl9pZCI6Miwicm9sZSI6ImFkbWluIiwidXNlcl9uYW1lIjoiQWxleCBTbWl0aCJ9.MnnSUxx68L-X9wt16GfOhFM3vOOeDyZP9VcNLqCLKIc",
+								"type": "text"
+							},
+							{
+								"key": "Content-Disposition",
+								"value": "form-data; name=\"file\"; filename=\"sample.txt\"",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "File-name",
+								"value": "3mb.exe",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "// {\r\n//     \"file_name\": \"3mb.exe\"\r\n// }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "localhost:9090/api/files/all"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "access",
+			"item": [
+				{
+					"name": "localhost:9090/api/access/ (providingAccess)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "jwt",
+							"jwt": {
+								"payload": "\"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2ODY4MzM3ODEsImlhdCI6MTY4Njc5MDU4MSwidXNlcl9pZCI6MSwicm9sZSI6ImFkbWluIn0.N5WFeG08JrYJAo8HcN4Vakd_xjN0-J6hQjko8nRvE_A\"",
+								"header": "",
+								"secret": "Bearer",
+								"headerPrefix": "Bearer",
+								"algorithm": "HS256",
+								"isSecretBase64Encoded": false,
+								"addTokenTo": "header",
+								"queryParamKey": "token"
+							}
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2ODgxNTk2NDQsImlhdCI6MTY4NzcyNzY0NCwidXNlcl9pZCI6MTksInJvbGUiOiJ1c2VyIiwidXNlcl9uYW1lIjoiSmFjayBDaXRpemVuIn0.6mIJ5WfqHEKdO9lfvUMYucIJtCMxX6zeB2CqdLJCj-I",
+								"type": "text"
+							},
+							{
+								"key": "Content-Disposition",
+								"value": "form-data; name=\"file\"; filename=\"sample.txt\"",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "File-name",
+								"value": "3mb.exe",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"file_id\": 1,\r\n    \"user_id\": 19\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "localhost:9090/api/access"
+					},
+					"response": []
+				},
+				{
+					"name": "localhost:9090/api/access/:ID (providingAccessAll)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "jwt",
+							"jwt": {
+								"payload": "\"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2ODY4MzM3ODEsImlhdCI6MTY4Njc5MDU4MSwidXNlcl9pZCI6MSwicm9sZSI6ImFkbWluIn0.N5WFeG08JrYJAo8HcN4Vakd_xjN0-J6hQjko8nRvE_A\"",
+								"header": "",
+								"secret": "Bearer",
+								"headerPrefix": "Bearer",
+								"algorithm": "HS256",
+								"isSecretBase64Encoded": false,
+								"addTokenTo": "header",
+								"queryParamKey": "token"
+							}
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2ODgxNTk1OTgsImlhdCI6MTY4NzcyNzU5OCwidXNlcl9pZCI6MSwicm9sZSI6InVzZXIiLCJ1c2VyX25hbWUiOiJKb2huIERvZSJ9.DRtJxKJd_l_A0bQBV1vOgsqt-eF9b3oPRsZUTmYhDAk",
+								"type": "text"
+							},
+							{
+								"key": "Content-Disposition",
+								"value": "form-data; name=\"file\"; filename=\"sample.txt\"",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "File-name",
+								"value": "3mb.exe",
+								"type": "text"
+							}
+						],
+						"url": "localhost:9090/api/access/8"
+					},
+					"response": []
+				},
+				{
+					"name": "localhost:9090/api/access/:ID (removingAccess)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "jwt",
+							"jwt": {
+								"payload": "\"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2ODY4MzM3ODEsImlhdCI6MTY4Njc5MDU4MSwidXNlcl9pZCI6MSwicm9sZSI6ImFkbWluIn0.N5WFeG08JrYJAo8HcN4Vakd_xjN0-J6hQjko8nRvE_A\"",
+								"header": "",
+								"secret": "Bearer",
+								"headerPrefix": "Bearer",
+								"algorithm": "HS256",
+								"isSecretBase64Encoded": false,
+								"addTokenTo": "header",
+								"queryParamKey": "token"
+							}
+						},
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2ODgxNTk1OTgsImlhdCI6MTY4NzcyNzU5OCwidXNlcl9pZCI6MSwicm9sZSI6InVzZXIiLCJ1c2VyX25hbWUiOiJKb2huIERvZSJ9.DRtJxKJd_l_A0bQBV1vOgsqt-eF9b3oPRsZUTmYhDAk",
+								"type": "text"
+							},
+							{
+								"key": "Content-Disposition",
+								"value": "form-data; name=\"file\"; filename=\"sample.txt\"",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "File-name",
+								"value": "3mb.exe",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"file_id\": 7,\r\n    \"user_id\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "localhost:9090/api/access"
+					},
+					"response": []
+				},
+				{
+					"name": "localhost:9090/api/access/all (removeAccessToAll)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "jwt",
+							"jwt": {
+								"payload": "\"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2ODY4MzM3ODEsImlhdCI6MTY4Njc5MDU4MSwidXNlcl9pZCI6MSwicm9sZSI6ImFkbWluIn0.N5WFeG08JrYJAo8HcN4Vakd_xjN0-J6hQjko8nRvE_A\"",
+								"header": "",
+								"secret": "Bearer",
+								"headerPrefix": "Bearer",
+								"algorithm": "HS256",
+								"isSecretBase64Encoded": false,
+								"addTokenTo": "header",
+								"queryParamKey": "token"
+							}
+						},
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2ODgxNTk1OTgsImlhdCI6MTY4NzcyNzU5OCwidXNlcl9pZCI6MSwicm9sZSI6InVzZXIiLCJ1c2VyX25hbWUiOiJKb2huIERvZSJ9.DRtJxKJd_l_A0bQBV1vOgsqt-eF9b3oPRsZUTmYhDAk",
+								"type": "text"
+							},
+							{
+								"key": "Content-Disposition",
+								"value": "form-data; name=\"file\"; filename=\"sample.txt\"",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "File-name",
+								"value": "3mb.exe",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"file_id\": 18\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "localhost:9090/api/access/all"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "limits",
+			"item": [
+				{
+					"name": "localhost:9090/api/limits/:ID (setLimitsToUser)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "jwt",
+							"jwt": {
+								"payload": "\"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2ODY4MzM3ODEsImlhdCI6MTY4Njc5MDU4MSwidXNlcl9pZCI6MSwicm9sZSI6ImFkbWluIn0.N5WFeG08JrYJAo8HcN4Vakd_xjN0-J6hQjko8nRvE_A\"",
+								"header": "",
+								"secret": "Bearer",
+								"headerPrefix": "Bearer",
+								"algorithm": "HS256",
+								"isSecretBase64Encoded": false,
+								"addTokenTo": "header",
+								"queryParamKey": "token"
+							}
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2ODgxNjYxNTYsImlhdCI6MTY4NzczNDE1NiwidXNlcl9pZCI6Miwicm9sZSI6ImFkbWluIiwidXNlcl9uYW1lIjoiQWxleCBTbWl0aCJ9.wNV-Hpn5QYzP3VrAIpQ-g9oj_tEQs3-FF-AT0mQ9Fpc",
+								"type": "text"
+							},
+							{
+								"key": "Content-Disposition",
+								"value": "form-data; name=\"file\"; filename=\"sample.txt\"",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "File-name",
+								"value": "3mb.exe",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"file_size_lim\": 5,\r\n    \"storage_size_lim\": 23\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "localhost:9090/api/limits/1"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "STAT",
+			"item": [
+				{
+					"name": "localhost:9090/api/stat/:id (getUserStatistics) admin only",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "jwt",
+							"jwt": {
+								"payload": "\"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2ODY4MzM3ODEsImlhdCI6MTY4Njc5MDU4MSwidXNlcl9pZCI6MSwicm9sZSI6ImFkbWluIn0.N5WFeG08JrYJAo8HcN4Vakd_xjN0-J6hQjko8nRvE_A\"",
+								"header": "",
+								"secret": "Bearer",
+								"headerPrefix": "Bearer",
+								"algorithm": "HS256",
+								"isSecretBase64Encoded": false,
+								"addTokenTo": "header",
+								"queryParamKey": "token"
+							}
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2ODgxODE4NDIsImlhdCI6MTY4Nzc0OTg0MiwidXNlcl9pZCI6Mywicm9sZSI6ImFkbWluIiwidXNlcl9uYW1lIjoiQWxleCBTbWl0aCJ9.NPfF_eK8w_0l6SD3nJ0kdwgl6xhIWX5Xn3BtVfmHHN0",
+								"type": "text"
+							},
+							{
+								"key": "Content-Disposition",
+								"value": "form-data; name=\"file\"; filename=\"sample.txt\"",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "file",
+							"file": {}
+						},
+						"url": "localhost:9090/api/stat/1"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "localhost:9090/ (PING)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "localhost:9090/"
+			},
+			"response": []
+		}
+	]
+}

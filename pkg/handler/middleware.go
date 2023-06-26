@@ -53,14 +53,12 @@ func getUserRole(c *gin.Context) (string, error) {
 	roleCtx, ok := c.Get(userRoleCtx)
 
 	if !ok {
-		//todo создать новую ошибку в models
 		logger.Error.Println("user role not found")
 		return "", errors.New("user role not found")
 	}
 
 	role, ok := roleCtx.(string)
 	if !ok {
-		//todo создать новую ошибку в models
 		logger.Error.Println("user role is of invalid type")
 		return "", errors.New("user role is of invalid type")
 	}

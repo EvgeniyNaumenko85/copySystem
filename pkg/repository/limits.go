@@ -18,13 +18,13 @@ func NewLimitsPostgres() *LimitsPostgres {
 func (lp *LimitsPostgres) SetLimitsToUser(userID, fileSizeLim, storageSizeLim int) (err error) {
 	err = checkUserExistByUserID(userID)
 	if err != nil {
-		logger.Error.Println(err.Error())
+		logger.Error.Println(err)
 		return err
 	}
 
 	_, err = db.GetDBConn().Exec(db.SetLimitsToUserSql, fileSizeLim, storageSizeLim, userID)
 	if err != nil {
-		logger.Error.Println(err.Error())
+		logger.Error.Println(err)
 		fmt.Println(err)
 	}
 

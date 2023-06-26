@@ -51,12 +51,10 @@ func (s *AuthService) GenerateToken(username, password, role string) (string, er
 	user, err := s.repo.GetUser(username, password, role)
 
 	if err != nil {
-		//logger.Error.Println("GetUser func: ", err.Error())
+		logger.Error.Println("GetUser func: ", err.Error())
 		return "", err
 	}
 
-	// если такой пользователь существует, сгенерируем токен
-	// передаем метод для подписи
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, &tokenClaims{
 		jwt.StandardClaims{
 			ExpiresAt: time.Now().Add(120 * time.Hour).Unix(), // время жизни токена
@@ -84,11 +82,10 @@ func (s *AuthService) ParseToken(accessToken string) (int, string, string, error
 	})
 
 	if err != nil {
-		logger.Error.Println(err.Error())
+		logger.Error.Println(err)
 		return 0, "", "", err
 	}
 
-	// приведем в структуру и сделаем проверку
 	claims, ok := token.Claims.(*tokenClaims)
 
 	if !ok {

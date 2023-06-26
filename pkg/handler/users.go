@@ -23,7 +23,7 @@ func (h *Handler) getUserByID(c *gin.Context) {
 	id, err := strconv.Atoi(idStr)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
-			"reason": "invalid task id",
+			"reason": "invalid user id",
 		})
 		return
 	}
@@ -37,7 +37,7 @@ func (h *Handler) getUserByID(c *gin.Context) {
 			})
 		default:
 			c.JSON(http.StatusInternalServerError, gin.H{
-				"message": "error while getting task",
+				"message": "error while getting user",
 				"reason":  err.Error(),
 			})
 		}

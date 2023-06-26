@@ -1,6 +1,5 @@
 package models
 
-// User defines the structure for an API users
 type User struct {
 	ID       int    `json:"id"`
 	UserName string `json:"username"`

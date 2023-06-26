@@ -235,7 +235,7 @@ func (fp *FilePostgres) UploadFile(header *multipart.FileHeader, c *gin.Context)
 
 	fileSizeLimit, err := getFileSizeLimitSql(userName)
 	if err != nil {
-		//todo log
+		logger.Error.Println(err)
 		return 0, err
 	}
 
@@ -405,7 +405,6 @@ func (fp *FilePostgres) FindFileByFileName(fileName, userName string) (file mode
 
 	err = checkUserToFileAccess(fileID, userID)
 	if err != nil {
-		fmt.Println("err", err)
 		logger.Error.Println(err.Error())
 		return file, err
 	}

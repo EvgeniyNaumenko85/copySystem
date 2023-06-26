@@ -3,7 +3,6 @@ package service
 import (
 	"copySys/models"
 	"copySys/pkg/repository"
-	"fmt"
 )
 
 type UserService struct {
@@ -23,7 +22,6 @@ func (s *UserService) GetUserByID(id int) (user models.User, err error) {
 }
 
 func (s *UserService) UpdateUserByID(id int, u models.User) (err error) {
-	fmt.Println("UpdateUserByID:", id, u)
 	return s.repo.UpdateUserByID(id, u)
 }
 

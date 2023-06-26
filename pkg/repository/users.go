@@ -39,7 +39,7 @@ func findUserIdByName(userName string) (int, error) {
 		if err == sql.ErrNoRows {
 			return 0, models.ErrUserNotExists
 		} else {
-			logger.Error.Println(err.Error())
+			logger.Error.Println(err)
 			return 0, err
 		}
 	}
@@ -50,7 +50,7 @@ func findUserIdByName(userName string) (int, error) {
 func (up *UserPostgres) GetAllUsers() (users []models.User, err error) {
 	rows, err := db.GetDBConn().Query(db.GetAllUsersSql)
 	if err != nil {
-		logger.Error.Println(err.Error())
+		logger.Error.Println(err)
 
 		return nil, err
 	}
@@ -65,7 +65,7 @@ func (up *UserPostgres) GetAllUsers() (users []models.User, err error) {
 			&u.Role,
 		)
 		if err != nil {
-			logger.Error.Println(err.Error())
+			logger.Error.Println(err)
 			continue
 		}
 		users = append(users, u)
@@ -85,7 +85,7 @@ func (up *UserPostgres) GetUserByID(id int) (user models.User, err error) {
 		&u.Role,
 	)
 	if err != nil {
-		logger.Error.Println(err.Error())
+		logger.Error.Println(err)
 		return u, err
 	}
 
@@ -96,7 +96,7 @@ func (up *UserPostgres) UpdateUserByID(id int, u models.User) (err error) {
 	result, err := db.GetDBConn().Exec(db.UpdateUserByIDSql, u.ID, u.UserName, u.Email, u.Role, id)
 
 	if err != nil {
-		logger.Error.Println("UpdateUserByID func: ", err.Error())
+		logger.Error.Println("UpdateUserByID func: ", err)
 		return err
 	}
 
@@ -112,7 +112,7 @@ func (up *UserPostgres) UpdateUserByID(id int, u models.User) (err error) {
 func (up *UserPostgres) DeleteUserByID(id int) (err error) {
 	result, err := db.GetDBConn().Exec(db.DeleteUserByIDSql, id)
 	if err != nil {
-		logger.Error.Println(err.Error())
+		logger.Error.Println(err)
 		return err
 	}
 

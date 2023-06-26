@@ -24,10 +24,12 @@ func main() {
 	logger.Init()
 
 	if err := initConfig(); err != nil {
+		logger.Error.Println(err)
 		log.Fatalf("error initializing configs: %s", err.Error())
 	}
 
 	if err := godotenv.Load(); err != nil {
+		logger.Error.Println(err)
 		log.Fatalf("error loading env variables: %s", err.Error())
 	}
 
@@ -53,6 +55,7 @@ func main() {
 	}
 
 	//if err := db.Down(); err != nil {
+	//logger.Error.Println(err)
 	//	log.Fatalf("Error while dropping tables, err is: %s", err.Error())
 	//	return
 	//}

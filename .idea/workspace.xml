@@ -5,20 +5,25 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c6fa6ba5-cea1-48b8-9398-c3ee53b77c36" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/models/statistics.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pkg/handler/statistics.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pkg/repository/statistics.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pkg/service/statistics.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/9f83a5aa-5582-4755-9610-f424706efe1f.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/9f83a5aa-5582-4755-9610-f424706efe1f.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/9f83a5aa-5582-4755-9610-f424706efe1f/storage_v2/_src_/database/files_db.Ro821A/schema/public.abK9xQ.meta" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/9f83a5aa-5582-4755-9610-f424706efe1f/storage_v2/_src_/database/files_db.Ro821A/schema/public.abK9xQ.meta" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DdDiagram.png" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/db/dml.go" beforeDir="false" afterPath="$PROJECT_DIR$/db/dml.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmd/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/main.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/db/postgres.go" beforeDir="false" afterPath="$PROJECT_DIR$/db/postgres.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/user.go" beforeDir="false" afterPath="$PROJECT_DIR$/models/user.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pkg/handler/files.go" beforeDir="false" afterPath="$PROJECT_DIR$/pkg/handler/files.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pkg/handler/handler.go" beforeDir="false" afterPath="$PROJECT_DIR$/pkg/handler/handler.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pkg/handler/middleware.go" beforeDir="false" afterPath="$PROJECT_DIR$/pkg/handler/middleware.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pkg/handler/users.go" beforeDir="false" afterPath="$PROJECT_DIR$/pkg/handler/users.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pkg/repository/access.go" beforeDir="false" afterPath="$PROJECT_DIR$/pkg/repository/access.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pkg/repository/auth.go" beforeDir="false" afterPath="$PROJECT_DIR$/pkg/repository/auth.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pkg/repository/files.go" beforeDir="false" afterPath="$PROJECT_DIR$/pkg/repository/files.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pkg/repository/limits.go" beforeDir="false" afterPath="$PROJECT_DIR$/pkg/repository/limits.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pkg/repository/repository.go" beforeDir="false" afterPath="$PROJECT_DIR$/pkg/repository/repository.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pkg/repository/users.go" beforeDir="false" afterPath="$PROJECT_DIR$/pkg/repository/users.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pkg/service/service.go" beforeDir="false" afterPath="$PROJECT_DIR$/pkg/service/service.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pkg/service/auth.go" beforeDir="false" afterPath="$PROJECT_DIR$/pkg/service/auth.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pkg/service/user.go" beforeDir="false" afterPath="$PROJECT_DIR$/pkg/service/user.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
