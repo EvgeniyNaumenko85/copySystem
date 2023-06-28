@@ -3,7 +3,7 @@
   <database-model serializer="dbm" dbms="POSTGRES" family-id="POSTGRES" format-version="4.48">
     <root id="1">
       <DateStyle>dmy</DateStyle>
-      <IntrospectionStateNumber>4111</IntrospectionStateNumber>
+      <IntrospectionStateNumber>4191</IntrospectionStateNumber>
       <ServerVersion>15.2</ServerVersion>
       <StartupTime>1687333368</StartupTime>
       <TimeZones>true ACDT
@@ -827,18 +827,18 @@ false Zulu
 13183||10|C|G
 13183||-9223372036854775808|U|G
 13183||10|U|G</Grants>
-      <IntrospectionStateNumber>4111</IntrospectionStateNumber>
+      <IntrospectionStateNumber>4191</IntrospectionStateNumber>
       <ObjectId>25276</ObjectId>
       <OwnerName>postgres</OwnerName>
     </database>
-    <role id="9" parent="1" name="pg_checkpoint">
-      <ObjectId>4544</ObjectId>
-    </role>
-    <role id="10" parent="1" name="pg_database_owner">
+    <role id="9" parent="1" name="pg_database_owner">
       <ObjectId>6171</ObjectId>
     </role>
-    <role id="11" parent="1" name="pg_execute_server_program">
-      <ObjectId>4571</ObjectId>
+    <role id="10" parent="1" name="pg_read_all_data">
+      <ObjectId>6181</ObjectId>
+    </role>
+    <role id="11" parent="1" name="pg_write_all_data">
+      <ObjectId>6182</ObjectId>
     </role>
     <role id="12" parent="1" name="pg_monitor">
       <ObjectId>3373</ObjectId>
@@ -846,29 +846,29 @@ false Zulu
 3375
 3377</RoleGrants>
     </role>
-    <role id="13" parent="1" name="pg_read_all_data">
-      <ObjectId>6181</ObjectId>
-    </role>
-    <role id="14" parent="1" name="pg_read_all_settings">
+    <role id="13" parent="1" name="pg_read_all_settings">
       <ObjectId>3374</ObjectId>
     </role>
-    <role id="15" parent="1" name="pg_read_all_stats">
+    <role id="14" parent="1" name="pg_read_all_stats">
       <ObjectId>3375</ObjectId>
+    </role>
+    <role id="15" parent="1" name="pg_stat_scan_tables">
+      <ObjectId>3377</ObjectId>
     </role>
     <role id="16" parent="1" name="pg_read_server_files">
       <ObjectId>4569</ObjectId>
     </role>
-    <role id="17" parent="1" name="pg_signal_backend">
+    <role id="17" parent="1" name="pg_write_server_files">
+      <ObjectId>4570</ObjectId>
+    </role>
+    <role id="18" parent="1" name="pg_execute_server_program">
+      <ObjectId>4571</ObjectId>
+    </role>
+    <role id="19" parent="1" name="pg_signal_backend">
       <ObjectId>4200</ObjectId>
     </role>
-    <role id="18" parent="1" name="pg_stat_scan_tables">
-      <ObjectId>3377</ObjectId>
-    </role>
-    <role id="19" parent="1" name="pg_write_all_data">
-      <ObjectId>6182</ObjectId>
-    </role>
-    <role id="20" parent="1" name="pg_write_server_files">
-      <ObjectId>4570</ObjectId>
+    <role id="20" parent="1" name="pg_checkpoint">
+      <ObjectId>4544</ObjectId>
     </role>
     <role id="21" parent="1" name="postgres">
       <BypassRls>1</BypassRls>
@@ -5907,10 +5907,330 @@ false Zulu
     <schema id="267" parent="8" name="public">
       <Comment>standard public schema</Comment>
       <Current>1</Current>
-      <IntrospectionStateNumber>4111</IntrospectionStateNumber>
+      <IntrospectionStateNumber>4191</IntrospectionStateNumber>
       <ObjectId>2200</ObjectId>
       <StateNumber>518</StateNumber>
       <OwnerName>pg_database_owner</OwnerName>
     </schema>
+    <sequence id="268" parent="267" name="access_id_seq">
+      <DasType>bigint|0s</DasType>
+      <ObjectId>35034</ObjectId>
+      <SequenceIdentity>1(6)</SequenceIdentity>
+      <StartValue>1</StartValue>
+      <StateNumber>4175</StateNumber>
+      <OwnerName>postgres</OwnerName>
+    </sequence>
+    <sequence id="269" parent="267" name="files_id_seq">
+      <DasType>bigint|0s</DasType>
+      <ObjectId>35018</ObjectId>
+      <SequenceIdentity>1(4)</SequenceIdentity>
+      <StartValue>1</StartValue>
+      <StateNumber>4174</StateNumber>
+      <OwnerName>postgres</OwnerName>
+    </sequence>
+    <sequence id="270" parent="267" name="users_id_seq">
+      <DasType>bigint|0s</DasType>
+      <ObjectId>35005</ObjectId>
+      <SequenceIdentity>1(4)</SequenceIdentity>
+      <StartValue>1</StartValue>
+      <StateNumber>4173</StateNumber>
+      <OwnerName>postgres</OwnerName>
+    </sequence>
+    <table id="271" parent="267" name="access">
+      <ObjectId>35035</ObjectId>
+      <StateNumber>4175</StateNumber>
+      <AccessMethodId>2</AccessMethodId>
+      <OwnerName>postgres</OwnerName>
+    </table>
+    <table id="272" parent="267" name="files">
+      <ObjectId>35019</ObjectId>
+      <StateNumber>4174</StateNumber>
+      <AccessMethodId>2</AccessMethodId>
+      <OwnerName>postgres</OwnerName>
+    </table>
+    <table id="273" parent="267" name="users">
+      <ObjectId>35006</ObjectId>
+      <StateNumber>4174</StateNumber>
+      <AccessMethodId>2</AccessMethodId>
+      <OwnerName>postgres</OwnerName>
+    </table>
+    <column id="274" parent="271" name="id">
+      <DasType>bigint|0s</DasType>
+      <DefaultExpression>nextval(&apos;access_id_seq&apos;::regclass)</DefaultExpression>
+      <NotNull>1</NotNull>
+      <Position>1</Position>
+      <StateNumber>4175</StateNumber>
+      <SequenceId>35034</SequenceId>
+      <TypeId>20</TypeId>
+    </column>
+    <column id="275" parent="271" name="file_id">
+      <DasType>integer|0s</DasType>
+      <Position>2</Position>
+      <StateNumber>4175</StateNumber>
+      <TypeId>23</TypeId>
+    </column>
+    <column id="276" parent="271" name="user_id">
+      <DasType>integer|0s</DasType>
+      <Position>3</Position>
+      <StateNumber>4175</StateNumber>
+      <TypeId>23</TypeId>
+    </column>
+    <foreign-key id="277" parent="271" name="access_file_id_fkey">
+      <ColNames>file_id</ColNames>
+      <NameSurrogate>1</NameSurrogate>
+      <ObjectId>35043</ObjectId>
+      <OnDelete>cascade</OnDelete>
+      <RefColNames>id</RefColNames>
+      <RefColPositions>1</RefColPositions>
+      <StateNumber>4175</StateNumber>
+      <RefTableId>35019</RefTableId>
+      <RefTableName>files</RefTableName>
+      <RefTableKind>table</RefTableKind>
+    </foreign-key>
+    <foreign-key id="278" parent="271" name="access_user_id_fkey">
+      <ColNames>user_id</ColNames>
+      <NameSurrogate>1</NameSurrogate>
+      <ObjectId>35048</ObjectId>
+      <OnDelete>cascade</OnDelete>
+      <RefColNames>id</RefColNames>
+      <RefColPositions>1</RefColPositions>
+      <StateNumber>4175</StateNumber>
+      <RefTableId>35006</RefTableId>
+      <RefTableName>users</RefTableName>
+      <RefTableKind>table</RefTableKind>
+    </foreign-key>
+    <index id="279" parent="271" name="access_pkey">
+      <ColNames>id</ColNames>
+      <NameSurrogate>1</NameSurrogate>
+      <ObjectId>35039</ObjectId>
+      <Primary>1</Primary>
+      <StateNumber>4175</StateNumber>
+      <Unique>1</Unique>
+      <AccessMethodId>403</AccessMethodId>
+    </index>
+    <index id="280" parent="271" name="unique_user_file_pair">
+      <ColNames>user_id
+file_id</ColNames>
+      <ObjectId>35041</ObjectId>
+      <StateNumber>4175</StateNumber>
+      <Unique>1</Unique>
+      <AccessMethodId>403</AccessMethodId>
+    </index>
+    <key id="281" parent="271" name="access_pkey">
+      <NameSurrogate>1</NameSurrogate>
+      <ObjectId>35040</ObjectId>
+      <Primary>1</Primary>
+      <StateNumber>4175</StateNumber>
+      <UnderlyingIndexId>35039</UnderlyingIndexId>
+    </key>
+    <key id="282" parent="271" name="unique_user_file_pair">
+      <ObjectId>35042</ObjectId>
+      <StateNumber>4175</StateNumber>
+      <UnderlyingIndexId>35041</UnderlyingIndexId>
+    </key>
+    <column id="283" parent="272" name="id">
+      <DasType>bigint|0s</DasType>
+      <DefaultExpression>nextval(&apos;files_id_seq&apos;::regclass)</DefaultExpression>
+      <NotNull>1</NotNull>
+      <Position>1</Position>
+      <StateNumber>4174</StateNumber>
+      <SequenceId>35018</SequenceId>
+      <TypeId>20</TypeId>
+    </column>
+    <column id="284" parent="272" name="user_id">
+      <DasType>integer|0s</DasType>
+      <Position>2</Position>
+      <StateNumber>4174</StateNumber>
+      <TypeId>23</TypeId>
+    </column>
+    <column id="285" parent="272" name="file_name">
+      <DasType>varchar(30)|0s</DasType>
+      <NotNull>1</NotNull>
+      <Position>3</Position>
+      <StateNumber>4174</StateNumber>
+      <TypeId>1043</TypeId>
+    </column>
+    <column id="286" parent="272" name="extension">
+      <DasType>varchar(10)|0s</DasType>
+      <Position>4</Position>
+      <StateNumber>4174</StateNumber>
+      <TypeId>1043</TypeId>
+    </column>
+    <column id="287" parent="272" name="file_path">
+      <DasType>varchar(255)|0s</DasType>
+      <NotNull>1</NotNull>
+      <Position>5</Position>
+      <StateNumber>4174</StateNumber>
+      <TypeId>1043</TypeId>
+    </column>
+    <column id="288" parent="272" name="file_size">
+      <DasType>double precision|0s</DasType>
+      <NotNull>1</NotNull>
+      <Position>6</Position>
+      <StateNumber>4174</StateNumber>
+      <TypeId>701</TypeId>
+    </column>
+    <column id="289" parent="272" name="deleted">
+      <DasType>boolean|0s</DasType>
+      <DefaultExpression>false</DefaultExpression>
+      <NotNull>1</NotNull>
+      <Position>7</Position>
+      <StateNumber>4174</StateNumber>
+      <TypeId>16</TypeId>
+    </column>
+    <column id="290" parent="272" name="added">
+      <DasType>timestamp|0s</DasType>
+      <DefaultExpression>to_timestamp(&apos;2023-06-25 12:53:00&apos;::text, &apos;YYYY-MM-DD HH24:MI:SS&apos;::text)</DefaultExpression>
+      <NotNull>1</NotNull>
+      <Position>8</Position>
+      <StateNumber>4174</StateNumber>
+      <TypeId>1114</TypeId>
+    </column>
+    <foreign-key id="291" parent="272" name="files_user_id_fkey">
+      <ColNames>user_id</ColNames>
+      <NameSurrogate>1</NameSurrogate>
+      <ObjectId>35029</ObjectId>
+      <OnDelete>cascade</OnDelete>
+      <RefColNames>id</RefColNames>
+      <RefColPositions>1</RefColPositions>
+      <StateNumber>4174</StateNumber>
+      <RefTableId>35006</RefTableId>
+      <RefTableName>users</RefTableName>
+      <RefTableKind>table</RefTableKind>
+    </foreign-key>
+    <index id="292" parent="272" name="files_pkey">
+      <ColNames>id</ColNames>
+      <NameSurrogate>1</NameSurrogate>
+      <ObjectId>35025</ObjectId>
+      <Primary>1</Primary>
+      <StateNumber>4174</StateNumber>
+      <Unique>1</Unique>
+      <AccessMethodId>403</AccessMethodId>
+    </index>
+    <index id="293" parent="272" name="files_file_path_key">
+      <ColNames>file_path</ColNames>
+      <NameSurrogate>1</NameSurrogate>
+      <ObjectId>35027</ObjectId>
+      <StateNumber>4174</StateNumber>
+      <Unique>1</Unique>
+      <AccessMethodId>403</AccessMethodId>
+      <CollationNames>default</CollationNames>
+      <CollationIds>100</CollationIds>
+      <CollationParentNames>pg_catalog</CollationParentNames>
+    </index>
+    <key id="294" parent="272" name="files_pkey">
+      <NameSurrogate>1</NameSurrogate>
+      <ObjectId>35026</ObjectId>
+      <Primary>1</Primary>
+      <StateNumber>4174</StateNumber>
+      <UnderlyingIndexId>35025</UnderlyingIndexId>
+    </key>
+    <key id="295" parent="272" name="files_file_path_key">
+      <NameSurrogate>1</NameSurrogate>
+      <ObjectId>35028</ObjectId>
+      <StateNumber>4174</StateNumber>
+      <UnderlyingIndexId>35027</UnderlyingIndexId>
+    </key>
+    <column id="296" parent="273" name="id">
+      <DasType>bigint|0s</DasType>
+      <DefaultExpression>nextval(&apos;users_id_seq&apos;::regclass)</DefaultExpression>
+      <NotNull>1</NotNull>
+      <Position>1</Position>
+      <StateNumber>4173</StateNumber>
+      <SequenceId>35005</SequenceId>
+      <TypeId>20</TypeId>
+    </column>
+    <column id="297" parent="273" name="user_name">
+      <DasType>varchar(30)|0s</DasType>
+      <NotNull>1</NotNull>
+      <Position>2</Position>
+      <StateNumber>4173</StateNumber>
+      <TypeId>1043</TypeId>
+    </column>
+    <column id="298" parent="273" name="email">
+      <DasType>varchar(30)|0s</DasType>
+      <NotNull>1</NotNull>
+      <Position>3</Position>
+      <StateNumber>4173</StateNumber>
+      <TypeId>1043</TypeId>
+    </column>
+    <column id="299" parent="273" name="password_hash">
+      <DasType>varchar(255)|0s</DasType>
+      <NotNull>1</NotNull>
+      <Position>4</Position>
+      <StateNumber>4173</StateNumber>
+      <TypeId>1043</TypeId>
+    </column>
+    <column id="300" parent="273" name="user_role">
+      <DasType>varchar(30)|0s</DasType>
+      <NotNull>1</NotNull>
+      <Position>5</Position>
+      <StateNumber>4173</StateNumber>
+      <TypeId>1043</TypeId>
+    </column>
+    <column id="301" parent="273" name="file_size_lim">
+      <DasType>integer|0s</DasType>
+      <DefaultExpression>20</DefaultExpression>
+      <Position>6</Position>
+      <StateNumber>4173</StateNumber>
+      <TypeId>23</TypeId>
+    </column>
+    <column id="302" parent="273" name="storage_size_lim">
+      <DasType>integer|0s</DasType>
+      <DefaultExpression>100</DefaultExpression>
+      <Position>7</Position>
+      <StateNumber>4173</StateNumber>
+      <TypeId>23</TypeId>
+    </column>
+    <index id="303" parent="273" name="users_pkey">
+      <ColNames>id</ColNames>
+      <NameSurrogate>1</NameSurrogate>
+      <ObjectId>35012</ObjectId>
+      <Primary>1</Primary>
+      <StateNumber>4173</StateNumber>
+      <Unique>1</Unique>
+      <AccessMethodId>403</AccessMethodId>
+    </index>
+    <index id="304" parent="273" name="users_user_name_key">
+      <ColNames>user_name</ColNames>
+      <NameSurrogate>1</NameSurrogate>
+      <ObjectId>35014</ObjectId>
+      <StateNumber>4173</StateNumber>
+      <Unique>1</Unique>
+      <AccessMethodId>403</AccessMethodId>
+      <CollationNames>default</CollationNames>
+      <CollationIds>100</CollationIds>
+      <CollationParentNames>pg_catalog</CollationParentNames>
+    </index>
+    <index id="305" parent="273" name="users_email_key">
+      <ColNames>email</ColNames>
+      <NameSurrogate>1</NameSurrogate>
+      <ObjectId>35016</ObjectId>
+      <StateNumber>4173</StateNumber>
+      <Unique>1</Unique>
+      <AccessMethodId>403</AccessMethodId>
+      <CollationNames>default</CollationNames>
+      <CollationIds>100</CollationIds>
+      <CollationParentNames>pg_catalog</CollationParentNames>
+    </index>
+    <key id="306" parent="273" name="users_pkey">
+      <NameSurrogate>1</NameSurrogate>
+      <ObjectId>35013</ObjectId>
+      <Primary>1</Primary>
+      <StateNumber>4173</StateNumber>
+      <UnderlyingIndexId>35012</UnderlyingIndexId>
+    </key>
+    <key id="307" parent="273" name="users_user_name_key">
+      <NameSurrogate>1</NameSurrogate>
+      <ObjectId>35015</ObjectId>
+      <StateNumber>4173</StateNumber>
+      <UnderlyingIndexId>35014</UnderlyingIndexId>
+    </key>
+    <key id="308" parent="273" name="users_email_key">
+      <NameSurrogate>1</NameSurrogate>
+      <ObjectId>35017</ObjectId>
+      <StateNumber>4173</StateNumber>
+      <UnderlyingIndexId>35016</UnderlyingIndexId>
+    </key>
   </database-model>
 </dataSource>

@@ -73,6 +73,9 @@ func (h *Handler) providingAccessAll(c *gin.Context) {
 		case models.ErrFileNotExists:
 			c.JSON(http.StatusNoContent, gin.H{})
 			return
+		case models.ErrFileAccessToAllUsers:
+			c.JSON(http.StatusAlreadyReported, gin.H{})
+			return
 		default:
 			c.JSON(http.StatusInternalServerError, gin.H{
 				"reason": err.Error(),

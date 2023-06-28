@@ -22,4 +22,4 @@ var ErrFileInfoNotFound = errors.New("file info is not found")
 var ErrFileAccessDenied = errors.New("file access denied")
 var ErrAccessInfoNotFound = errors.New("access info is not found")
 
-var ErrCantGetInfoFromHeader = errors.New("can't  get info from Headers")
+var ErrFileAccessToAllUsers = errors.New("can't set access to all users")
