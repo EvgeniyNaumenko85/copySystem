@@ -1,6 +1,8 @@
 package models
 
-import "errors"
+import (
+	"errors"
+)
 
 var ErrNoRows = errors.New("sql: no rows in result set")
 var ErrNoRowsSQL = "sql: no rows in result set"
@@ -23,3 +25,4 @@ var ErrFileAccessDenied = errors.New("file access denied")
 var ErrAccessInfoNotFound = errors.New("access info is not found")
 
 var ErrFileAccessToAllUsers = errors.New("can't set access to all users")
+

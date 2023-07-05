@@ -5,16 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c6fa6ba5-cea1-48b8-9398-c3ee53b77c36" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/9f83a5aa-5582-4755-9610-f424706efe1f.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/9f83a5aa-5582-4755-9610-f424706efe1f.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/9f83a5aa-5582-4755-9610-f424706efe1f/storage_v2/_src_/database/files_db.Ro821A/schema/public.abK9xQ.meta" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/9f83a5aa-5582-4755-9610-f424706efe1f/storage_v2/_src_/database/files_db.Ro821A/schema/public.abK9xQ.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/db/database.sql" beforeDir="false" afterPath="$PROJECT_DIR$/db/database.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/db/ddl.go" beforeDir="false" afterPath="$PROJECT_DIR$/db/ddl.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/db/dml.go" beforeDir="false" afterPath="$PROJECT_DIR$/db/dml.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/models/erorrs.go" beforeDir="false" afterPath="$PROJECT_DIR$/models/erorrs.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pkg/handler/acces.go" beforeDir="false" afterPath="$PROJECT_DIR$/pkg/handler/acces.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pkg/repository/access.go" beforeDir="false" afterPath="$PROJECT_DIR$/pkg/repository/access.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pkg/handler/acces.go" beforeDir="false" afterPath="$PROJECT_DIR$/pkg/handler/access.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pkg/handler/limits.go" beforeDir="false" afterPath="$PROJECT_DIR$/pkg/handler/limits.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pkg/repository/files.go" beforeDir="false" afterPath="$PROJECT_DIR$/pkg/repository/files.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -40,30 +36,30 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ASKED_MARK_IGNORED_FILES_AS_EXCLUDED&quot;: &quot;true&quot;,
-    &quot;DefaultGoTemplateProperty&quot;: &quot;Go File&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.go.formatter.settings.were.checked&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.go.migrated.go.modules.settings&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.go.modules.go.list.on.any.changes.was.set&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;go.import.settings.migrated&quot;: &quot;true&quot;,
-    &quot;go.sdk.automatically.set&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/Евгений Науменко/Desktop/copySys/models&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settingsdialog.IDE.editor.colors.General&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_MARK_IGNORED_FILES_AS_EXCLUDED": "true",
+    "DefaultGoTemplateProperty": "Go File",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.go.formatter.settings.were.checked": "true",
+    "RunOnceActivity.go.migrated.go.modules.settings": "true",
+    "RunOnceActivity.go.modules.go.list.on.any.changes.was.set": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "go.import.settings.migrated": "true",
+    "go.sdk.automatically.set": "true",
+    "last_opened_file_path": "C:/Users/Евгений Науменко/Desktop/copySys",
+    "node.js.detected.package.eslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "reference.settingsdialog.IDE.editor.colors.General"
   },
-  &quot;keyToStringList&quot;: {
-    &quot;DatabaseDriversLRU&quot;: [
-      &quot;postgresql&quot;
+  "keyToStringList": {
+    "DatabaseDriversLRU": [
+      "postgresql"
     ]
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\Евгений Науменко\Desktop\copySys\models" />
@@ -71,6 +67,25 @@
       <recent name="C:\Users\Евгений Науменко\Desktop\copySys\pkg\handler" />
       <recent name="C:\Users\Евгений Науменко\Desktop\copySys\pkg\repository" />
     </key>
+  </component>
+  <component name="RunManager">
+    <configuration default="true" type="GoApplicationRunConfiguration" factoryName="Go Application">
+      <module name="copySys" />
+      <working_directory value="$PROJECT_DIR$" />
+      <kind value="FILE" />
+      <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$" />
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="GoTestRunConfiguration" factoryName="Go Test">
+      <module name="copySys" />
+      <working_directory value="$PROJECT_DIR$" />
+      <kind value="DIRECTORY" />
+      <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$" />
+      <framework value="gotest" />
+      <method v="2" />
+    </configuration>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TypeScriptGeneratedFilesManager">

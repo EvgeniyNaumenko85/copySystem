@@ -102,6 +102,7 @@ func getFileSize(filePath string) (float64, error) {
 		fileSizeInMb = 0.01
 	}
 
+	fmt.Println("fileSizeInMb: ", fileSizeInMb)
 	return fileSizeInMb, nil
 }
 
@@ -373,10 +374,13 @@ func (fp *FilePostgres) ShowAllUserFilesInfo(c *gin.Context) (files []models.Fil
 			&file.UserId,
 			&file.FileName,
 			&file.Extension,
-			&file.FileSize,
 			&file.FilePath,
+			&file.FileSize,
 			&file.Added,
 		)
+
+		fmt.Println("&file.FilePath: ", file.FilePath)
+		fmt.Println("&file.FileSize: ", file.FileSize)
 		if err != nil {
 			logger.Error.Println(err.Error())
 			continue

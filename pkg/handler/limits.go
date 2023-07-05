@@ -18,7 +18,7 @@ func (h *Handler) setLimitsToUser(c *gin.Context) {
 	}
 
 	var l models.LimitRequest
-	if err := c.BindJSON(&l); err != nil {
+	if err = c.BindJSON(&l); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"reason": "error while binding body",
 			"err":    err,
