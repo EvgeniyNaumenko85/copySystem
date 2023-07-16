@@ -1,5 +1,5 @@
 ../.idea
 utils/.env
-logs/
-storage/
+logs/*
+storage/*
 desktop.ini

@@ -64,7 +64,6 @@ func main() {
 		if err := srv.Run(viper.GetString("PORT"), handlers.InitRoutes()); err != nil {
 			//logger.Info.Println(err.Error())
 			//log.Fatalf("Error occured while running http server: %s", err.Error())
-
 			return
 		}
 	}()
